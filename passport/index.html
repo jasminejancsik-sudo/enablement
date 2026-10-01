@@ -167,6 +167,58 @@ textarea.refl{width:100%;min-height:90px;border:1px solid var(--line);border-rad
 .ticket .v{font-size:18px;font-weight:800;margin-bottom:12px}
 .left li{margin:4px 0}
 canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+/* ---------- Workbook ---------- */
+details.tool{border:1px solid var(--line);border-radius:16px;background:#fff;margin:10px 0;overflow:hidden}
+details.tool summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;flex-wrap:wrap}
+details.tool summary::-webkit-details-marker{display:none}
+details.tool summary .tt::before{content:"▸";display:inline-block;margin-right:8px;transition:transform .15s;color:var(--muted)}
+details.tool[open] summary .tt::before{transform:rotate(90deg)}
+details.tool[open] summary{border-bottom:1px dashed var(--line);background:var(--paper)}
+details.tool .tags{display:flex;gap:6px;flex-wrap:wrap}
+details.tool .tbody{padding:16px}
+.pill.ok{background:#e7f6ef;color:#1f7a5c}
+.mini{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card)}
+.tbl{overflow-x:auto}
+.tbl table{width:100%;border-collapse:separate;border-spacing:0 6px;min-width:560px}
+.tbl th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 6px}
+.tbl td{padding:0 4px;vertical-align:middle}
+.tbl input,.tbl select{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.tbl .planner td{text-align:center;border-top:1px dashed var(--line);padding:8px 4px}
+.tbl .planner td:first-child{text-align:left}
+.chk{display:inline-flex;gap:8px;align-items:center;cursor:pointer;font-weight:600;font-size:14px}
+.chk input{width:20px;height:20px;accent-color:var(--navy)}
+.preview{white-space:pre-wrap;font-family:inherit;background:var(--paper);border:1px dashed #cdbf9f;border-radius:14px;padding:14px 16px;margin:6px 0 0;font-size:16px;line-height:1.6}
+.preview.empty{color:var(--muted);font-style:italic}
+.timer{display:inline-flex;gap:8px;align-items:center}
+.timer b{font-variant-numeric:tabular-nums;font-size:22px;min-width:64px}
+.timer b.late{color:var(--coral)}
+.counter{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.cnt{display:flex;align-items:center;gap:10px}
+.round{width:36px;height:36px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:20px;font-weight:800;line-height:1}
+.num2{font-size:24px;font-weight:800;min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
+.rubrow{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-top:1px dashed var(--line)}
+.lv{display:flex;gap:4px;flex-wrap:wrap}
+.lvb{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--ink-2)}
+.lvb.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.flow .actors{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:14px;flex-wrap:wrap}
+.actor{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:14px;border:2px solid var(--line);background:#fff;min-width:92px;font-size:13px;font-weight:700;color:var(--muted);transition:all .25s}
+.actor .ae{font-size:26px;filter:grayscale(1);opacity:.6;transition:all .25s}
+.actor.lit{border-color:var(--w2);color:var(--ink);background:#fff7df}
+.actor.lit .ae{filter:none;opacity:1}
+.actor.to{box-shadow:0 0 0 4px rgba(245,185,66,.35);transform:translateY(-3px)}
+.arrow{font-size:22px;font-weight:800;color:#d7cbb0}
+.arrow.lit{color:var(--w2);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.25)}}
+.stepcard{background:var(--paper);border-radius:16px;padding:16px}
+.whyit{background:#fff;border-radius:12px;padding:10px 12px;margin:8px 0 0;font-size:15px}
+.dots{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.fdot{width:14px;height:14px;border-radius:50%;border:2px solid #cdbf9f;background:#fff;padding:0}
+.fdot.done{background:var(--w3);border-color:var(--w3)}
+.fdot.on{transform:scale(1.35);border-color:var(--navy)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+@media (max-width:820px){.flow .actors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.actor{min-width:0;padding:6px 2px;font-size:10px;text-align:center}.actor .ae{font-size:20px}.flow .arrow{display:none}}
+@media print{details.tool .tbody{display:block}}
+
 
 @media (max-width:820px){
   .app{grid-template-columns:1fr}
@@ -377,15 +429,15 @@ const WEEKS = [
 const CERTS = [
  {key:"social", stamp:"c1", n:1, name:"Social selling", day:"Week 5 · Monday · Virtual",
   how:"Submit your portfolio on Friday of Week 4, then walk the assessors through it for 10 minutes.",
-  by:"Enablement & Marketing",
+  by:"Enablement & Marketing", secs:600,
   criteria:["Professional LinkedIn profile: photo, headline and About section","A researched outreach sequence for three target contacts","One published post that adds value for merchants","Clear explanation of why you chose each contact and message"]},
  {key:"cold", stamp:"c2", n:2, name:"Cold calling", day:"Week 5 · Tuesday · Office",
   how:"A 20-minute live role play with a buyer persona.",
-  by:"Stephanie Nelson & Enablement",
+  by:"Stephanie Nelson & Enablement", secs:1200,
   criteria:["A strong, confident opening","Earning permission to keep talking","Discovery questions using DEPTH","Handling objections calmly","Booking the meeting with a clear next step"]},
  {key:"pitch", stamp:"c3", n:3, name:"Pitch deck", day:"Week 5 · Wednesday · Office",
   how:"A 10-minute pitch and a 5-minute Q&A for a panel.",
-  by:"a panel of Stephanie Nelson & an AE",
+  by:"a panel of Stephanie Nelson & an AE", secs:600,
   criteria:["A story built for one industry","A clear link between the merchant's problem and our value","Plain-language explanation of how we help","Confident answers to questions"]}
 ];
 
@@ -431,7 +483,7 @@ const ALL_STAMPS = WEEKS.flatMap(w=>w.stamps.map(s=>({...s,week:w})));
    State (saved in this browser)
    ========================================================= */
 const KEY = "checkin-passport-v1";
-const blank = ()=>({profile:null, stamps:{}, obj:{}, refl:{}, certs:{}, learned:{}, myTerms:[], team:{}, notes:"", celebrated:false});
+const blank = ()=>({profile:null, stamps:{}, obj:{}, refl:{}, certs:{}, learned:{}, myTerms:[], team:{}, notes:"", wb:{}, celebrated:false});
 let state = load();
 function load(){ try{ return Object.assign(blank(), JSON.parse(localStorage.getItem(KEY))||{}); }catch(e){ return blank(); } }
 function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
@@ -553,6 +605,7 @@ function shell(content, route){
      ${WEEKS.map(w=>link("week/"+w.n,`<span class="dot" style="background:${w.hex}"></span>Week ${w.n}: ${w.name}`,
         `<span class="tick">${cw===w.n?"📍 ":""}${stampCount(w)}/${w.stamps.length}</span>`)).join("")}
      <div class="sep"></div>
+     ${link("workbook","📒 Workbook")}
      ${link("certs","🏅 Certifications")}
      ${link("glossary","📖 Glossary")}
      ${link("team","👋 My team")}
@@ -593,7 +646,10 @@ function viewHome(){
      <div class="bar"><i style="width:${c/t*100}%;background:${w.hex}"></i></div>
      <div class="count">${c} of ${t} stamps${weekRange(w.n)?" · "+weekRange(w.n):""}</div></a>`}).join("")}
   </div>
-  <div class="grid g2" style="margin-top:16px">
+  <div class="grid g3" style="margin-top:16px">
+   <div class="card"><h3>📒 My workbook</h3><p class="muted" style="margin:0 0 10px">Every deliverable has a tool to help you build it.</p>
+    <div class="bar"><i style="width:${Math.round(TOOLS.map(toolPct).reduce((a,b)=>a+b,0)/TOOLS.length)}%;background:var(--w3)"></i></div>
+    <p style="margin:8px 0 12px"><b>${TOOLS.filter(t=>toolPct(t)===100).length}</b> of ${TOOLS.length} tools complete</p><a class="btn small ghost" href="#workbook">Open workbook</a></div>
    <div class="card"><h3>📖 My glossary</h3><p class="muted" style="margin:0 0 10px">Goal: 20 terms by the end of Week 2.</p>
     <div class="bar"><i style="width:${Math.min(100,glossaryCount()/20*100)}%;background:var(--w2)"></i></div>
     <p style="margin:8px 0 12px"><b>${glossaryCount()}</b> of 20 terms</p><a class="btn small ghost" href="#glossary">Practise terms</a></div>
@@ -659,6 +715,8 @@ function viewWeek(n){
 
   <div class="card good" style="margin-top:16px"><div class="kicker">✨ What good looks like</div><p style="margin:6px 0 0;font-size:17px">${w.good}</p></div>
 
+  ${workbookSection(n)}
+
   <div class="card" style="margin-top:16px"><h3>🛂 Stamps to collect</h3>
    <p class="muted" style="margin:0 0 16px">Finish the deliverable, then tap the stamp and record who signed it off.</p>
    <div class="stamps">${w.stamps.map(s=>{const r=state.stamps[s.id];return `<button class="slot ${r?"done":""}" data-stamp="${s.id}">
@@ -675,13 +733,13 @@ function viewWeek(n){
 function viewCerts(){
   return `<div class="kicker">Week 5</div><h2 class="page">🏅 Your certifications</h2>
   <p class="lede">You take them in the order you'll use the skills: social selling first, then cold calling, then the pitch deck. Full rubrics arrive in Week 2. The pass mark is 80% on each rubric (to be confirmed). If you don't pass first time, you get coaching and a retake on Thursday of Week 5.</p>
-  <div class="grid g3">${CERTS.map(c=>{const st=state.certs[c.key]||{};const passed=!!state.stamps[c.stamp];
-   const ticks=c.criteria.filter((_,i)=>st["p"+i]).length;
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">${CERTS.map(c=>{const passed=!!state.stamps[c.stamp];
    return `<div class="card cert"><span class="num">${c.n}</span>
     <div class="kicker" style="margin-top:6px">${c.day}</div><h3>${c.name}</h3>
     <p style="margin:0 0 8px">${c.how}</p><p class="muted" style="margin:0 0 8px;font-size:14px">Assessed by ${c.by}</p>
-    <div class="kicker">Practice checklist · ${ticks}/${c.criteria.length}</div>
-    <ul class="obj">${c.criteria.map((x,i)=>`<li><label><input type="checkbox" data-cert="${c.key}" data-i="${i}" ${st["p"+i]?"checked":""}><span>${esc(x)}</span></label></li>`).join("")}</ul>
+    <div class="kicker" style="margin:10px 0 6px">Practise against the rubric</div>
+    ${rubric(c,"rub")}
+    <div class="kicker" style="margin:4px 0 6px">Practice timer</div><div style="margin-bottom:12px">${timer("cert-"+c.key,c.secs)}</div>
     ${passed?`<span class="badge-pass">✓ Passed${state.stamps[c.stamp].score?" · "+esc(state.stamps[c.stamp].score)+"%":""}</span>`
       :`<button class="btn small" data-stamp="${c.stamp}">Record my pass</button>`}
    </div>`}).join("")}</div>`;
@@ -801,6 +859,7 @@ function openStamp(id){
   const isCert=!!s.cert;
   const m=modal(`<div class="kicker">Week ${w.n} · ${w.name}</div><h3>${esc(s.title)}</h3>
    <p class="muted" style="margin:0">To be signed off by ${esc(s.by)}.</p>
+   ${toolForStamp(id)?`<p style="margin:10px 0 0"><a href="#week/${w.n}/${toolForStamp(id).id}" data-x="tool">📒 Open your ${esc(toolForStamp(id).title)} (${toolPct(toolForStamp(id))}% done)</a></p>`:""}
    <form id="stampForm">
     <label class="field"><span>Signed off by (name)</span><input name="by" required placeholder="${esc(s.by)}"></label>
     <label class="field"><span>Date</span><input name="date" type="date" value="${ymd(new Date())}" required></label>
@@ -808,6 +867,7 @@ function openStamp(id){
     <div class="actions"><button type="button" class="btn ghost" data-x="close">Cancel</button><button class="btn gold" type="submit">Stamp it! 🛂</button></div>
    </form>`);
   m.querySelector('[data-x="close"]').onclick=()=>m.remove();
+  const tl=m.querySelector('[data-x="tool"]'); if(tl) tl.onclick=()=>m.remove();
   m.querySelector("#stampForm").onsubmit=e=>{
     e.preventDefault(); const fd=new FormData(e.target);
     state.stamps[id]={by:fd.get("by").trim(),date:fd.get("date"),score:fd.get("score")||""}; save(); m.remove();
@@ -847,9 +907,12 @@ function render(){
   const root=$("#root");
   if(!state.profile || editing){ root.innerHTML=viewCover(); bindCover(); return; }
   const r=route(); let html;
-  if(r.startsWith("week/")) html=viewWeek(+r.split("/")[1]);
-  else html=({home:viewHome,certs:viewCerts,glossary:viewGlossary,team:viewTeam,notes:viewNotes,checkout:viewCheckout}[r]||viewHome)();
-  root.innerHTML=shell(html, r.startsWith("week/")?r:(["certs","glossary","team","notes","checkout"].includes(r)?r:"home"));
+  const parts=r.split("/"); let focusTool=null;
+  if(parts[0]==="week"){ if(parts[2]&&TOOLMAP[parts[2]]){ focusTool=parts[2]; ui.open.add(focusTool); } html=viewWeek(+parts[1]); }
+  else html=({home:viewHome,workbook:viewWorkbook,certs:viewCerts,glossary:viewGlossary,team:viewTeam,notes:viewNotes,checkout:viewCheckout}[r]||viewHome)();
+  root.innerHTML=shell(html, parts[0]==="week"?"week/"+parts[1]:(["workbook","certs","glossary","team","notes","checkout"].includes(r)?r:"home"));
+  updateDerived();
+  if(focusTool){ const el=document.getElementById("tool-"+focusTool); if(el) setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),50); }
   if(justStamped){ const el=document.querySelector(`[data-stamp="${justStamped}"] .inkstamp`); if(el) el.classList.add("thunk"); justStamped=null; }
   if(r==="checkout" && stampCount()===total) confetti();
 }
@@ -873,6 +936,18 @@ document.addEventListener("click",e=>{
   if(t.id==="editProfile"||t.dataset.act==="edit"){ e.preventDefault(); editing=true; render(); return; }
   if(t.id==="settingsBtn"){ openSettings(); return; }
   if(t.dataset.stamp){ openStamp(t.dataset.stamp); return; }
+  if(t.dataset.fstep!==undefined){ ui.flow=+t.dataset.fstep; render(); return; }
+  if(t.dataset.act==="flowhide"){ ui.flowHide=t.checked; render(); return; }
+  if(t.dataset.lv){ const cur=+wbv(t.dataset.lv,0), v=+t.dataset.v; state.wb[t.dataset.lv]=cur===v?0:v; save(); render(); return; }
+  if(t.dataset.cnt){ state.wb[t.dataset.cnt]=Math.max(0,(+wbv(t.dataset.cnt,0))+(+t.dataset.d)); save(); render(); return; }
+  if(t.dataset.act==="resetcnt"){ TOOLMAP[t.dataset.tool].items.forEach(([k])=>delete state.wb[`${t.dataset.tool}.${k}`]); save(); render(); return; }
+  if(t.dataset.timer){ const k=t.dataset.timer, secs=+t.dataset.secs; const st=ui.timers[k]||(ui.timers[k]={left:secs,secs,running:false});
+    if(t.dataset.op==="reset"){ st.left=secs; st.running=false; } else { if(st.left===0) st.left=secs; st.running=!st.running; }
+    document.querySelectorAll(`[data-timer-display="${k}"]`).forEach(el=>{el.textContent=mmss(st.left);el.classList.remove("late");});
+    document.querySelectorAll(`[data-timer="${k}"][data-op="toggle"]`).forEach(b=>b.textContent=st.running?"Pause":"▶ Start"); return; }
+  if(t.dataset.act==="copy"){ const txt=handoffText(); if(!txt) return; (navigator.clipboard?.writeText(txt)||Promise.reject()).then(()=>{t.textContent="✓ Copied";setTimeout(()=>t.textContent="📋 Copy handoff note",1500);}).catch(()=>{prompt("Copy your handoff note:",txt);}); return; }
+  if(t.dataset.act==="openall"||t.dataset.act==="printwb"){ TOOLS.forEach(x=>ui.open.add(x.id)); render(); if(t.dataset.act==="printwb") setTimeout(()=>window.print(),100); return; }
+  if(t.dataset.act==="closeall"){ ui.open.clear(); render(); return; }
   if(t.dataset.day!==undefined && t.classList.contains("tab")){ activeDay[+route().split("/")[1]]=+t.dataset.day; render(); return; }
   if(t.dataset.gtab){ gloss.tab=t.dataset.gtab; render(); return; }
   if(t.dataset.flip!==undefined){ gloss.flipped[t.dataset.flip]=!gloss.flipped[t.dataset.flip]; t.classList.toggle("on"); return; }
@@ -885,12 +960,14 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="confetti"){ confetti(); return; }
 });
 document.addEventListener("change",e=>{
-  const t=e.target;
+  const t=e.target; onWb(t);
   if(t.dataset.obj){ state.obj[t.dataset.obj]=t.checked; save(); }
   if(t.dataset.cert){ const c=state.certs[t.dataset.cert]||(state.certs[t.dataset.cert]={}); c["p"+t.dataset.i]=t.checked; save(); render(); }
 });
+document.addEventListener("toggle",e=>{ const d=e.target; if(d.dataset&&d.dataset.tool&&d.tagName==="DETAILS"){ d.open?ui.open.add(d.dataset.tool):ui.open.delete(d.dataset.tool); } },true);
+function onWb(t){ if(t.dataset.wb===undefined) return; state.wb[t.dataset.wb]= t.type==="checkbox"?t.checked:t.value; save(); updateDerived(); }
 document.addEventListener("input",e=>{
-  const t=e.target;
+  const t=e.target; onWb(t);
   if(t.dataset.refl){ state.refl[t.dataset.refl]=t.value; save(); flashSaved(); }
   if(t.id==="notes"){ state.notes=t.value; save(); flashSaved(); }
   if(t.dataset.team){ const v=state.team[t.dataset.team]||(state.team[t.dataset.team]={}); v[t.dataset.f]=t.value; save(); }
@@ -911,6 +988,240 @@ function confetti(){
   let f=0; (function tick(){ x.clearRect(0,0,c.width,c.height);
     ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore();});
     if(++f<240) requestAnimationFrame(tick); else x.clearRect(0,0,c.width,c.height); })();
+}
+
+
+/* =========================================================
+   Workbook: an in-app tool for each deliverable
+   ========================================================= */
+const OBJ_HINTS = ["We're happy with our current provider","Just send me an email","It's not a priority right now","We don't have budget for this","We've just signed a contract","I'm not the right person","Call me next quarter","What makes you different?","How did you get my number?","We're too small for you"];
+const ACTORS = [["cardholder","🧑","Cardholder"],["merchant","🛍️","Merchant"],["cko","⚡","Checkout.com"],["scheme","🌐","Card scheme"],["issuer","🏦","Issuer"]];
+const FLOW = [
+ {from:"cardholder",to:"merchant",t:"The customer pays",d:"The cardholder enters their card details on the merchant's checkout page, or taps a digital wallet, and presses Pay.",why:"A slow or confusing checkout loses customers before a payment even starts."},
+ {from:"merchant",to:"cko",t:"The merchant sends the payment",d:"The merchant's website or app sends the payment details securely to Checkout.com, its payment provider.",why:"One connection to one platform is simpler for a merchant than managing many."},
+ {from:"cko",to:"cko",t:"Fraud checks and authentication",d:"Checkout.com screens the payment for fraud. 3D Secure may ask the cardholder to confirm it's really them, for example in their banking app.",why:"Merchants want to stop fraud without blocking good customers."},
+ {from:"cko",to:"scheme",t:"The authorisation request",d:"Checkout.com sends an authorisation request through the card scheme, such as Visa or Mastercard.",why:""},
+ {from:"scheme",to:"issuer",t:"The issuer decides",d:"The scheme routes the request to the issuer, the cardholder's bank. The issuer checks the card, the account and the funds, then approves or declines the payment.",why:"Every unnecessary decline is a lost sale. That's why acceptance rate matters so much to merchants."},
+ {from:"issuer",to:"merchant",t:"The answer comes back",d:"The approval or decline travels back through the scheme and Checkout.com to the merchant, usually in a second or two. The customer sees “Payment successful”.",why:""},
+ {from:"merchant",to:"cko",t:"Capture",d:"When the merchant is ready to collect the money, for example when an order ships, it captures the approved payment.",why:""},
+ {from:"issuer",to:"merchant",t:"Settlement",d:"The money moves from the issuer, through the scheme, to Checkout.com, which pays it out to the merchant's bank account, minus fees.",why:"How quickly and reliably merchants get paid affects their cash flow."}
+];
+const PLAN_DAYS = ["Mon","Tue","Wed","Thu","Fri"];
+const PLAN_BLOCKS = [["res","Research & planning"],["cb1","Call block 1"],["soc","Email & LinkedIn"],["cb2","Call block 2"],["sf","Salesforce updates"]];
+const LEVELS = ["Not scored","Not yet","Developing","Good","Excellent"];
+const F = (k,label,o={})=>({k,label,...o});
+
+const TOOLS = [
+ {id:"pitch", week:1, stamp:"w1b", icon:"🎤", title:"60-second pitch builder", kind:"pitch",
+  intro:"Build your 60-second explanation of Checkout.com, then practise it out loud with the timer. About 130 to 160 words takes a minute to say.",
+  fields:[F("who","Who we are",{ph:"Checkout.com is a global payments platform that…"}),F("serve","Who we help",{ph:"We work with businesses like…"}),F("problem","The problem we solve",{ph:"Merchants lose sales when…"}),F("how","How we help",{ph:"We help them…"}),F("proof","Proof",{ph:"A customer story or result you heard in a session"}),F("ask","Your ask",{ph:"Would it be worth a short conversation to see if…"})]},
+ {id:"linkedin", week:1, stamp:"w1a", icon:"💼", title:"LinkedIn profile checklist", kind:"checklist",
+  intro:"Get your profile ready for social selling. Your manager or Enablement signs this stamp off.",
+  items:["A professional, friendly photo","A banner image (check with Marketing for an approved one)","A headline that says who you help, not just your job title","An About section: who you help, how, and why you joined Checkout.com","Your current role: BDR at Checkout.com","Contact info and a custom profile URL","Following Checkout.com and key colleagues"],
+  fields:[F("headline","Draft your headline",{ph:"Helping [industry] businesses [outcome] | BDR at Checkout.com"}),F("about","Draft your About section",{type:"area"})]},
+ {id:"shadow", week:1, stamp:"w1c", icon:"🎧", title:"Shadowing notes", kind:"rows", rows:3, rowLabel:"Call",
+  intro:"Listen to three live calls with your buddy and capture what you learn.",
+  fields:[F("who","Who was on the call, and what kind of call was it?"),F("worked","What worked well?",{type:"area"}),F("steal","One technique you'll use",{type:"area"}),F("q","A question for your buddy")]},
+
+ {id:"flow", week:2, stamp:"w2a", icon:"💳", title:"Payment flow explorer", kind:"flow",
+  intro:"Step through a card payment from start to finish. Then switch on teach-back mode, hide the answers and explain each step in your own words."},
+ {id:"icp", week:2, icon:"🎯", title:"ICP notes", kind:"form",
+  intro:"Capture what you learn in the ICP session.",
+  fields:[F("ind","Industries we target in NORAM",{type:"area"}),F("size","Size and signals of a good fit",{type:"area"}),F("no","Merchants we don't book, and why",{type:"area"})]},
+ {id:"depth", week:2, icon:"🧭", title:"DEPTH notes", kind:"form",
+  intro:"In the DEPTH session, write down what each letter stands for and one question you'd ask at that stage.",
+  fields:["D","E","P","T","H"].map(l=>F(l,`${l}: what it stands for, and a question you'd ask`,{type:"area"}))},
+ {id:"week", week:2, stamp:"w2d", icon:"🗓️", title:"Ideal week planner", kind:"planner",
+  intro:"Plan a BDR week. Every day needs two protected call blocks. Tuesday to Thursday are usually the strongest calling days."},
+
+ {id:"qualify", week:3, stamp:"w3a", icon:"🔍", title:"Merchant qualification", kind:"rows", rows:3, rowLabel:"Merchant",
+  intro:"Assess three sample merchants. Use Glean to check restricted and high-risk businesses.",
+  fields:[F("name","Merchant name and website"),F("ind","Industry"),F("fit","ICP fit",{type:"select",opts:["Strong fit","Possible fit","Not a fit"]}),F("risk","Risk check",{type:"select",opts:["Clear","Check with Risk","Restricted or high risk"]}),F("prob","A problem we could solve for them",{type:"area"}),F("comp","Likely current provider"),F("dec","Your decision",{type:"select",opts:["Book a meeting","Nurture","Don't book"]})]},
+ {id:"objections", week:3, stamp:"w3b", icon:"🛡️", title:"Objection bank", kind:"table", rows:10,
+  intro:"Write the ten most common objections and your response to each, in your own words. The grey text shows common examples.",
+  fields:[F("o","Objection",{phs:OBJ_HINTS}),F("r","Your response")]},
+ {id:"value", week:3, stamp:"w3c", icon:"💡", title:"Value statements", kind:"rows", rows:2, rowLabel:"Industry",
+  intro:"Tailor the Checkout.com value message for two industries.",
+  fields:[F("ind","Industry"),F("pain","What these merchants worry about",{type:"area"}),F("help","How Checkout.com helps",{type:"area"}),F("proof","Proof point or customer story"),F("line","Your one-line value statement",{type:"area"})]},
+ {id:"handoff", week:3, stamp:"w3d", icon:"🤝", title:"AE handoff note", kind:"handoff",
+  intro:"Write a handoff note to the standard. The preview builds as you type, and you can copy it into Salesforce or Slack.",
+  fields:[F("company","Company"),F("contact","Contact name and title"),F("when","Meeting date and time"),F("ae","AE"),F("why","Why they took the meeting",{type:"area"}),F("current","Current provider and setup"),F("pain","Pain points or priorities",{type:"area"}),F("size","Size or volume, if known"),F("others","Other contacts to multithread"),F("next","Agreed next step")]},
+
+ {id:"account", week:4, stamp:"w4a", icon:"🗺️", title:"Account plan: 10 target accounts", kind:"table", rows:10,
+  intro:"Build your target account list, with three contacts per account so you can multithread.",
+  fields:[F("co","Company"),F("ind","Industry"),F("why","Why now?"),F("c1","Contact 1"),F("c2","Contact 2"),F("c3","Contact 3")]},
+ {id:"sequence", week:4, stamp:"w4b", icon:"📬", title:"Multichannel sequence", kind:"table", rows:8,
+  intro:"Build a sequence that mixes calls, emails and LinkedIn. The days and channels are a suggested starting point. Change them as you need.",
+  fields:[F("day","Day",{defs:["1","1","3","5","8","10","14","17"],w:"70px"}),F("ch","Channel",{type:"select",opts:["Call","Email","LinkedIn","Call + voicemail"],defs:["Call","LinkedIn","Email","Call + voicemail","Email","LinkedIn","Call","Email"],w:"170px"}),F("msg","Message or talk track")]},
+ {id:"sim", week:4, stamp:"w4c", icon:"📊", title:"Full day simulation scorecard", kind:"counters",
+  intro:"Track your activity during the full day simulation. Targets are the proposed daily standard.",
+  items:[["dials","Dials",50],["convos","Conversations",null],["emails","Personalised emails",20],["li","LinkedIn touches",10],["meet","Meetings booked",1]]},
+ {id:"rehearsal", week:4, stamp:"w4d", icon:"🎭", title:"Dress rehearsal self-score", kind:"rubric", certs:["cold","pitch"],
+  intro:"Score yourself after the dress rehearsal, then compare with your coach's scores. The proposed pass mark is 80%."},
+ {id:"social", week:4, stamp:"w4e", icon:"📣", title:"Social selling portfolio", kind:"form",
+  intro:"Pull your portfolio together. It's due Friday of Week 4 at 12pm ET.",
+  fields:[F("profile","Link to your LinkedIn profile"),F("t1","Target contact 1: who, and why them"),F("t2","Target contact 2: who, and why them"),F("t3","Target contact 3: who, and why them"),F("seq","Your outreach sequence for these contacts",{type:"area"}),F("post","Link to your published post")]},
+
+ {id:"plan", week:5, stamp:"w5d", icon:"🧗", title:"30/60/90 day plan", kind:"form",
+  intro:"Draft your plan, then agree it with your manager on Thursday of Week 5.",
+  fields:[F("d30","First 30 days: my goals",{type:"area"}),F("d60","By day 60",{type:"area"}),F("d90","By day 90",{type:"area"}),F("skills","Skills I want to build",{type:"area"}),F("support","Support I need from my manager",{type:"area"})]}
+];
+const TOOLMAP = Object.fromEntries(TOOLS.map(t=>[t.id,t]));
+const toolForStamp = id => TOOLS.find(t=>t.stamp===id);
+
+const ui = {open:new Set(), flow:0, flowHide:false, timers:{}};
+const wbv = (p,d="")=>{ const v=state.wb[p]; return v===undefined||v===null?d:v; };
+
+function toolPaths(t){
+  const id=t.id;
+  switch(t.kind){
+    case "form": case "pitch": case "handoff": return t.fields.map(f=>`${id}.${f.k}`);
+    case "checklist": return t.items.map((_,i)=>`${id}.c${i}`).concat(t.fields.map(f=>`${id}.${f.k}`));
+    case "rows": case "table": { const out=[]; for(let i=0;i<t.rows;i++) t.fields.filter(f=>!f.defs).forEach(f=>out.push(`${id}.${i}.${f.k}`)); return out; }
+    case "planner": return PLAN_DAYS.flatMap(d=>[`${id}.${d}.cb1`,`${id}.${d}.cb2`]);
+    case "flow": return FLOW.map((_,i)=>`${id}.t${i}`);
+    case "counters": return t.items.map(([k])=>`${id}.${k}`);
+    case "rubric": return t.certs.flatMap(c=>CERTS.find(x=>x.key===c).criteria.map((_,i)=>`${id}.${c}.${i}`));
+  }
+  return [];
+}
+const filled = v => v!==undefined && v!==null && v!=="" && v!==false && v!=="0" && v!==0;
+function toolPct(t){ const p=toolPaths(t); return p.length?Math.round(p.filter(x=>filled(state.wb[x])).length/p.length*100):0; }
+
+function input(path,f,i){
+  const def = f.defs ? f.defs[i] : "";
+  const val = wbv(path,def);
+  const ph = f.phs ? f.phs[i] : (f.ph||"");
+  const aria = `aria-label="${esc(f.label)}${i!==undefined?" "+(i+1):""}"`;
+  if(f.type==="select") return `<select data-wb="${path}" ${aria}><option value="">Choose…</option>${f.opts.map(o=>`<option ${o===val?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+  if(f.type==="area") return `<textarea data-wb="${path}" rows="3" placeholder="${esc(ph)}" ${aria}>${esc(val)}</textarea>`;
+  return `<input data-wb="${path}" value="${esc(val)}" placeholder="${esc(ph)}" ${aria}>`;
+}
+const fieldBlock = (path,f,i)=>`<label class="field"><span>${esc(f.label)}</span>${input(path,f,i)}</label>`;
+
+function renderTool(t){
+  const id=t.id;
+  switch(t.kind){
+    case "form":
+      return `<div class="grid g2">${t.fields.map(f=>fieldBlock(`${id}.${f.k}`,f)).join("")}</div>`;
+    case "checklist":
+      return `<div class="obj">${t.items.map((x,i)=>`<label><input type="checkbox" data-wb="${id}.c${i}" ${wbv(`${id}.c${i}`)?"checked":""}><span>${esc(x)}</span></label>`).join("")}</div>
+        ${t.fields.map(f=>fieldBlock(`${id}.${f.k}`,f)).join("")}`;
+    case "rows":
+      return `<div class="grid g2">${Array.from({length:t.rows},(_,i)=>`<div class="mini"><div class="kicker">${t.rowLabel} ${i+1}</div>${t.fields.map(f=>fieldBlock(`${id}.${i}.${f.k}`,f)).join("")}</div>`).join("")}</div>`;
+    case "table":
+      return `<div class="tbl"><table><thead><tr><th style="width:34px">#</th>${t.fields.map(f=>`<th${f.w?` style="width:${f.w}"`:""}>${esc(f.label)}</th>`).join("")}</tr></thead><tbody>
+        ${Array.from({length:t.rows},(_,i)=>`<tr><td class="muted">${i+1}</td>${t.fields.map(f=>`<td>${input(`${id}.${i}.${f.k}`,f,i)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    case "pitch":
+      return `<div class="grid g2">${t.fields.map(f=>fieldBlock(`${id}.${f.k}`,{...f,type:"area"})).join("")}</div>
+        <div class="kicker" style="margin-top:8px">Your pitch</div><div class="preview" data-preview="pitch"></div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px"><span class="pill" data-wc="pitch"></span>${timer("pitch",60)}</div>`;
+    case "handoff":
+      return `<div class="grid g2">${t.fields.map(f=>fieldBlock(`${id}.${f.k}`,f)).join("")}</div>
+        <div class="kicker" style="margin-top:8px">Preview</div><pre class="preview" data-preview="handoff"></pre>
+        <button class="btn small" data-act="copy" style="margin-top:8px">📋 Copy handoff note</button>`;
+    case "planner":
+      return `<div class="tbl"><table class="planner"><thead><tr><th>Day</th>${PLAN_BLOCKS.map(([,l])=>`<th>${l}</th>`).join("")}</tr></thead><tbody>
+        ${PLAN_DAYS.map(d=>`<tr><td><b>${d}</b>${["Tue","Wed","Thu"].includes(d)?' <span class="pill office">Best calling day</span>':""}</td>${PLAN_BLOCKS.map(([k,l])=>`<td><label class="chk"><input type="checkbox" data-wb="${id}.${d}.${k}" ${wbv(`${id}.${d}.${k}`)?"checked":""} aria-label="${d} ${l}"></label></td>`).join("")}</tr>`).join("")}
+        </tbody></table></div><p data-planner style="font-weight:700;margin:10px 0 0"></p>
+        <label class="field"><span>Notes: when exactly are your call blocks, in your prospects' time zone?</span>${input(`${id}.notes`,{label:"Notes",type:"area"})}</label>`;
+    case "flow": return renderFlow(t);
+    case "counters":
+      return `<div class="grid g2">${t.items.map(([k,l,target])=>{const v=+wbv(`${id}.${k}`,0);
+        return `<div class="mini counter"><div><b>${l}</b><div class="muted" style="font-size:13px">${target?`Target: ${target}`:"No set target"}</div></div>
+         <div class="cnt"><button class="round" data-cnt="${id}.${k}" data-d="-1" aria-label="Remove one ${l}">−</button><span class="num2">${v}</span><button class="round" data-cnt="${id}.${k}" data-d="1" aria-label="Add one ${l}">+</button></div>
+         ${target?`<div class="bar" style="grid-column:1/-1"><i style="width:${Math.min(100,v/target*100)}%;background:${v>=target?"#2f9d76":"var(--w4)"}"></i></div>`:""}</div>`}).join("")}</div>
+        <button class="btn small ghost" data-act="resetcnt" data-tool="${id}" style="margin-top:12px">Reset counters</button>`;
+    case "rubric": return t.certs.map(c=>rubric(CERTS.find(x=>x.key===c), id)).join("");
+  }
+  return "";
+}
+
+function rubric(c, prefix){
+  return `<div class="mini" style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+     <b>${esc(c.name)}</b><span class="pill" data-rub="${prefix}|${c.key}"></span></div>
+    ${c.criteria.map((x,i)=>{const p=`${prefix}.${c.key}.${i}`;const v=+wbv(p,0);
+      return `<div class="rubrow"><span>${esc(x)}</span><div class="lv" role="group" aria-label="${esc(x)}">${LEVELS.slice(1).map((l,j)=>`<button class="lvb ${v===j+1?"on":""}" data-lv="${p}" data-v="${j+1}" title="${l}">${l}</button>`).join("")}</div></div>`}).join("")}</div>`;
+}
+function rubricScore(prefix,key){
+  const c=CERTS.find(x=>x.key===key); const vals=c.criteria.map((_,i)=>+wbv(`${prefix}.${key}.${i}`,0));
+  const scored=vals.filter(v=>v>0).length; const pct=Math.round(vals.reduce((a,b)=>a+b,0)/(4*vals.length)*100);
+  return {pct,scored,n:vals.length};
+}
+
+function renderFlow(t){
+  const i=ui.flow, s=FLOW[i];
+  const idx=k=>ACTORS.findIndex(a=>a[0]===k);
+  const a=idx(s.from), b=idx(s.to), lo=Math.min(a,b), hi=Math.max(a,b);
+  const dir = b>a?"→":b<a?"←":"⟳";
+  return `<div class="flow">
+    <div class="actors">${ACTORS.map(([k,e,l],j)=>`<div class="actor ${j>=lo&&j<=hi?"lit":""} ${j===b?"to":""}"><span class="ae">${e}</span><span>${l}</span></div>${j<ACTORS.length-1?`<span class="arrow ${j>=lo&&j<hi?"lit":""}">${j>=lo&&j<hi?dir:"·"}</span>`:""}`).join("")}</div>
+    <div class="stepcard">
+      <div class="kicker">Step ${i+1} of ${FLOW.length}</div><h3 style="margin:2px 0 6px">${s.t}</h3>
+      ${ui.flowHide?`<p class="muted">Teach-back mode: the answer is hidden. Explain this step below, then check yourself.</p>`:`<p style="margin:0 0 6px">${s.d}</p>${s.why?`<p class="whyit">💬 <b>Why it matters to a merchant:</b> ${s.why}</p>`:""}`}
+      <label class="field"><span>Explain this step in your own words</span><textarea data-wb="flow.t${i}" rows="2">${esc(wbv(`flow.t${i}`))}</textarea></label>
+    </div>
+    <div class="dots">${FLOW.map((_,j)=>`<button class="fdot ${j===i?"on":""} ${filled(state.wb["flow.t"+j])?"done":""}" data-fstep="${j}" aria-label="Step ${j+1}"></button>`).join("")}</div>
+    <div class="actions" style="justify-content:space-between">
+      <label class="chk"><input type="checkbox" data-act="flowhide" ${ui.flowHide?"checked":""}> Teach-back mode (hide answers)</label>
+      <span><button class="btn small ghost" data-fstep="${Math.max(0,i-1)}" ${i===0?"disabled":""}>← Back</button> <button class="btn small" data-fstep="${Math.min(FLOW.length-1,i+1)}" ${i===FLOW.length-1?"disabled":""}>Next step →</button></span>
+    </div></div>`;
+}
+
+function timer(key, secs){
+  const st=ui.timers[key]||{left:secs,secs};
+  return `<span class="timer"><b data-timer-display="${key}">${mmss(st.left)}</b>
+    <button class="btn small" data-timer="${key}" data-secs="${secs}" data-op="toggle">${st.running?"Pause":"▶ Start"}</button>
+    <button class="btn small ghost" data-timer="${key}" data-secs="${secs}" data-op="reset">Reset</button></span>`;
+}
+const mmss = s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+setInterval(()=>{
+  for(const [k,st] of Object.entries(ui.timers)){
+    if(!st.running) continue;
+    st.left=Math.max(0,st.left-1);
+    document.querySelectorAll(`[data-timer-display="${k}"]`).forEach(el=>{el.textContent=mmss(st.left); el.classList.toggle("late",st.left===0);});
+    if(st.left===0){ st.running=false; document.querySelectorAll(`[data-timer="${k}"][data-op="toggle"]`).forEach(b=>b.textContent="▶ Start"); }
+  }
+},1000);
+
+function pitchText(){ return TOOLMAP.pitch.fields.map(f=>wbv(`pitch.${f.k}`).trim()).filter(Boolean).join(" "); }
+function handoffText(){
+  const t=TOOLMAP.handoff; const lines=t.fields.map(f=>{const v=wbv(`handoff.${f.k}`).trim();return v?`${f.label}: ${v}`:null}).filter(Boolean);
+  return lines.length?`AE handoff note\n\n${lines.join("\n")}`:"";
+}
+function updateDerived(){
+  document.querySelectorAll("[data-prog]").forEach(el=>{const p=toolPct(TOOLMAP[el.dataset.prog]); el.textContent=p===100?"✓ Complete":`${p}% done`; el.classList.toggle("ok",p===100);});
+  document.querySelectorAll('[data-preview="pitch"]').forEach(el=>{const t=pitchText(); el.textContent=t||"Your pitch appears here as you fill in the boxes above."; el.classList.toggle("empty",!t);});
+  document.querySelectorAll('[data-wc="pitch"]').forEach(el=>{const n=pitchText().split(/\s+/).filter(Boolean).length;
+    el.textContent=`${n} words · ${n<130?"keep going":n<=160?"about 60 seconds ✓":"a bit long, try trimming"}`; el.className="pill "+(n>=130&&n<=160?"virtual":n>160?"office":"");});
+  document.querySelectorAll('[data-preview="handoff"]').forEach(el=>{const t=handoffText(); el.textContent=t||"Your handoff note appears here as you fill in the fields above."; el.classList.toggle("empty",!t);});
+  document.querySelectorAll("[data-rub]").forEach(el=>{const [p,k]=el.dataset.rub.split("|");const r=rubricScore(p,k);
+    const all=r.scored===r.n;
+    el.textContent=!r.scored?"Not scored yet":!all?`${r.scored} of ${r.n} scored`:`${r.pct}% · ${r.pct>=80?"at or above the pass mark ✓":"below the 80% pass mark"}`;
+    el.className="pill "+(all?(r.pct>=80?"virtual":"office"):"");});
+  document.querySelectorAll("[data-planner]").forEach(el=>{const n=PLAN_DAYS.filter(d=>wbv(`week.${d}.cb1`)&&wbv(`week.${d}.cb2`)).length;
+    el.textContent=n===5?"✓ Two protected call blocks every day. Nice!":`${n} of 5 days have two call blocks.`; el.style.color=n===5?"#1f7a5c":"var(--ink-2)";});
+}
+
+function toolCard(t){
+  const st = t.stamp ? state.stamps[t.stamp] : null;
+  return `<details class="tool" id="tool-${t.id}" data-tool="${t.id}" ${ui.open.has(t.id)?"open":""}>
+    <summary><span class="tt">${t.icon} <b>${esc(t.title)}</b></span>
+     <span class="tags"><span class="pill" data-prog="${t.id}"></span>${t.stamp?(st?`<span class="pill virtual">🛂 Stamped</span>`:`<span class="pill">Earns a stamp</span>`):""}</span></summary>
+    <div class="tbody">${t.intro?`<p class="muted" style="margin:0 0 12px">${t.intro}</p>`:""}${renderTool(t)}
+     ${t.stamp&&!st?`<div class="actions"><button class="btn small gold" data-stamp="${t.stamp}">Ready? Get it signed off 🛂</button></div>`:""}</div>
+  </details>`;
+}
+function workbookSection(n){
+  const list=TOOLS.filter(t=>t.week===n); if(!list.length) return "";
+  return `<div class="card" style="margin-top:16px"><h3>📒 Workbook</h3><p class="muted" style="margin:0 0 12px">Do your deliverables here. Your work saves automatically. Open a tool to start.</p>${list.map(toolCard).join("")}</div>`;
+}
+function viewWorkbook(){
+  const all=TOOLS.map(toolPct); const avg=Math.round(all.reduce((a,b)=>a+b,0)/all.length);
+  return `<div class="kicker">Everything you've built</div><h2 class="page">📒 My workbook</h2>
+  <p class="lede">Every Check In deliverable in one place. Overall, you're <b>${avg}%</b> of the way through your workbook. Print it to share with your manager at your checkpoints.</p>
+  <div class="actions no-print" style="justify-content:flex-start;margin:0 0 16px"><button class="btn" data-act="printwb">🖨️ Print my workbook</button><button class="btn ghost" data-act="openall">Open all</button><button class="btn ghost" data-act="closeall">Close all</button></div>
+  ${WEEKS.map(w=>`<h3 style="margin:22px 0 10px"><span class="dot" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${w.hex}"></span> Week ${w.n}: ${w.name}</h3>${TOOLS.filter(t=>t.week===w.n).map(toolCard).join("")}`).join("")}`;
 }
 
 render();
