@@ -70,7 +70,14 @@ h2{font-size:26px;margin:0 0 4px;letter-spacing:-.01em}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 /* journey */
-.journey{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.journey{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.wk{font-size:11px;font-weight:700;color:var(--text-muted);white-space:nowrap}
+.obj-line{font-size:12.5px;color:var(--text-secondary);margin-top:2px}
+.obj-line:before{content:"→ ";color:var(--accent);font-weight:700}
+.cal{display:grid;grid-template-columns:repeat(18,minmax(0,1fr));gap:3px;margin-top:14px}
+.cal div{height:10px;border-radius:3px;background:var(--surface-2)}
+.cal div.m{background:var(--accent)}
+.calx{display:grid;grid-template-columns:repeat(18,minmax(0,1fr));gap:3px;font-size:10px;color:var(--text-muted);text-align:center;margin-top:3px}
 .weekhead{font-size:11px;color:var(--text-muted);text-align:center;padding-bottom:2px}
 .phase{border-radius:12px;padding:14px 14px 12px;background:var(--surface-1);border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;display:flex;flex-direction:column}
 .phase .pgoal{flex:1}
@@ -182,24 +189,29 @@ footer{padding:40px 0 60px;color:var(--text-muted);font-size:13px}
   </div>
 </header>
 <nav class="toc"><div class="wrap">
-  <a href="#journey">Journey</a><a href="#load">Learning load</a><a href="#readiness">Readiness</a><a href="#backlog">Build list</a>
-  <a href="#stacks">Day 60 &amp; 90 stacks</a><a href="#certs">Certifications</a><a href="#changes">What changes</a><a href="#metrics">Success measures</a><a href="#inventory">All sessions</a>
+  <a href="#journey">Journey</a><a href="#load">Learning load</a><a href="#certs">Certifications</a><a href="#stacks">Day 60 &amp; 90</a>
+  <a href="#readiness">Readiness</a><a href="#backlog">Build list</a><a href="#changes">What changes</a><a href="#metrics">Success measures</a><a href="#inventory">All sessions</a>
   <span class="spacer"></span><button id="themeBtn" type="button">Toggle dark</button>
 </div></nav>
 
 <main class="wrap">
 <section id="journey">
   <h2>The 90-day journey</h2>
-  <p class="lede">Six phases, each with one job. Day 30, 60 and 90 each end with a clear gate, and selling time grows as structured learning steps back.</p>
+  <p class="lede">Three 30-working-day blocks, each with one job. Both certifications are done by Day 30, so Days 31–90 go to building pipeline and winning deals. Every session is placed by week and weekday. Cohorts starting on the 1st and the 15th follow the same map.</p>
   <div class="journey" id="journeyGrid"></div>
+  <div class="card" style="margin-top:14px">
+    <div class="chart-head"><div class="chart-title">18 working weeks at a glance</div><div class="chart-sub">Filled squares mark the four milestone weeks</div></div>
+    <div class="cal" id="cal"></div><div class="calx" id="calx"></div>
+    <div class="legend" id="calLegend" style="margin-top:10px"></div>
+  </div>
 </section>
 
 <section id="load">
   <h2>Learning load, paced on purpose</h2>
-  <p class="lede">Structured hours drop from about 15 a week while AEs are landing to about 5 a week once they're selling. Learning is stacked into two focused weeks, Explore at Day 60 and Propose at Day 90, timed to when each skill is needed.</p>
+  <p class="lede">Structured learning peaks while AEs are landing and building toward their certifications, then steps back so selling time can grow. After Day 30, learning is concentrated in two focused moments: Follow the Flow (Day 60) and the Deal Room (Day 90).</p>
   <div class="card">
     <div class="chart-head">
-      <div><div class="chart-title">Structured learning hours per week</div><div class="chart-sub">Hover a bar for the breakdown. Week 14 shows a typical everboarding month.</div></div>
+      <div><div class="chart-title">Structured learning hours per week</div><div class="chart-sub">Hover a bar for the breakdown. "90+" shows a typical everboarding month.</div></div>
       <div class="legend" id="loadLegend"></div>
     </div>
     <div id="loadChart"></div>
@@ -208,54 +220,51 @@ footer{padding:40px 0 60px;color:var(--text-muted);font-size:13px}
   </div>
 </section>
 
+<section id="certs">
+  <h2>Certifications: both by Day 30</h2>
+  <p class="lede">Each certification has a build-up of sessions in the weeks before it. Both use a standard persona and a standard case, so every AE is scored the same way. Assessments run as one batch day per cohort, and anyone who misses the bar retakes by Day 35 with supplemental materials.</p>
+  <div class="grid2" id="certCards"></div>
+</section>
+
+<section id="stacks">
+  <h2>Day 60 and Day 90: stacked moments</h2>
+  <p class="lede">Once certified, AEs learn from their own deals. Day 60 and Day 90 each group the relevant sessions into one focused moment.</p>
+  <div class="grid2" id="stackCards"></div>
+</section>
+
 <section id="readiness">
   <h2>What exists today, and what's missing</h2>
-  <p class="lede">Every session from the Q4 2025 plan, the NY Sales Class repository and the Q3 2026 tracker, mapped into the new journey. Most of the content already exists. The gaps are concentrated where AEs prove their skills.</p>
+  <p class="lede">Every session from the Q4 2025 plan, the NY repository, the Q3 2026 tracker and the global Commercial Onboarding Sessions catalogue, mapped into the new journey.</p>
   <div class="card">
-    <div class="chart-head">
-      <div class="chart-title">Session readiness by phase</div>
-      <div class="legend" id="statusLegend"></div>
-    </div>
+    <div class="chart-head"><div class="chart-title">Session readiness by block</div><div class="legend" id="statusLegend"></div></div>
     <div id="readyBars"></div>
   </div>
 </section>
 
 <section id="backlog">
   <h2>Build list</h2>
-  <p class="lede">What needs to be created or refreshed, by priority. P1 items are needed for the next cohort: the certifications, the Day 60 and Day 90 stacks, and the Day 1 payments primer.</p>
+  <p class="lede">P1 items are needed for the next cohort: everything that leads to a certification, Follow the Flow, the Deal Room, and the Day 1 payments primer.</p>
   <div class="grid2" id="backlogCols"></div>
-</section>
-
-<section id="stacks">
-  <h2>Stacked moments: Day 60 and Day 90</h2>
-  <p class="lede">Instead of dripping topics across months, related sessions are grouped into one focused week right before the skill is certified. Fewer things at once, each at the moment it's needed.</p>
-  <div class="grid2" id="stackCards"></div>
-</section>
-
-<section id="certs">
-  <h2>Certifications</h2>
-  <p class="lede">Two certifications at the moments that matter most in a Checkout deal: discovery, and the proposal. Both are scored 1–5 per section on a shared rubric so the bar is the same across pods.</p>
-  <div class="grid2" id="certCards"></div>
 </section>
 
 <section id="changes">
   <h2>What changes from today</h2>
-  <p class="lede">Built on the feedback from previous cohorts and from sales leadership.</p>
+  <p class="lede">Based on feedback from previous cohorts and sales leadership.</p>
   <div class="card"><div class="chg-h"><div>Today</div><div></div><div>New programme</div></div><div id="changeRows"></div></div>
 </section>
 
 <section id="metrics">
   <h2>How we'll measure success</h2>
-  <p class="lede">Reported to NORAM leadership for each cohort, connecting onboarding to revenue outcomes.</p>
+  <p class="lede">Reported to NORAM leadership for each cohort.</p>
   <div class="grid3" id="metricTiles"></div>
 </section>
 
 <section id="inventory">
   <h2>All sessions</h2>
-  <p class="lede">The full inventory. Filter by phase or status, or search by title or owner.</p>
+  <p class="lede">The full programme in order, with what the AE can do after each session. Filter by block or status, or search by title or owner.</p>
   <div class="card">
     <div class="filters" id="filters"></div>
-    <div style="overflow-x:auto"><table id="invTable"><thead><tr><th class="num">Wk</th><th>Session</th><th>Format</th><th class="num">Hrs</th><th>Owner</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+    <div style="overflow-x:auto"><table id="invTable"><thead><tr><th>When</th><th class="num">Day</th><th>Session</th><th>Format</th><th class="num">Min</th><th>Owner</th><th>Status</th></tr></thead><tbody></tbody></table></div>
     <div class="sel" id="invCount"></div>
   </div>
 </section>
@@ -270,10 +279,10 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;
 const ICON = {Ready:"✓", Refresh:"↻", Build:"+"};
 const SLABEL = {Ready:"Ready today", Refresh:"Needs refresh", Build:"To build"};
 const pill = s => `<span class="pill s-${s}"><i aria-hidden="true">${ICON[s]}</i>${SLABEL[s]}</span>`;
-const phaseByKey = Object.fromEntries(D.phases.map(p => [p.key, p]));
+const blockByKey = Object.fromEntries(D.blocks.map(b => [b.key, b]));
 const total = D.sessions.length, st = D.status;
+const wkLabel = w => w === 0 ? "Pre" : w === 19 ? "90+" : "W" + w;
 
-// theme toggle
 $("#themeBtn").onclick = () => {
   const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
   document.documentElement.dataset.theme = dark ? "light" : "dark";
@@ -283,156 +292,148 @@ $("#themeBtn").onclick = () => {
 // hero
 $("#title").textContent = D.program.title;
 $("#subtitle").textContent = D.program.subtitle;
-$("#meta").textContent = `${D.program.owner} · ${D.program.version}`;
-const certCount = D.milestones.length;
+$("#meta").textContent = `${D.program.owner} · ${D.program.version} · Days are working days`;
 $("#tiles").innerHTML = [
   ["Sessions mapped", total, ""],
   ["Ready today", st.Ready, "", "Ready"],
   ["Need refresh", st.Refresh, "", "Refresh"],
   ["To build", st.Build, "", "Build"],
-  ["Skill gates", certCount, "D30 · D60 · D90"],
-  ["Days to first Propose", 90, ""],
+  ["Certified by", "Day 30", ""],
+  ["Working weeks", 18, "to Day 90"],
 ].map(([l, v, sm, s]) => `<div class="tile"><div class="label">${s ? `<span class="icon bg-${s}" style="color:${s==="Refresh"?"#0b0b0b":"#fff"}">${ICON[s]}</span>` : ""}${l}</div><div class="value">${v}${sm ? `<small>${sm}</small>` : ""}</div></div>`).join("");
 
 // journey
 (function(){
-  const g = $("#journeyGrid");
   let h = "";
-  D.phases.forEach((p, i) => {
-    const n = D.sessions.filter(x => x.phase === p.key).length;
-    const wk = p.weeks[0] === 0 ? "Week 0" : p.weeks[0] === 14 ? "Ongoing" : p.weeks.length > 1 ? `Weeks ${p.weeks[0]}–${p.weeks[p.weeks.length - 1]}` : `Week ${p.weeks[0]}`;
-    h += `<div class="phase" style="--i:${i}"><div class="pweeks">${wk}</div>
-      <div class="pname">${esc(p.name)}</div><div class="pdays">${esc(p.days)}</div>
-      <div class="ptheme">${esc(p.theme)}</div><div class="pgoal">${esc(p.goal)}</div>
-      <div class="pfoot"><span><b>${n}</b> sessions</span><span>Selling <b>${esc(p.selling)}</b></span></div></div>`;
+  D.blocks.forEach((b, i) => {
+    const n = D.sessions.filter(x => x.block === b.key).length;
+    const ms = D.milestones.filter(m => b.weeks.includes(m.week));
+    h += `<div class="phase" style="--i:${i}"><div class="pweeks">${esc(b.days)}</div>
+      <div class="pname">${esc(b.name)}</div><div class="ptheme" style="margin-top:4px">${esc(b.theme)}</div><div class="pgoal">${esc(b.goal)}</div>
+      ${ms.length ? `<div style="margin-top:10px">${ms.map(m => `<div class="note"><b style="color:var(--accent)">${m.type === "cert" ? "★" : "◆"} Day ${m.day}</b> · ${esc(m.name)}</div>`).join("")}</div>` : ""}
+      <div class="pfoot"><span><b>${n}</b> sessions</span><span>Selling <b>${esc(b.selling)}</b></span></div></div>`;
   });
-  const endOf = {30: 2, 60: 3, 90: 4};
-  h += `<div class="rail"><div class="line"></div>${D.milestones.map(m => {
-    const left = ((endOf[m.day] + 1) / 6) * 100;
-    return `<div class="flag ${m.type}" style="left:calc(${left}% - 5px)"><div class="dot"></div><div class="ft">Day ${m.day}</div><div class="fd">${esc(m.name.replace("Day 30 ", ""))}</div></div>`;
-  }).join("")}</div>`;
-  g.innerHTML = h;
+  $("#journeyGrid").innerHTML = h;
+  const mw = Object.fromEntries(D.milestones.map(m => [m.week, m]));
+  $("#cal").innerHTML = Array.from({length: 18}, (_, i) => `<div class="${mw[i + 1] ? "m" : ""}" title="${mw[i + 1] ? "Day " + mw[i + 1].day + ": " + esc(mw[i + 1].name) : "Week " + (i + 1)}"></div>`).join("");
+  $("#calx").innerHTML = Array.from({length: 18}, (_, i) => `<span>${i + 1}</span>`).join("");
+  $("#calLegend").innerHTML = D.milestones.map(m => `<span><b style="color:var(--text-primary)">Week ${m.week} ${m.dow}</b> · Day ${m.day} ${esc(m.name)}</span>`).join("");
 })();
 
-// tooltip helpers
+// tooltip
 const tt = $("#tt");
 function showTT(e, html){ tt.innerHTML = html; tt.style.opacity = 1; moveTT(e); }
 function moveTT(e){ const r = tt.getBoundingClientRect(); let x = e.clientX + 14, y = e.clientY + 14; if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 14; if (y + r.height > innerHeight - 8) y = e.clientY - r.height - 14; tt.style.left = x + "px"; tt.style.top = y + "px"; }
 function hideTT(){ tt.style.opacity = 0; }
 
-// learning load chart
+// learning load
 const SERIES = [["Live", "--series-1", "Live sessions"], ["Self-paced", "--series-2", "Self-paced e-learning"], ["Practice", "--series-3", "Practice & certification"]];
 $("#loadLegend").innerHTML = SERIES.map(([k, v, l]) => `<span><span class="sw" style="background:var(${v})"></span>${l}</span>`).join("");
-function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function drawLoad(){
-  const W = 1180, H = 330, m = {l:40, r:12, t:34, b:40};
-  const data = D.load, n = data.length;
-  const max = 16, iw = W - m.l - m.r, ih = H - m.t - m.b, bw = iw / n, barW = Math.min(46, bw * .58);
+  const W = 1180, H = 330, m = {l:40, r:12, t:36, b:40};
+  const data = D.load, n = data.length, max = 16, iw = W - m.l - m.r, ih = H - m.t - m.b, bw = iw / n, barW = Math.min(36, bw * .62);
   const y = v => m.t + ih - (v / max) * ih;
+  const idx = w => data.findIndex(d => d.week === w);
   let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Stacked bar chart of structured learning hours per week">`;
-  // stack bands
-  const bands = {9:"Explore Week · Day 60", 13:"Propose Week · Day 90"};
-  data.forEach((d, i) => { if (bands[d.week]) { const x = m.l + i * bw; s += `<rect x="${x + 2}" y="${m.t - 26}" width="${bw - 4}" height="${ih + 26}" rx="8" fill="var(--stack-band)"/><text x="${x + bw / 2}" y="${m.t - 12}" text-anchor="middle" style="font-weight:700;fill:var(--text-primary)">${bands[d.week]}</text>`; } });
+  [[5, 6, "Certifications · Day 25 & 30"], [12, 12, "Follow the Flow · Day 60"], [18, 18, "Deal Room · Day 90"]].forEach(([a, b, l]) => {
+    const x0 = m.l + idx(a) * bw, x1 = m.l + (idx(b) + 1) * bw;
+    s += `<rect x="${x0 + 2}" y="${m.t - 28}" width="${x1 - x0 - 4}" height="${ih + 28}" rx="8" fill="var(--stack-band)"/><text x="${(x0 + x1) / 2}" y="${m.t - 14}" text-anchor="middle" style="font-weight:700;fill:var(--text-primary);font-size:11.5px">${l}</text>`;
+  });
   for (let v = 0; v <= max; v += 4) s += `<line class="${v ? "grid" : "axis"}" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}h</text>`;
   data.forEach((d, i) => {
     const cx = m.l + i * bw + bw / 2, x = cx - barW / 2;
     let base = 0; const segs = SERIES.filter(([k]) => d[k] > 0);
     segs.forEach(([k, v], j) => {
-      const y0 = y(base), y1 = y(base + d[k]); const h = Math.max(0, y0 - y1 - (j ? 2 : 0));
-      const top = j === segs.length - 1;
-      const yy = y1;
-      s += top ? `<path d="M${x},${yy + h} V${yy + 4} Q${x},${yy} ${x + 4},${yy} H${x + barW - 4} Q${x + barW},${yy} ${x + barW},${yy + 4} V${yy + h} Z" fill="${css(v)}"/>`
-               : `<rect x="${x}" y="${yy}" width="${barW}" height="${h}" fill="${css(v)}"/>`;
+      const y1 = y(base + d[k]), h = Math.max(0, y(base) - y1 - (j ? 2 : 0));
+      s += j === segs.length - 1 ? `<path d="M${x},${y1 + h} V${y1 + 4} Q${x},${y1} ${x + 4},${y1} H${x + barW - 4} Q${x + barW},${y1} ${x + barW},${y1 + 4} V${y1 + h} Z" fill="${css(v)}"/>` : `<rect x="${x}" y="${y1}" width="${barW}" height="${h}" fill="${css(v)}"/>`;
       base += d[k];
     });
     const tot = SERIES.reduce((a, [k]) => a + d[k], 0);
-    if ([1, 9, 13].includes(d.week)) s += `<text x="${cx}" y="${y(tot) - 7}" text-anchor="middle" style="fill:var(--text-primary);font-weight:600">${+tot.toFixed(1)}h</text>`;
-    s += `<text x="${cx}" y="${H - m.b + 18}" text-anchor="middle">${d.week === 0 ? "Pre" : d.week === 14 ? "90+" : "W" + d.week}</text>`;
+    if ([1, 6, 12, 18].includes(d.week)) s += `<text x="${cx}" y="${y(tot) - 7}" text-anchor="middle" style="fill:var(--text-primary);font-weight:600">${+tot.toFixed(1)}h</text>`;
+    s += `<text x="${cx}" y="${H - m.b + 18}" text-anchor="middle">${wkLabel(d.week)}</text>`;
     s += `<rect class="hit" data-i="${i}" x="${m.l + i * bw}" y="${m.t}" width="${bw}" height="${ih}" fill="transparent"/>`;
   });
-  s += `<text x="${m.l}" y="${H - 4}" style="fill:var(--text-muted)">Week of employment</text></svg>`;
+  s += `<text x="${m.l}" y="${H - 4}" style="fill:var(--text-muted)">Working week</text></svg>`;
   $("#loadChart").innerHTML = s;
   $("#loadChart").querySelectorAll(".hit").forEach(r => {
-    const d = data[+r.dataset.i], ph = D.phases.find(p => p.weeks.includes(d.week));
-    const tot = SERIES.reduce((a, [k]) => a + d[k], 0);
-    const html = `<div class="tt-h">${d.week === 0 ? "Pre-board" : d.week === 14 ? "Everboarding (monthly)" : "Week " + d.week} · ${esc(ph.name)}</div>` +
+    const d = data[+r.dataset.i], b = D.blocks.find(b => b.weeks.includes(d.week)), tot = SERIES.reduce((a, [k]) => a + d[k], 0);
+    const html = `<div class="tt-h">${d.week === 0 ? "Before Day 1" : d.week === 19 ? "After Day 90 (monthly)" : "Week " + d.week} · ${esc(b.name)}</div>` +
       SERIES.map(([k, v, l]) => `<div class="row" style="--c:var(${v})"><span>${l}</span><b>${+d[k].toFixed(2)}h</b></div>`).join("") +
       `<div class="row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px"><span style="--c:transparent">Total</span><b>${+tot.toFixed(2)}h</b></div>`;
     r.addEventListener("mouseenter", e => showTT(e, html)); r.addEventListener("mousemove", moveTT); r.addEventListener("mouseleave", hideTT);
   });
 }
 drawLoad();
-$("#loadTable").innerHTML = `<table><thead><tr><th>Week</th>${SERIES.map(s => `<th class="num">${s[2]}</th>`).join("")}<th class="num">Total</th></tr></thead><tbody>${D.load.map(d => `<tr><td>${d.week === 0 ? "Pre-board" : d.week === 14 ? "90+ (monthly)" : "Week " + d.week}</td>${SERIES.map(([k]) => `<td class="num">${+d[k].toFixed(2)}</td>`).join("")}<td class="num"><b>${+SERIES.reduce((a, [k]) => a + d[k], 0).toFixed(2)}</b></td></tr>`).join("")}</tbody></table>`;
+$("#loadTable").innerHTML = `<table><thead><tr><th>Week</th>${SERIES.map(s => `<th class="num">${s[2]}</th>`).join("")}<th class="num">Total</th></tr></thead><tbody>${D.load.map(d => `<tr><td>${d.week === 0 ? "Before Day 1" : d.week === 19 ? "After Day 90 (monthly)" : "Week " + d.week}</td>${SERIES.map(([k]) => `<td class="num">${+d[k].toFixed(2)}</td>`).join("")}<td class="num"><b>${+SERIES.reduce((a, [k]) => a + d[k], 0).toFixed(2)}</b></td></tr>`).join("")}</tbody></table>`;
 $("#loadTableBtn").onclick = e => { const t = $("#loadTable"); t.hidden = !t.hidden; e.target.textContent = t.hidden ? "Show as table" : "Hide table"; e.target.setAttribute("aria-expanded", !t.hidden); };
 
-// readiness bars
+// sequence list helper
+const seq = items => `<div class="seq">${items.map(x => `<div class="it ${x.fmt === "Certification" ? "cert" : ""}"><div style="display:flex;justify-content:space-between;gap:10px"><div class="t">${esc(x.title)}</div>${pill(x.status)}</div><div class="m">${esc(x.when)} · ${esc(x.fmt)} · ${x.minutes} min · ${esc(x.owner)}</div></div>`).join("")}</div>`;
+
+// certs
+$("#certCards").innerHTML = D.certs.map(c => {
+  const tag = c.name.startsWith("Explore") ? "Explore cert" : "Pitch cert";
+  return `<div class="card cert"><div class="when">${esc(c.when)}</div><h3>${esc(c.name)}</h3>
+  <div class="kv" style="margin-top:12px"><b>Format</b><span>${esc(c.format)}</span><b>Assessors</b><span>${esc(c.assessors)}</span><b>Pass</b><span>${esc(c.pass)}</span></div>
+  <div class="chart-title" style="font-size:14px;margin:6px 0 8px">The build-up</div>${seq(D.sessions.filter(x => x.tag === tag))}
+  <div class="chart-title" style="font-size:14px;margin:16px 0 4px">Rubric (each section scored 1–5)</div>
+  <table class="rub"><tbody>${c.rubric.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</tbody></table></div>`;
+}).join("");
+
+// stacks
+$("#stackCards").innerHTML = Object.entries(D.stacks).map(([k, v]) => `<div class="card stack"><div class="big">${esc(v.when)}</div><h3>${esc(v.title)}</h3>
+  <p class="why" style="margin-top:8px">${esc(v.why)}</p>
+  <div class="chart-title" style="font-size:14px;margin-bottom:4px">By the end, the AE can…</div>
+  <ul class="obj">${v.objectives.map(o => `<li>${esc(o)}</li>`).join("")}</ul>
+  <div class="chart-title" style="font-size:14px;margin-bottom:8px">${k === "Follow the Flow" ? "The flow: one real deal, every desk" : "The run-up"}</div>${seq(D.sessions.filter(x => x.tag === k))}</div>`).join("");
+
+// readiness
 $("#statusLegend").innerHTML = ["Ready", "Refresh", "Build"].map(s => `<span><span class="si bg-${s}" style="color:${s === "Refresh" ? "#0b0b0b" : "#fff"}">${ICON[s]}</span>${SLABEL[s]}</span>`).join("");
 (function(){
-  const maxN = Math.max(...D.phases.map(p => D.sessions.filter(x => x.phase === p.key).length));
-  $("#readyBars").innerHTML = D.phases.map(p => {
-    const c = D.byPhase[p.key] || {}, n = (c.Ready || 0) + (c.Refresh || 0) + (c.Build || 0);
+  const maxN = Math.max(...D.blocks.map(b => D.sessions.filter(x => x.block === b.key).length));
+  $("#readyBars").innerHTML = D.blocks.map(b => {
+    const c = D.byBlock[b.key] || {};
     const bar = ["Ready", "Refresh", "Build"].filter(s => c[s]).map(s => `<div class="bg-${s}" style="flex:0 0 calc(${(c[s] / maxN) * 100}% - 2px)" title="${c[s]} ${SLABEL[s].toLowerCase()}"></div>`).join("");
     const lab = ["Ready", "Refresh", "Build"].map(s => c[s] ? `${ICON[s]} ${c[s]} ${s === "Ready" ? "ready" : s === "Refresh" ? "refresh" : "to build"}` : "").filter(Boolean).join(" · ");
-    return `<div class="rb-row"><div class="rb-name">${esc(p.name)}<small>${esc(p.days)}</small></div><div class="rb-bar">${bar}</div><div class="rb-lab">${lab}</div></div>`;
+    return `<div class="rb-row"><div class="rb-name">${esc(b.name)}<small>${esc(b.days)} · ${esc(b.theme)}</small></div><div class="rb-bar">${bar}</div><div class="rb-lab">${lab}</div></div>`;
   }).join("");
 })();
 
 // backlog
 (function(){
   const todo = D.sessions.filter(x => x.status !== "Ready");
-  const p1 = x => x.stack || x.cat === "Certification" || x.title.startsWith("Payments at Checkout");
   const col = (title, items, sub) => `<div class="card bl-col"><h3>${title} <span class="note" style="margin:0">${sub}</span></h3>${items.map(x => `
     <div class="bl-item"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div class="t">${esc(x.title)}</div>${pill(x.status)}</div>
-    <div class="m">${esc(phaseByKey[x.phase].name)} · Week ${x.week} · ${esc(x.owner)}</div>${x.note ? `<div class="note">${esc(x.note)}</div>` : ""}</div>`).join("")}</div>`;
-  const a = todo.filter(p1).sort((x, y) => x.week - y.week), b = todo.filter(x => !p1(x)).sort((x, y) => (x.status === "Build" ? 0 : 1) - (y.status === "Build" ? 0 : 1) || x.week - y.week);
+    <div class="m">${esc(x.when)} · ${esc(x.owner)}</div>${x.note ? `<div class="note">${esc(x.note)}</div>` : ""}</div>`).join("")}</div>`;
+  const a = todo.filter(x => x.priority === "P1").sort((x, y) => x.week - y.week);
+  const b = todo.filter(x => x.priority === "P2").sort((x, y) => (x.status === "Build" ? 0 : 1) - (y.status === "Build" ? 0 : 1) || x.week - y.week);
   $("#backlogCols").innerHTML = col("P1: needed for the next cohort", a, `${a.length} items`) + col("P2: build into the programme", b, `${b.length} items`);
 })();
 
-// stacks
-(function(){
-  const card = key => {
-    const k = D.stacks[key], items = D.sessions.filter(x => x.stack === key);
-    return `<div class="card stack"><div class="big">${key === "D60" ? "Day 60" : "Day 90"}</div><h3>${esc(k.title.split(": ")[1] || k.title)}</h3><div class="days">${esc(k.days)}</div>
-      <p class="why">${esc(k.why)}</p>
-      <div class="chart-title" style="font-size:14px;margin-bottom:4px">By the end of the week, the AE can…</div>
-      <ul class="obj">${k.objectives.map(o => `<li>${esc(o)}</li>`).join("")}</ul>
-      <div class="chart-title" style="font-size:14px;margin-bottom:8px">The week</div>
-      <div class="seq">${items.map(x => `<div class="it ${x.cat === "Certification" ? "cert" : ""}"><div style="display:flex;justify-content:space-between;gap:10px"><div class="t">${esc(x.title)}</div>${pill(x.status)}</div><div class="m">${esc(x.fmt)} · ${x.hrs}h · ${esc(x.owner)}</div></div>`).join("")}</div></div>`;
-  };
-  $("#stackCards").innerHTML = card("D60") + card("D90");
-})();
-
-// certs
-$("#certCards").innerHTML = D.certs.map(c => `<div class="card cert"><div class="when">${esc(c.when)}</div><h3>${esc(c.name)}</h3>
-  <div class="kv" style="margin-top:12px"><b>Format</b><span>${esc(c.format)}</span><b>Assessors</b><span>${esc(c.assessors)}</span><b>Pass</b><span>${esc(c.pass)}</span></div>
-  <table class="rub"><thead><tr><th>Section</th><th>What good looks like</th><th class="sc">Score</th></tr></thead><tbody>
-  ${c.rubric.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td><td class="sc"><span class="dots">○○○○○</span></td></tr>`).join("")}</tbody></table></div>`).join("");
-
-// changes
 $("#changeRows").innerHTML = D.changes.map(([a, b]) => `<div class="chg"><div class="a">${esc(a)}</div><div class="arr" aria-hidden="true">→</div><div class="b">${esc(b)}</div></div>`).join("");
-
-// metrics
 $("#metricTiles").innerHTML = D.metrics.map(([l, v]) => `<div class="card metric"><div class="label">${esc(l)}</div><div class="value">${esc(v)}</div></div>`).join("");
 
 // inventory
 (function(){
-  const state = {phase: "all", status: "all", q: ""};
+  const state = {block: "all", status: "all", q: ""};
   const f = $("#filters");
-  f.innerHTML = `<button class="chip" data-k="phase" data-v="all" aria-pressed="true">All phases</button>` +
-    D.phases.map(p => `<button class="chip" data-k="phase" data-v="${p.key}" aria-pressed="false">${esc(p.name)}</button>`).join("") +
+  f.innerHTML = `<button class="chip" data-k="block" data-v="all" aria-pressed="true">All</button>` +
+    D.blocks.map(b => `<button class="chip" data-k="block" data-v="${b.key}" aria-pressed="false">${esc(b.name)}</button>`).join("") +
     `<span class="sep"></span><button class="chip" data-k="status" data-v="all" aria-pressed="true">Any status</button>` +
     ["Ready", "Refresh", "Build"].map(s => `<button class="chip" data-k="status" data-v="${s}" aria-pressed="false">${ICON[s]} ${SLABEL[s]}</button>`).join("") +
     `<span class="sep"></span><input type="search" placeholder="Search sessions or owners" aria-label="Search sessions">`;
   f.addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; state[b.dataset.k] = b.dataset.v; f.querySelectorAll(`.chip[data-k="${b.dataset.k}"]`).forEach(x => x.setAttribute("aria-pressed", x === b)); render(); });
   f.querySelector("input").addEventListener("input", e => { state.q = e.target.value.toLowerCase(); render(); });
   function render(){
-    const rows = D.sessions.filter(x => (state.phase === "all" || x.phase === state.phase) && (state.status === "all" || x.status === state.status) && (!state.q || (x.title + " " + x.owner + " " + x.note).toLowerCase().includes(state.q)));
-    let last = null, h = "";
+    const rows = D.sessions.filter(x => (state.block === "all" || x.block === state.block) && (state.status === "all" || x.status === state.status) && (!state.q || (x.title + " " + x.owner + " " + x.note + " " + x.objective).toLowerCase().includes(state.q)));
+    let lastB = null, lastW = null, h = "";
     rows.forEach(x => {
-      if (x.phase !== last) { const p = phaseByKey[x.phase]; h += `<tr><td colspan="6" style="background:var(--surface-2);font-weight:700">${esc(p.name)} <span class="note" style="font-weight:400">· ${esc(p.days)} · ${esc(p.theme)}</span></td></tr>`; last = x.phase; }
-      h += `<tr><td class="num">${x.week === 0 ? "–" : x.week === 14 ? "90+" : x.week}</td><td><b>${esc(x.title)}</b>${x.stack ? `<span class="tag">${x.stack === "D30" ? "Day 30" : x.stack === "D60" ? "Day 60 stack" : "Day 90 stack"}</span>` : ""}${x.note ? `<div class="note">${esc(x.note)}</div>` : ""}</td><td>${esc(x.fmt)}</td><td class="num">${x.hrs || "–"}</td><td>${esc(x.owner)}</td><td>${pill(x.status)}</td></tr>`;
+      if (x.block !== lastB) { const b = blockByKey[x.block]; h += `<tr><td colspan="7" style="background:var(--surface-2);font-weight:700">${esc(b.name)} <span class="note" style="font-weight:400">· ${esc(b.days)} · ${esc(b.theme)}</span></td></tr>`; lastB = x.block; lastW = null; }
+      const showW = x.week !== lastW; lastW = x.week;
+      h += `<tr${showW ? ' style="border-top:2px solid var(--border)"' : ""}><td class="wk">${esc(x.when)}</td><td class="num">${x.wd ?? "–"}</td><td><b>${esc(x.title)}</b>${x.tag ? `<span class="tag">${esc(x.tag)}</span>` : ""}${x.bdr ? `<span class="tag" style="color:var(--text-muted)">BDR too</span>` : ""}<div class="obj-line">${esc(x.objective)}</div>${x.note ? `<div class="note">${esc(x.note)}</div>` : ""}</td><td>${esc(x.fmt)}</td><td class="num">${x.minutes || "–"}</td><td>${esc(x.owner)}</td><td>${pill(x.status)}</td></tr>`;
     });
-    $("#invTable tbody").innerHTML = h || `<tr><td colspan="6">No sessions match.</td></tr>`;
+    $("#invTable tbody").innerHTML = h || `<tr><td colspan="7">No sessions match.</td></tr>`;
     $("#invCount").textContent = `Showing ${rows.length} of ${total} sessions`;
   }
   render();

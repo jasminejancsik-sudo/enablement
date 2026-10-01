@@ -5,15 +5,17 @@ A 90-day onboarding programme for AEs at Checkout.com: what exists today, what n
 | File | Use it for |
 |---|---|
 | [`ae-onboarding-program.html`](ae-onboarding-program.html) | **Leadership view.** Open it in a browser. It covers the journey, the weekly learning load, readiness by phase, the build list, the Day 60/90 stacks, the certifications, what changes from today, success measures, and a searchable session inventory. Works in light and dark mode and prints cleanly. |
-| [`ae-onboarding-tracker.xlsx`](ae-onboarding-tracker.xlsx) | **Working tracker.** Tabs: Overview (live counts) · Inventory (status dropdown) · Build Backlog (track progress as content is built) · Explore Call Cert and Pitch Deck Cert scorecards (auto-score with PASS/RETAKE) · New Hire Tracker (enter a start date and target dates fill in; copy it for each AE) · Who to Meet. |
+| [`ae-onboarding-tracker.xlsx`](ae-onboarding-tracker.xlsx) | **Working tracker.** Tabs: Programme (every session by week and weekday, with objective, status, catalogue ID and feedback columns) · Build Plan · Explore Call Cert and Pitch Deck Cert scorecards · New Hire Tracker · Who to Meet. |
 | [`build/program_data.py`](build/program_data.py) | **Single source of truth.** Sessions, phases, stacks, rubrics and metrics. |
 
-## Programme at a glance
-- **Phases:** Pre-board → Land (D1–14) → Learn (D15–30) → Practice (D31–60) → Perform (D61–90) → Everboard.
-- **Gates:** Day 30 Checkpoint (elevator pitch + five-pillar check) · **Day 60 Explore Call Certification** · **Day 90 Pitch Deck Certification**.
-- **Stacked moments:** *Explore Week* (Days 56–60) and *Propose Week* (Days 86–90). Related sessions are grouped right before each certification, each with focused learning objectives.
-- **Pacing:** Payments Academy moves from Day 2 to Week 2. A 60-minute "Payments at Checkout" story comes first. Weekly structured learning drops from about 15 hours to about 5 hours as selling time grows.
-- **Inventory:** 83 sessions. 51 are ready today, 14 need a refresh and 18 need to be built.
+## Programme at a glance (v2)
+- **Working days.** Week N, weekday D = working day (N−1)×5 + D. Day 30 = end of Week 6, Day 60 = end of Week 12, Day 90 = end of Week 18. Cohorts start on the 1st and the 15th.
+- **Blocks:** Before Day 1 → Days 1–30 *Get certified* → Days 31–60 *Build pipeline* → Days 61–90 *Win deals* → After Day 90.
+- **Certifications, both by Day 30:** Explore Call Certification (Day 25, Week 5 Fri) and Pitch Deck Certification (Day 30, Week 6 Fri). The pitch is a first-meeting deck for a standard case. Each runs as a batch day per cohort; retakes by Day 35, with supplemental materials.
+- **Day 60, Follow the Flow** (Week 12 Wed): one real deal goes through every partner team as a payment flow (Authorise → Risk check → Tokenise & integrate → Route → Settle → Reconcile).
+- **Day 90, Deal Room** (Week 18 Wed): the AE presents a full proposal for their top live deal. Coaching, not scored.
+- **Catalogue alignment:** sessions from the global Commercial Onboarding Sessions catalogue carry their catalogue ID. NORAM versions are added for intros that exist only for UK/EEA.
+- **Tracker:** each tab has a leadership summary block at the top. The New Hire Tracker fills in target dates from the start date using WORKDAY.
 
 ## Updating
 Edit `build/program_data.py`, then run:
