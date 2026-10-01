@@ -3,6 +3,8 @@
 
 Full tab-by-tab copy: [q4-2025-usa-new-hire-plan-full.md](q4-2025-usa-new-hire-plan-full.md)
 
+Related: [NY Sales Class onboarding repository](ny-sales-class-onboarding-repository.md) (resources, who to meet, sales tips) · [New hire onboarding tracker template](new-hire-onboarding-tracker-template.md) (a deliverable for each new hire)
+
 ## My notes (Jasmine)
 - **Payments Academy is scheduled way too early.** In this plan it starts on Day 2 (Wed, Week 1). Week 1 has about 5 hours of Payments Foundation modules 1–10, and Week 2 adds Product Foundations (Connect, Move, Protect) with quizzes. At that point new hires are still doing IT, People and compliance inductions and don't have context yet. Push it later and pace it out in the next plan.
 
