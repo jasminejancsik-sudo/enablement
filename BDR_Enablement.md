@@ -26,6 +26,38 @@ This page holds what we know about BDR enablement, starting with the global **BD
 - **Mitch Curtis:** confirmed the Revenue Enablement curriculum plans; raised the APAC/MENA representation point and the China access question
 - Also in the working group: Sandra Suen, Vince Cardoso
 
+## BDR onboarding plan (draft)
+*Source: [BDR Onboarding working notes](https://docs.google.com/document/d/1ungMmDFXAYu1uyTjowtxXkwoXzIRhj1nSoh77b3YaIw/edit)*
+
+### Onboarding sessions
+| Area | Session | Notes |
+|---|---|---|
+| **Foundations** | ICP | Who we sell to |
+| | How to qualify a merchant | Use the Glean tool. Cover restricted and high-risk merchants |
+| | Tooling: Salesforce hygiene | |
+| **Selling skills** | Prospecting | Certified at bootcamp |
+| | Social selling | |
+| | Cold calling | Certified at bootcamp |
+| | Objection handling | |
+| | Messaging and value by industry | |
+| **Working with sellers** | Meeting handoff with AE | Define what a good handoff looks like. Explore whether we can build an agent for it |
+| **Learning from the team** | Pause and play of Stephanie pitching | Recorded pitch, stopped at key moments to discuss |
+| | Collaboration and hands-on time with current BDRs | |
+| | Day in the life of a BDR | Best times to call, what success looks like, call block days on calendars |
+
+### Bootcamp certifications
+Certifications happen during bootcamp. Each one needs a **rubric** that sets out what the certification covers and how it is scored.
+- Cold calling certification (pilot)
+- Pitch deck certification
+- Prospecting certification
+
+### BDR expectations
+- **8 Explore meetings**
+- **6 Propose meetings**
+- **Trade metric** (to be defined)
+- **First month:** linked to sellers, with multithreading into accounts
+- **Time to first meeting:** to be defined. BDRs must be certified on the process first
+
 ## What this means for NORAM Enablement
 1. **Onboarding runs as a cohort twice a year.** Plan the BDR onboarding pathway around a **March** and a **September** start, with the first run in **early March 2027**. Content needs to be ready by about **February 2027**.
 2. **Month 3 and month 6 checkpoints are mandatory.** Our 30/60/90 framework (Charter priority 1) has to line up with these. Agree what each checkpoint assesses (e.g. certification, pitch, activity and meeting targets) with Global Revenue Enablement and BDR leaders.
@@ -38,3 +70,6 @@ This page holds what we know about BDR enablement, starting with the global **BD
 - What exactly is assessed at month 3 and month 6, and what happens if someone doesn't pass?
 - Does the custom curriculum replace or sit on top of the standard mandatory onboarding sessions?
 - Will the 2026 NORAM BDR hires be brought into the checkpoint model?
+- Over what period are the 8 Explore and 6 Propose meetings measured (per month, per quarter, by end of ramp)?
+- What is the trade metric, and what is the target time to first meeting?
+- How do the bootcamp certifications map to the month 3 and month 6 checkpoints?
