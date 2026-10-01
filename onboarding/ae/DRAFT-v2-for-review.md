@@ -114,3 +114,14 @@ The certifications are done by Day 30, so the Day 90 stack is about **winning a 
 
 ## 7. What I need from you
 Answers to **A–F**, plus anything else you want changed. Then I'll rebuild the programme data, the HTML page and the tracker together, and walk you through them.
+
+## 8. Decisions (Jasmine, 1 Oct 2026)
+- **Timeline format:** Week + weekday, with Day 30/60/90 shown only as milestones.
+- **Days are working days.** There are two cohorts a month (starting on the 1st and the 15th), so Day 30 = end of Week 6, Day 60 = end of Week 12, Day 90 = end of Week 18.
+- **Add the 5 missing catalogue sessions:** Top of Funnel intro, RAC Plans, Commercial OKRs, Regional BPs & Strategy, Commercial Product Partnership.
+- **Restructure from scratch.** Don't follow JJ's week placements.
+- **Add NORAM versions of the 7 UK/EEA-only intros:** Pricing, Partnerships, Account Management, Solutions Engineering, Merchant Insights, Issuing, Discover (SAT style).
+- **Pitch Deck Certification = first-meeting deck only.** The full proposal moves to the Day 90 Deal Room.
+- **Deal Room is coaching, not scored.** All certifications are complete by Day 30.
+- **Leadership summary sits at the top of each sheet.**
+- **Day 60 workshop name:** still open; options in progress.
