@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check In Passport · Checkout.com BDR Onboarding</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛂</text></svg>">
+<style>
+:root{
+  --paper:#fbf6ec; --paper-2:#f4ecdc; --card:#fffdf8; --ink:#1f2a44; --ink-2:#4b5672; --muted:#7c849a;
+  --line:#e6dcc6; --navy:#1f2a44; --navy-2:#2d3b5e; --gold:#e8b44c; --coral:#ff6b5b;
+  --w1:#ff8a7a; --w2:#f5b942; --w3:#4fb59a; --w4:#6d8ee8; --w5:#a77be0;
+  --radius:18px; --shadow:0 2px 0 rgba(31,42,68,.06),0 8px 24px rgba(31,42,68,.08);
+  --font:ui-rounded,"SF Pro Rounded","Nunito","Varela Round",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--font);color:var(--ink);background:var(--paper);
+  background-image:radial-gradient(rgba(31,42,68,.045) 1px,transparent 1px);background-size:18px 18px;line-height:1.5}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Cover ---------- */
+.cover-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
+.cover{width:min(440px,100%);background:linear-gradient(160deg,var(--navy-2),var(--navy));color:#f6efdd;border-radius:22px 28px 28px 22px;
+  padding:40px 32px 32px;box-shadow:0 30px 60px rgba(31,42,68,.35),inset 10px 0 0 rgba(0,0,0,.12);position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;inset:14px;border:1.5px solid rgba(232,180,76,.45);border-radius:16px;pointer-events:none}
+.cover .crest{width:96px;height:96px;margin:0 auto 14px;display:block}
+.cover h1{font-size:30px;letter-spacing:.18em;text-transform:uppercase;text-align:center;margin:0;color:var(--gold)}
+.cover .sub{text-align:center;letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.8;margin:6px 0 26px}
+.cover label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:12px 0 4px}
+.cover input,.cover select{color-scheme:dark;width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 12px;color:#fff}
+.cover select option{color:var(--ink)}
+.cover .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cover .hint{font-size:12px;color:var(--gold);min-height:18px;margin-top:4px}
+.btn{text-decoration:none;display:inline-block;border:0;border-radius:999px;padding:11px 20px;font-weight:700;background:var(--ink);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.18);transition:transform .12s}
+.btn:hover{transform:translateY(-1px)}.btn:active{transform:translateY(1px)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}
+.btn.small{padding:7px 14px;font-size:14px}
+.cover .btn{width:100%;margin-top:22px;font-size:17px}
+
+/* ---------- Layout ---------- */
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.side{background:var(--navy);color:#f6efdd;padding:22px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;margin:0 6px 18px}
+.brand svg{flex:none}
+.brand b{display:block;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-size:14px}
+.brand small{opacity:.75;font-size:12px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;text-decoration:none;font-weight:600;font-size:15px;opacity:.85}
+.nav a:hover{background:rgba(255,255,255,.07);opacity:1}
+.nav a.on{background:rgba(232,180,76,.16);color:var(--gold);opacity:1}
+.nav .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.nav .sep{height:1px;background:rgba(255,255,255,.12);margin:10px 8px}
+.nav .tick{margin-left:auto;font-size:12px;opacity:.8;white-space:nowrap;text-align:right}
+.side .holder{margin-top:auto;padding:12px;border-radius:14px;background:rgba(255,255,255,.06);font-size:13px}
+.side .holder b{display:block;font-size:15px}
+.side .holder button{background:none;border:0;color:var(--gold);padding:0;margin-top:6px;font-size:13px;text-decoration:underline}
+main{padding:28px clamp(16px,4vw,48px) 80px;max-width:1100px;width:100%}
+.topbar{display:none}
+
+h2.page{font-size:30px;margin:0 0 4px}
+.lede{color:var(--ink-2);margin:0 0 22px;max-width:70ch}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px;font-size:18px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;background:var(--paper-2);color:var(--ink-2);white-space:nowrap}
+.pill.hybrid{background:#e6edff;color:#2f4ea8}.pill.virtual{background:#e7f6ef;color:#1f7a5c}
+.pill.office{background:#fff0d6;color:#8a5a00}.pill.self{background:#f1e8fb;color:#6a3fa8}
+.muted{color:var(--muted)}
+
+/* ---------- Home ---------- */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.ring{position:relative;width:150px;height:150px}
+.ring svg{transform:rotate(-90deg)}
+.ring .val{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .val b{font-size:34px;line-height:1}
+.ring .val span{font-size:12px;color:var(--ink-2)}
+.dest{position:relative;text-decoration:none;display:block;border-radius:var(--radius);padding:18px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;transition:transform .15s}
+.dest:hover{transform:translateY(-3px)}
+.dest .band{position:absolute;inset:0 0 auto 0;height:6px}
+.dest h4{margin:6px 0 2px;font-size:20px}
+.dest p{margin:0 0 12px;color:var(--ink-2);font-size:14px}
+.bar{height:8px;border-radius:99px;background:var(--paper-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.dest .count{font-size:13px;color:var(--ink-2);margin-top:6px}
+.today li{list-style:none;display:grid;grid-template-columns:120px 1fr;gap:12px;padding:10px 0;border-top:1px dashed var(--line)}
+.today ul{padding:0;margin:0}
+.today li:first-child{border-top:0}
+.time{font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+
+/* ---------- Week ---------- */
+.whead{border-radius:24px;padding:26px;color:var(--navy);position:relative;overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
+.whead .big{font-size:44px;font-weight:800;letter-spacing:.02em;margin:2px 0}
+.whead .q{font-size:18px;font-weight:600;opacity:.85}
+.whead .seal{position:absolute;right:20px;top:50%;transform:translateY(-50%) rotate(-12deg);opacity:.9}
+.whead .dates{margin-top:10px;font-weight:700;font-size:14px;opacity:.8}
+.obj label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line);cursor:pointer}
+.obj label:first-of-type{border-top:0}
+.obj input{width:20px;height:20px;margin-top:2px;accent-color:var(--navy);flex:none}
+.obj input:checked + span{color:var(--muted);text-decoration:line-through}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{border:0;background:var(--paper-2);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}
+.tab.on{background:var(--navy);color:#fff}
+.tab small{font-weight:600;opacity:.75;margin-left:4px}
+.sess{display:grid;grid-template-columns:130px 1fr;gap:14px;padding:12px 0;border-top:1px dashed var(--line)}
+.sess:first-child{border-top:0}
+.sess .t small{display:block;color:var(--muted);font-weight:600}
+.sess .lead{color:var(--ink-2);font-size:14px;margin-top:2px}
+.sess.standup{opacity:.7}
+.good{background:linear-gradient(135deg,#fff7df,#fffdf8);border-style:dashed}
+.stamps{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+.slot{border:0;background:none;padding:0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.slot .circ{width:122px;height:122px;border-radius:50%;border:2.5px dashed #cdbf9f;display:grid;place-items:center;color:var(--muted);font-size:30px;transition:transform .15s,background .15s;background:rgba(255,255,255,.5)}
+.slot:hover .circ{transform:scale(1.04);background:#fff}
+.slot .lbl{font-size:13px;font-weight:700;line-height:1.3}
+.slot .by{font-size:12px;color:var(--muted)}
+.slot.done .circ{border:0;background:none}
+.inkstamp{width:122px;height:122px;transform:rotate(var(--rot,-8deg))}
+.inkstamp.thunk{animation:thunk .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes thunk{0%{transform:scale(2.2) rotate(-25deg);opacity:0}60%{opacity:1}100%{transform:scale(1) rotate(var(--rot,-8deg))}}
+textarea.refl{width:100%;min-height:90px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;resize:vertical}
+.saved{font-size:12px;color:var(--muted);height:16px}
+
+/* ---------- Modal ---------- */
+.scrim{position:fixed;inset:0;background:rgba(31,42,68,.45);display:grid;place-items:center;padding:20px;z-index:50;animation:fade .15s}
+@keyframes fade{from{opacity:0}}
+.modal{background:var(--card);border-radius:22px;padding:24px;width:min(420px,100%);box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.modal h3{margin:0 0 4px}
+.field{display:block;margin:12px 0}
+.field span{display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:4px}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+
+/* ---------- Certs ---------- */
+.cert{position:relative}
+.cert .num{position:absolute;top:-12px;left:18px;background:var(--navy);color:var(--gold);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.cert ul{padding:0;margin:8px 0}
+.cert li{list-style:none}
+.badge-pass{display:inline-flex;gap:6px;align-items:center;background:#e7f6ef;color:#1f7a5c;border-radius:999px;padding:4px 12px;font-weight:800;font-size:13px}
+
+/* ---------- Glossary ---------- */
+.flip{perspective:900px;height:170px;border:0;background:none;padding:0;text-align:left}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:18px;border:1px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center}
+.flip .f{background:var(--card)}
+.flip .f b{font-size:20px}
+.flip .b{background:var(--navy);color:#f6efdd;transform:rotateY(180deg);font-size:14px}
+.flip .tag{position:absolute;top:12px;right:14px;font-size:12px;font-weight:700}
+.quizopt{display:block;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;margin:8px 0;font-size:15px}
+.quizopt.right{border-color:#2f9d76;background:#e7f6ef}
+.quizopt.wrong{border-color:var(--coral);background:#ffecea}
+
+/* ---------- Checkout ---------- */
+.ticket{display:grid;grid-template-columns:1fr 200px;background:var(--card);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+.ticket .main{padding:26px}
+.ticket .stub{background:var(--navy);color:#f6efdd;padding:26px;border-left:3px dashed var(--paper);display:flex;flex-direction:column;justify-content:space-between}
+.ticket .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.ticket .stub .k{color:var(--gold)}
+.ticket .v{font-size:18px;font-weight:800;margin-bottom:12px}
+.left li{margin:4px 0}
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;inset:0 auto 0 0;width:270px;transform:translateX(-100%);transition:transform .2s;z-index:40}
+  .side.open{transform:none;box-shadow:0 0 0 100vmax rgba(31,42,68,.4)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--navy);color:var(--gold);position:sticky;top:0;z-index:30}
+  .topbar button{background:none;border:0;color:#fff;font-size:24px}
+  .hero{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .sess,.today li{grid-template-columns:1fr;gap:2px}
+  .whead .seal{display:none}
+  .ticket{grid-template-columns:1fr}.ticket .stub{border-left:0;border-top:3px dashed var(--paper)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{
+  .side,.topbar,.no-print,.actions{display:none!important}
+  .app{display:block} body{background:#fff} .card,.ticket{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+/* =========================================================
+   Programme content (from Check_In_Programme.md)
+   Times are stored in ET, 24h. Converted to the holder's hub.
+   ========================================================= */
+const FORMATS = {
+  hybrid:{label:"Hybrid", tip:"New York in the room, Atlanta and San Francisco on video from their hub"},
+  virtual:{label:"Virtual", tip:"Everyone remote"},
+  office:{label:"In office", tip:"In person at each hub"},
+  self:{label:"Self-paced", tip:"Passport work outside live hours"}
+};
+const HUBS = {
+  ny:{name:"New York", tz:"ET", off:0},
+  atl:{name:"Atlanta", tz:"ET", off:0},
+  sf:{name:"San Francisco", tz:"PT", off:-3}
+};
+const S = (s,e,title,lead,f)=>({s,e,title,lead,f});
+
+const WEEKS = [
+ {n:1, name:"Connect", color:"var(--w1)", hex:"#ff8a7a", icon:"🤝",
+  q:"Who are we, and what is my role?",
+  why:"You can't represent a company you don't understand or do a role you can't picture. This week you get set up, meet your team and learn what great looks like.",
+  objectives:["Explain in 60 seconds what Checkout.com does and who we serve","Describe the BDR role, how it's measured and where it leads","Name the teams you'll work with and what each one does","Show a LinkedIn profile that's ready for social selling","Log in to and navigate every tool you need"],
+  days:[
+   {d:"Tue", tag:"Day 1", office:true, noStandup:true, sessions:[
+     S(null,null,"People team onboarding: laptops, system access, benefits and policies","People team","office"),
+     S("15:00","16:00","Welcome to Check In: the programme, your Passport and meeting the cohort","Jasmine Jancsik & Stephanie Nelson","hybrid")]},
+   {d:"Wed", office:true, sessions:[
+     S("12:15","13:30","The Checkout.com story: mission, values and how we win in NORAM","NORAM commercial leader","hybrid"),
+     S("13:45","15:00","The BDR role and what good looks like: the day-to-day, the metrics and the path from BDR to AE","Stephanie Nelson","hybrid"),
+     S("15:00","16:00","Meet your manager and your buddy","BDR managers & buddies","office")]},
+   {d:"Thu", office:true, sessions:[
+     S("12:15","13:30","Who does what: AE, AM, SE, Deal Management, Risk, Product and Marketing","Cross-team panel","hybrid"),
+     S("13:45","15:00","LinkedIn profile workshop: build your professional brand (profiles edited live)","Enablement & Marketing","hybrid"),
+     S("15:00","16:00","Shadowing: listen to live calls with your buddy","Buddies","office")]},
+   {d:"Fri", sessions:[
+     S("12:15","13:30","Payments 101, part 1: what happens when a customer pays online","Enablement","virtual"),
+     S("13:45","15:00","Tools lab: Salesforce, sales engagement platform, LinkedIn Sales Navigator, Glean and Slack","Sales Ops & Enablement","virtual"),
+     S("15:00","16:00","Week 1 quiz, reflection and 15-minute manager checkpoints","Enablement & BDR managers","virtual")]}
+  ],
+  good:"You give a clear, confident 60-second explanation of Checkout.com without notes. Your LinkedIn profile has a professional photo, a headline and an About section that say what you do for merchants.",
+  stamps:[
+   {id:"w1a", title:"LinkedIn profile updated", by:"Enablement"},
+   {id:"w1b", title:"60-second “What Checkout.com does” recording", by:"Manager"},
+   {id:"w1c", title:"Shadowing notes from three live calls", by:"Buddy"},
+   {id:"w1d", title:"Payments 101, part 1 quiz passed (80%+)", by:"Enablement"}],
+  reflections:["What surprised you most about Checkout.com this week?","What do you still want to understand about the BDR role?"]},
+
+ {n:2, name:"Authorise", color:"var(--w2)", hex:"#f5b942", icon:"🔐",
+  q:"How do payments work, and how do I work?",
+  why:"You earn a meeting by sounding credible in the first 30 seconds. This week you learn how payments work, how to describe our platform simply and how to structure your day and your conversations.",
+  objectives:["Explain a payment from start to finish using the correct terms","Describe the Checkout.com platform and the merchant problem each part solves","Explain DEPTH and use it to plan a first conversation","Describe our ICP and identify a good-fit merchant","Plan a BDR week with protected call blocks","Publish your first professional LinkedIn post"],
+  days:[
+   {d:"Mon", sessions:[
+     S("12:15","13:30","Payments 101, part 2: the payments ecosystem (merchants, acquirers, card schemes, issuers and APMs)","Solutions Engineering","virtual"),
+     S("13:45","15:00","Social selling foundations: how BDRs use LinkedIn to open conversations","Enablement","virtual"),
+     S("15:00","16:00","Glossary teach-back: explain payments terms to each other","Enablement","virtual")]},
+   {d:"Tue", office:true, sessions:[
+     S("12:15","13:30","Our ICP: the merchants and industries we target in NORAM","Stephanie Nelson","hybrid"),
+     S("13:45","15:00","The Checkout.com platform made simple","Solutions Engineering","hybrid"),
+     S("15:00","16:00","Platform walk-through: what a merchant sees in the dashboard","Solutions Engineering","hybrid")]},
+   {d:"Wed", office:true, sessions:[
+     S("12:15","13:30","DEPTH for BDRs: our sales methodology applied to a first conversation","Enablement","hybrid"),
+     S("13:45","15:00","What good looks like: a listening lab on our best BDR calls","Stephanie Nelson","hybrid"),
+     S("15:00","16:00","Discovery questions workshop","Enablement","hybrid")]},
+   {d:"Thu", office:true, sessions:[
+     S("12:15","13:30","Salesforce hygiene, hands on: logging activity, creating leads and next steps","Sales Ops","hybrid"),
+     S("13:45","15:00","Research with Glean and AI tools","Enablement","hybrid"),
+     S("15:00","16:00","A day in the life of a BDR: structuring your day, call blocks, and the best days and times to call","Stephanie Nelson & BDR panel","hybrid")]},
+   {d:"Fri", sessions:[
+     S("12:15","13:30","Certification preview: the rubrics for social selling, cold calling and pitch deck","Enablement","virtual"),
+     S("13:45","15:00","LinkedIn post workshop: write and publish your first post","Enablement & Marketing","virtual"),
+     S("15:00","16:00","Week 2 quiz, reflection and manager checkpoints","Enablement & BDR managers","virtual")]}
+  ],
+  extra:{title:"A BDR day (starting guidance)", items:[
+    ["Before calling","30 to 45 minutes of account research and planning"],
+    ["Call block 1","The prospect's morning, usually 8 to 10am their time"],
+    ["Midday","Emails, LinkedIn activity and Salesforce updates"],
+    ["Call block 2","The prospect's late afternoon, usually 4 to 5:30pm their time"],
+    ["Best days","Tuesday to Thursday for calling. Monday and Friday for research, sequences and social selling"]]},
+  good:"You can draw the payment flow on a whiteboard and explain each step in plain language. Your calendar for next week has two protected call blocks every day.",
+  stamps:[
+   {id:"w2a", title:"Payment flow teach-back", by:"SE or Enablement"},
+   {id:"w2b", title:"Personal glossary of 20+ payments terms", by:"Enablement"},
+   {id:"w2c", title:"Salesforce exercise", by:"Sales Ops"},
+   {id:"w2d", title:"Ideal BDR week built in your calendar", by:"Manager"},
+   {id:"w2e", title:"First LinkedIn post published", by:"Enablement"}],
+  reflections:["Which part of the payment flow is still unclear to you?","What will your call blocks look like next week?"]},
+
+ {n:3, name:"Capture", color:"var(--w3)", hex:"#4fb59a", icon:"🎯",
+  q:"Why would a merchant choose us?",
+  why:"Merchants ignore generic outreach. This week you learn enough about our products to connect a merchant's problem to our value, which merchants not to book, and how to work with your AE so your meetings turn into pipeline.",
+  objectives:["Explain acceptance rates, APMs, fraud and authentication in terms a merchant cares about","Qualify a merchant, including spotting restricted and high-risk businesses","Position Checkout.com against our main competitors","Tailor the value message for at least two industries","Handle the ten most common objections","Write an AE handoff note to the standard"],
+  days:[
+   {d:"Mon", sessions:[
+     S("12:15","13:30","Product deep dive: acquiring and acceptance rates, and why they matter to a merchant","Product & SE","virtual"),
+     S("13:45","15:00","Product deep dive: APMs and global coverage","Product & SE","virtual"),
+     S("15:00","16:00","Product deep dive: fraud, risk and authentication","Product","virtual")]},
+   {d:"Tue", office:true, sessions:[
+     S("12:15","13:30","How to qualify a merchant: using Glean, and which merchants are restricted or high risk","Risk & Underwriting (guest on video)","hybrid"),
+     S("13:45","15:00","Competitor landscape: who we compete with and how we win","Product Marketing","hybrid"),
+     S("15:00","16:00","Messaging and value by industry, with customer stories","Product Marketing & Enablement","hybrid")]},
+   {d:"Wed", office:true, sessions:[
+     S("12:15","13:30","Working with your AE: account alignment, shared goals and multithreading","AE panel","hybrid"),
+     S("13:45","15:00","What good looks like: the AE handoff, including the handoff note and the joint first call","AE & Stephanie Nelson","hybrid"),
+     S("15:00","16:00","Marketing and BDRs: campaigns, inbound leads and events","Marketing","hybrid")]},
+   {d:"Thu", office:true, sessions:[
+     S("12:15","13:30","Pause and play: Stephanie pitches, stopping at key moments to discuss what she did and why","Stephanie Nelson","hybrid"),
+     S("13:45","15:00","Objection handling workshop","Enablement","hybrid"),
+     S("15:00","16:00","Cold call role play, round 1 (mixed-hub pairs)","Hub hosts & Stephanie Nelson","hybrid")]},
+   {d:"Fri", sessions:[
+     S("12:15","13:30","Social selling clinic: connection requests, outreach messages and engagement","Enablement","virtual"),
+     S("13:45","15:00","Qualification exercise: assess three sample merchants","Enablement","virtual"),
+     S("15:00","16:00","Week 3 quiz, reflection and manager checkpoints","Enablement & BDR managers","virtual")]}
+  ],
+  good:"Given a merchant's website, you can say in two minutes whether they fit our ICP, what problem we could solve for them and which competitor they probably use today.",
+  stamps:[
+   {id:"w3a", title:"Qualification exercise on three sample merchants", by:"Risk or Enablement"},
+   {id:"w3b", title:"Objection bank: ten objections, in your own words", by:"Enablement"},
+   {id:"w3c", title:"Value statements for two industries", by:"Product Marketing or Enablement"},
+   {id:"w3d", title:"Sample AE handoff note", by:"AE"},
+   {id:"w3e", title:"Recorded practice cold call with feedback", by:"Manager"}],
+  reflections:["Which objection do you find hardest, and how will you practise it?","Which industry do you want to build your pitch around?"]},
+
+ {n:4, name:"Settle", color:"var(--w4)", hex:"#6d8ee8", icon:"🏁",
+  q:"Can I do the job?",
+  why:"Knowledge becomes skill through practice. This week you run the BDR role in a simulation, so your first live day feels familiar, and you rehearse every certification.",
+  objectives:["Build an account plan for ten target accounts","Build a multichannel sequence (call, email and LinkedIn)","Run a structured BDR day from planning to logged activity","Submit a complete social selling portfolio","Score at or above the pass mark in the cold calling and pitch deck dress rehearsals"],
+  days:[
+   {d:"Mon", sessions:[
+     S("12:15","13:30","Account research and planning lab: build a target account list with Glean and AI tools","Enablement","virtual"),
+     S("13:45","15:00","Prospecting and multichannel sequencing","Enablement","virtual"),
+     S("15:00","16:00","Social selling portfolio build","Enablement & Marketing","virtual")]},
+   {d:"Tue", office:true, sessions:[
+     S("12:15","13:30","Account plan review with your AE","AEs","office"),
+     S("13:45","15:00","Cold call role play, round 2","Stephanie Nelson & hub hosts","hybrid"),
+     S("15:00","16:00","Pitch deck build: choose an industry and build the story","Product Marketing & Enablement","hybrid")]},
+   {d:"Wed", office:true, sessions:[
+     S("12:00","16:00","Full day simulation: planning, a call block with role-play prospects, emails and LinkedIn, Salesforce logging and debrief","Stephanie Nelson & BDR managers","hybrid")]},
+   {d:"Thu", office:true, sessions:[
+     S("12:15","13:30","BDR panel: what I wish I'd known in my first month","Tenured BDRs","hybrid"),
+     S("13:45","16:00","Certification dress rehearsal: cold calling and pitch deck, scored by peers and coaches","Enablement & Stephanie Nelson","hybrid")]},
+   {d:"Fri", sessions:[
+     S("12:00",null,"Social selling portfolio due","You","self"),
+     S("12:15","15:00","One-to-one coaching on dress rehearsal feedback (30 minutes each)","Enablement & BDR managers","virtual"),
+     S("15:00","16:00","Week 4 reflection and manager checkpoints","BDR managers","virtual")]}
+  ],
+  good:"In the simulation, you protect both call blocks, log every activity in Salesforce the same day and book at least one role-play meeting with a complete handoff note.",
+  stamps:[
+   {id:"w4a", title:"Account plan for ten target accounts", by:"AE"},
+   {id:"w4b", title:"Multichannel sequence", by:"Manager"},
+   {id:"w4c", title:"Full day simulation scorecard", by:"Manager"},
+   {id:"w4d", title:"Dress rehearsal scores and coaching notes", by:"Enablement"},
+   {id:"w4e", title:"Social selling portfolio submitted", by:"Enablement"}],
+  reflections:["What did the simulation teach you about your day?","What is your one focus area before certification?"]},
+
+ {n:5, name:"Checkout", color:"var(--w5)", hex:"#a77be0", icon:"🎓",
+  q:"Am I ready?",
+  why:"Certification shows that you are ready to speak to real prospects, and that you meet the same standard as every BDR at Checkout.com.",
+  objectives:["Pass the social selling certification","Pass the cold calling certification","Pass the pitch deck certification","Agree a 30/60/90 day plan with your manager"],
+  days:[
+   {d:"Mon", sessions:[
+     S("12:15","15:00","Social selling certification: portfolio review and a 10-minute live walk-through (15 minutes each)","Enablement & Marketing","virtual"),
+     S("15:00","16:00","Final cold calling coaching","BDR managers","virtual")]},
+   {d:"Tue", office:true, sessions:[
+     S("12:00","16:00","Cold calling certification: a scored live role play with a buyer persona (20 minutes each)","Stephanie Nelson & Enablement","hybrid")]},
+   {d:"Wed", office:true, sessions:[
+     S("12:00","16:00","Pitch deck certification: a 10-minute pitch and 5-minute Q&A for a panel (20 minutes each)","Panel: Stephanie Nelson & an AE","hybrid")]},
+   {d:"Thu", office:true, sessions:[
+     S("12:15","13:30","Retakes for anyone who needs them","Enablement","hybrid"),
+     S("13:45","15:00","30/60/90 day plan sign-off","BDR managers","office"),
+     S("15:00","16:00","Check Out: graduation with NORAM leadership","Jasmine Jancsik, Stephanie Nelson & NORAM leadership","hybrid")]},
+   {d:"Fri", sessions:[
+     S("12:00","16:00","Ramp begins: your first live call block, with your buddy","Buddies & BDR managers","virtual")]}
+  ],
+  good:"You pass all three certifications, agree your 30/60/90 day plan and walk into Friday ready for your first live call block.",
+  stamps:[
+   {id:"c1", title:"Social selling certification passed", by:"Enablement", cert:"social"},
+   {id:"c2", title:"Cold calling certification passed", by:"Stephanie Nelson", cert:"cold"},
+   {id:"c3", title:"Pitch deck certification passed", by:"Panel", cert:"pitch"},
+   {id:"w5d", title:"30/60/90 day plan agreed", by:"Manager"}],
+  reflections:["What are you most proud of from Check In?","What is your first goal for your first month after Check Out?"]}
+];
+
+const CERTS = [
+ {key:"social", stamp:"c1", n:1, name:"Social selling", day:"Week 5 · Monday · Virtual",
+  how:"Submit your portfolio on Friday of Week 4, then walk the assessors through it for 10 minutes.",
+  by:"Enablement & Marketing",
+  criteria:["Professional LinkedIn profile: photo, headline and About section","A researched outreach sequence for three target contacts","One published post that adds value for merchants","Clear explanation of why you chose each contact and message"]},
+ {key:"cold", stamp:"c2", n:2, name:"Cold calling", day:"Week 5 · Tuesday · Office",
+  how:"A 20-minute live role play with a buyer persona.",
+  by:"Stephanie Nelson & Enablement",
+  criteria:["A strong, confident opening","Earning permission to keep talking","Discovery questions using DEPTH","Handling objections calmly","Booking the meeting with a clear next step"]},
+ {key:"pitch", stamp:"c3", n:3, name:"Pitch deck", day:"Week 5 · Wednesday · Office",
+  how:"A 10-minute pitch and a 5-minute Q&A for a panel.",
+  by:"a panel of Stephanie Nelson & an AE",
+  criteria:["A story built for one industry","A clear link between the merchant's problem and our value","Plain-language explanation of how we help","Confident answers to questions"]}
+];
+
+const GLOSSARY = [
+ ["Merchant","A business that sells goods or services and accepts payments from its customers. Our customers are merchants."],
+ ["Cardholder","The person paying with a card."],
+ ["Issuer","The bank that gave the cardholder their card. It approves or declines each payment."],
+ ["Acquirer","The bank or licensed company that processes card payments for the merchant and pays the money out to them."],
+ ["Card scheme","The network that connects acquirers and issuers and sets the rules, such as Visa, Mastercard and American Express."],
+ ["Payment service provider (PSP)","A company that lets merchants accept payments online, connecting them to acquirers and payment methods."],
+ ["Authorisation","The step where the issuer approves or declines a payment."],
+ ["Capture","The step where the merchant confirms it wants to collect an approved payment."],
+ ["Settlement","The step where money moves from the issuer, through the acquirer, to the merchant."],
+ ["Acceptance rate","The share of attempted payments that are approved. A higher rate means more revenue for the merchant."],
+ ["Decline","A payment that the issuer refuses."],
+ ["Chargeback","When a cardholder disputes a payment through their bank and the money is taken back from the merchant."],
+ ["Alternative payment method (APM)","A way to pay other than a card, such as a digital wallet, a bank transfer or buy now, pay later."],
+ ["3D Secure (3DS)","An extra check, such as a code or banking app approval, that confirms the cardholder is making an online payment."],
+ ["Tokenisation","Replacing card details with a secure code (a token), so the real card number isn't stored or shared."],
+ ["Interchange fee","A fee paid to the issuer on each card payment."],
+ ["Payout","Sending money from a business to someone else, such as a marketplace paying its sellers."],
+ ["ICP (ideal customer profile)","The type of merchant we target: the industries, sizes and needs that fit Checkout.com best."],
+ ["Multithreading","Building relationships with several people at one target company, not just one contact."]
+];
+
+const TEAM_ROLES = [
+ ["lead","Programme lead","Jasmine Jancsik"],["bdr","BDR lead","Stephanie Nelson"],["manager","Your manager",""],
+ ["buddy","Your buddy",""],["host","Your hub host",""],["people","People team contact",""]
+];
+
+const EXPECT = [
+ ["Meetings","8 Explore meetings and 6 Propose meetings"],
+ ["Daily activity","Two call blocks, with calls, personalised emails and LinkedIn activity"],
+ ["Salesforce","Every activity logged the same day"],
+ ["First month","Linked to your sellers, multithreading into every target account"],
+ ["Handoffs","Every meeting goes to your AE with a completed handoff note"],
+ ["Coaching","A weekly one-to-one with your manager, including a review of a recorded call"]
+];
+
+const ALL_STAMPS = WEEKS.flatMap(w=>w.stamps.map(s=>({...s,week:w})));
+
+/* =========================================================
+   State (saved in this browser)
+   ========================================================= */
+const KEY = "checkin-passport-v1";
+const blank = ()=>({profile:null, stamps:{}, obj:{}, refl:{}, certs:{}, learned:{}, myTerms:[], team:{}, notes:"", celebrated:false});
+let state = load();
+function load(){ try{ return Object.assign(blank(), JSON.parse(localStorage.getItem(KEY))||{}); }catch(e){ return blank(); } }
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+/* =========================================================
+   Helpers
+   ========================================================= */
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const parseDate = s=>{ if(!s) return null; const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+const ymd = d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const fmtDate = (d,opt={weekday:"short",month:"short",day:"numeric"})=>d.toLocaleDateString("en-US",opt);
+function hub(){ return HUBS[state.profile?.hub||"ny"]; }
+function fmtTime(t){
+  if(!t) return "";
+  let [h,m]=t.split(":").map(Number); h+=hub().off;
+  const ap=h>=12?"pm":"am"; const hh=((h+11)%12)+1;
+  return m?`${hh}:${String(m).padStart(2,"0")}${ap}`:`${hh}${ap}`;
+}
+function timeRange(s){
+  if(!s.s) return "Morning, local time";
+  return s.e?`${fmtTime(s.s)} – ${fmtTime(s.e)}`:fmtTime(s.s);
+}
+/* Programme dates: Day 1 is a Tuesday. Week 1 = Tue–Fri; weeks 2–5 = Mon–Fri. */
+function dayDate(weekN, d){
+  const start=parseDate(state.profile?.start); if(!start) return null;
+  const idx={Mon:0,Tue:1,Wed:2,Thu:3,Fri:4}[d];
+  const monday = weekN===1 ? addDays(start,-1) : addDays(start, 6+7*(weekN-2));
+  return addDays(monday, idx);
+}
+function weekRange(n){
+  const w=WEEKS[n-1]; const a=dayDate(n,w.days[0].d), b=dayDate(n,w.days[w.days.length-1].d);
+  return a?`${fmtDate(a,{month:"short",day:"numeric"})} – ${fmtDate(b,{month:"short",day:"numeric"})}`:"";
+}
+function currentWeek(){
+  const start=parseDate(state.profile?.start); if(!start) return null;
+  const t=new Date(); t.setHours(0,0,0,0);
+  if(t<start) return 0;
+  for(const w of WEEKS){ const last=dayDate(w.n,"Fri"); if(t<=addDays(last,2)) return w.n; }
+  return 6;
+}
+function stampCount(w){ const list=w?w.stamps:ALL_STAMPS; return list.filter(s=>state.stamps[s.id]).length; }
+const total = ALL_STAMPS.length;
+const glossaryCount = ()=>Object.keys(state.learned).filter(k=>state.learned[k]).length + state.myTerms.length;
+
+/* =========================================================
+   SVG bits
+   ========================================================= */
+function crest(size=96, color="#e8b44c"){
+  return `<svg class="crest" width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true">
+   <circle cx="50" cy="50" r="46" fill="none" stroke="${color}" stroke-width="3"/>
+   <circle cx="50" cy="50" r="38" fill="none" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 4"/>
+   <path d="M30 52 l14 14 l27 -30" fill="none" stroke="${color}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+function inkStamp(w, s, rec, thunk){
+  const rot = ((s.id.charCodeAt(s.id.length-1)%5)-2)*6 - 4;
+  const date = rec?.date ? fmtDate(parseDate(rec.date),{month:"short",day:"numeric"}).toUpperCase() : "";
+  const id = "arc-"+s.id;
+  return `<svg class="inkstamp ${thunk?"thunk":""}" style="--rot:${rot}deg" viewBox="0 0 120 120" role="img" aria-label="Stamped: ${esc(s.title)}">
+    <defs><path id="${id}" d="M60,60 m-41,0 a41,41 0 1,1 82,0 a41,41 0 1,1 -82,0"/></defs>
+    <g fill="none" stroke="${w.hex}" opacity=".92">
+      <circle cx="60" cy="60" r="54" stroke-width="4"/>
+      <circle cx="60" cy="60" r="31" stroke-width="2"/>
+    </g>
+    <text font-size="10.5" font-weight="800" letter-spacing="2.2" fill="${w.hex}"><textPath href="#${id}" startOffset="2%">CHECK IN · WEEK ${w.n} · ${w.name.toUpperCase()} ·</textPath></text>
+    <text x="60" y="58" text-anchor="middle" font-size="20">${w.icon}</text>
+    <text x="60" y="76" text-anchor="middle" font-size="9.5" font-weight="800" fill="${w.hex}">${esc(date)}</text>
+  </svg>`;
+}
+function ring(done, tot){
+  const r=62, c=2*Math.PI*r, p=tot?done/tot:0;
+  return `<div class="ring" role="img" aria-label="${done} of ${tot} stamps collected">
+   <svg width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
+    <circle cx="75" cy="75" r="${r}" fill="none" stroke="#efe5cf" stroke-width="14"/>
+    <circle cx="75" cy="75" r="${r}" fill="none" stroke="var(--coral)" stroke-width="14" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p)}" style="transition:stroke-dashoffset .6s"/>
+   </svg>
+   <div class="val"><div><b>${done}</b><br><span>of ${tot} stamps</span></div></div></div>`;
+}
+
+/* =========================================================
+   Views
+   ========================================================= */
+function viewCover(){
+  const p=state.profile||{};
+  return `<div class="cover-wrap"><form class="cover" id="coverForm">
+   ${crest()}
+   <h1>Check In</h1>
+   <div class="sub">Passport · Checkout.com BDR</div>
+   <label for="f-name">Your name</label><input id="f-name" name="name" required value="${esc(p.name)}" autocomplete="name">
+   <div class="row">
+    <div><label for="f-hub">Your hub</label><select id="f-hub" name="hub">
+      ${Object.entries(HUBS).map(([k,h])=>`<option value="${k}" ${p.hub===k?"selected":""}>${h.name}</option>`).join("")}</select></div>
+    <div><label for="f-start">Day 1 (a Tuesday)</label><input id="f-start" name="start" type="date" value="${esc(p.start)}"></div>
+   </div>
+   <div class="hint" id="startHint"></div>
+   <div class="row">
+    <div><label for="f-manager">Manager</label><input id="f-manager" name="manager" value="${esc(p.manager)}"></div>
+    <div><label for="f-buddy">Buddy</label><input id="f-buddy" name="buddy" value="${esc(p.buddy)}"></div>
+   </div>
+   <button class="btn gold" type="submit">${state.profile?"Save details":"Open my passport ✈︎"}</button>
+   ${state.profile?`<button class="btn ghost" type="button" id="coverCancel" style="width:100%;margin-top:10px;color:#f6efdd;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)">Cancel</button>`:""}
+  </form></div>`;
+}
+
+function shell(content, route){
+  const cw=currentWeek();
+  const link=(href,label,extra="")=>`<a href="#${href}" class="${route===href?"on":""}">${label}${extra}</a>`;
+  return `<div class="topbar"><button id="menuBtn" aria-label="Open menu">☰</button><b>CHECK IN PASSPORT</b><span style="width:24px"></span></div>
+  <div class="app">
+   <aside class="side" id="side">
+    <div class="brand">${crest(40)}<div><b>Check In</b><small>BDR Passport</small></div></div>
+    <nav class="nav">
+     ${link("home","🏠 My passport")}
+     <div class="sep"></div>
+     ${WEEKS.map(w=>link("week/"+w.n,`<span class="dot" style="background:${w.hex}"></span>Week ${w.n}: ${w.name}`,
+        `<span class="tick">${cw===w.n?"📍 ":""}${stampCount(w)}/${w.stamps.length}</span>`)).join("")}
+     <div class="sep"></div>
+     ${link("certs","🏅 Certifications")}
+     ${link("glossary","📖 Glossary")}
+     ${link("team","👋 My team")}
+     ${link("notes","📝 Notes")}
+     ${link("checkout","🎓 Check Out")}
+    </nav>
+    <div class="holder"><span class="muted" style="color:#c9c3b3">Passport holder</span><b>${esc(state.profile.name)}</b>${hub().name} · ${hub().tz}
+     <div><button id="editProfile">Edit details</button> · <button id="settingsBtn">Backup &amp; reset</button></div></div>
+   </aside>
+   <main id="main">${content}</main>
+  </div>`;
+}
+
+function viewHome(){
+  const done=stampCount(), cw=currentWeek(), p=state.profile;
+  let status;
+  if(cw===null) status=`Add your Day 1 date in <a href="#" data-act="edit">your details</a> to see your dates and today's sessions.`;
+  else if(cw===0) status=`Your Check In starts on <b>${fmtDate(parseDate(p.start),{weekday:"long",month:"long",day:"numeric"})}</b>. Day 1 is run by the People team.`;
+  else if(cw<=5) status=`You're in <b>Week ${cw}: ${WEEKS[cw-1].name}</b>. ${WEEKS[cw-1].q}`;
+  else status=`Your Check In weeks are complete.`;
+
+  return `<div class="kicker">Welcome aboard</div>
+  <h2 class="page">Hi ${esc(p.name.split(" ")[0])} 👋</h2>
+  <p class="lede">${status}</p>
+  <div class="grid g2" style="margin-bottom:16px">
+   <div class="card hero">${ring(done,total)}
+    <div><h3>${done===total?"Every stamp collected! 🎉":"Collect every stamp to Check Out"}</h3>
+     <p class="muted" style="margin:0 0 12px">Each stamp is a deliverable, signed off by the person named on it. Pass all three certifications and collect all ${total} stamps to graduate.</p>
+     <a class="btn small" href="#${done===total?"checkout":(cw>=1&&cw<=5?"week/"+cw:"week/1")}">${done===total?"Go to Check Out":"Continue my journey"} →</a></div></div>
+   ${viewToday()}
+  </div>
+  <h3 style="margin:26px 0 12px">Your five destinations</h3>
+  <div class="grid g3">
+   ${WEEKS.map(w=>{const c=stampCount(w),t=w.stamps.length;return `<a class="dest" href="#week/${w.n}">
+     <span class="band" style="background:${w.hex}"></span>
+     <div class="kicker">Week ${w.n}${cw===w.n?" · you are here":""}</div>
+     <h4>${w.icon} ${w.name}</h4><p>${w.q}</p>
+     <div class="bar"><i style="width:${c/t*100}%;background:${w.hex}"></i></div>
+     <div class="count">${c} of ${t} stamps${weekRange(w.n)?" · "+weekRange(w.n):""}</div></a>`}).join("")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+   <div class="card"><h3>📖 My glossary</h3><p class="muted" style="margin:0 0 10px">Goal: 20 terms by the end of Week 2.</p>
+    <div class="bar"><i style="width:${Math.min(100,glossaryCount()/20*100)}%;background:var(--w2)"></i></div>
+    <p style="margin:8px 0 12px"><b>${glossaryCount()}</b> of 20 terms</p><a class="btn small ghost" href="#glossary">Practise terms</a></div>
+   <div class="card"><h3>🗓️ How your week works</h3>
+    <p style="margin:0 0 6px"><b>Mon & Fri:</b> virtual &nbsp;·&nbsp; <b>Tue–Thu:</b> in the office</p>
+    <p style="margin:0 0 6px"><b>Live sessions:</b> ${fmtTime("12:00")} – ${fmtTime("16:00")} ${hub().tz}</p>
+    <p class="muted" style="margin:0">Outside live hours: pre-reading, self-paced modules, shadowing and practice (${hub().off? "1–5pm PT":"9am–12pm ET"}).</p></div>
+  </div>`;
+}
+
+function viewToday(){
+  const t=new Date(); t.setHours(0,0,0,0);
+  let found=null;
+  for(const w of WEEKS) for(const d of w.days){ const dd=dayDate(w.n,d.d); if(dd&&ymd(dd)===ymd(t)) found={w,d}; }
+  if(!found){
+    return `<div class="card today"><h3>📍 Today</h3><p class="muted">No Check In sessions today. ${state.profile.start?"Open a week to see its full schedule.":"Add your Day 1 date to see your daily schedule here."}</p></div>`;
+  }
+  const {w,d}=found;
+  return `<div class="card today"><div class="kicker">Week ${w.n} · ${w.name} · ${d.office?"In the office":"Virtual"}</div><h3>📍 Today</h3>
+   <ul>${sessionsFor(d).map(s=>`<li><span class="time">${timeRange(s)}</span><span>${esc(s.title)} <span class="pill ${s.f}">${FORMATS[s.f].label}</span></span></li>`).join("")}</ul>
+   <a class="btn small ghost" href="#week/${w.n}" style="margin-top:10px">Open Week ${w.n}</a></div>`;
+}
+function sessionsFor(d){
+  const list=[...d.sessions];
+  if(!d.noStandup) list.unshift({s:"12:00",e:"12:15",title:"Cohort stand-up: yesterday's learning and today's goals",lead:"Cohort",f:d.office?"hybrid":"virtual",standup:true});
+  return list;
+}
+
+let activeDay = {};
+function viewWeek(n){
+  const w=WEEKS[n-1]; if(!w) return viewHome();
+  const day = activeDay[n] ?? (()=>{ const t=ymd(new Date()); const i=w.days.findIndex(d=>{const x=dayDate(n,d.d);return x&&ymd(x)===t}); return i<0?0:i; })();
+  activeDay[n]=day;
+  const d=w.days[day];
+  const prev=n>1?`<a class="btn small ghost" href="#week/${n-1}">← Week ${n-1}</a>`:"<span></span>";
+  const next=n<5?`<a class="btn small" href="#week/${n+1}">Week ${n+1}: ${WEEKS[n].name} →</a>`:`<a class="btn small" href="#checkout">Go to Check Out →</a>`;
+  return `<section class="whead" style="background:linear-gradient(135deg,${w.hex}55,${w.hex}22),var(--card)">
+    <div class="kicker" style="color:var(--navy)">Week ${n} of 5${weekRange(n)?" · "+weekRange(n):""}</div>
+    <div class="big">${w.icon} ${w.name}</div><div class="q">${w.q}</div>
+    <div class="dates">${stampCount(w)} of ${w.stamps.length} stamps collected</div>
+    <svg class="seal" width="120" height="120" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="${w.hex}" stroke-width="4" stroke-dasharray="6 5"/><text x="60" y="70" text-anchor="middle" font-size="34" font-weight="800" fill="${w.hex}">W${n}</text></svg>
+  </section>
+  <div class="grid g2">
+   <div class="card"><div class="kicker">Why this week matters</div><p style="margin:6px 0 0;font-size:17px">${w.why}</p></div>
+   <div class="card obj"><div class="kicker">By Friday, you can…</div>
+    ${w.objectives.map((o,i)=>{const id=`o${n}-${i}`;return `<label><input type="checkbox" data-obj="${id}" ${state.obj[id]?"checked":""}><span>${esc(o)}</span></label>`}).join("")}
+    <p class="muted" style="font-size:13px;margin:8px 0 0">Tick these off when you feel confident.</p></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+    <h3 style="margin:0">🗓️ Schedule <span class="muted" style="font-weight:600;font-size:14px">· times in ${hub().tz} (${hub().name})</span></h3></div>
+   <div class="tabs" role="tablist">
+    ${w.days.map((x,i)=>{const dd=dayDate(n,x.d);return `<button class="tab ${i===day?"on":""}" role="tab" aria-selected="${i===day}" data-day="${i}">${x.d}${x.tag?" · "+x.tag:""}<small>${dd?fmtDate(dd,{month:"short",day:"numeric"}):""} ${x.office?"🏢":"💻"}</small></button>`}).join("")}
+   </div>
+   <p class="muted" style="margin:0 0 6px;font-size:14px">${d.office?"🏢 Office day. New York in the room; Atlanta and San Francisco on video from their hub, with a hub host.":"💻 Virtual day. Join from wherever you work."}</p>
+   <div>${sessionsFor(d).map(s=>`<div class="sess ${s.standup?"standup":""}"><div class="t"><span class="time">${timeRange(s)}</span></div>
+     <div><b>${esc(s.title)}</b><div class="lead">${esc(s.lead)} &nbsp;<span class="pill ${s.f}" title="${FORMATS[s.f].tip}">${FORMATS[s.f].label}</span></div></div></div>`).join("")}</div>
+  </div>
+
+  ${w.extra?`<div class="card" style="margin-top:16px"><h3>☀️ ${w.extra.title}</h3>${w.extra.items.map(([k,v])=>`<div class="sess"><div class="time">${k}</div><div>${v}</div></div>`).join("")}
+    <p class="muted" style="font-size:13px;margin:6px 0 0">General guidance, to be checked against our own call data.</p></div>`:""}
+
+  <div class="card good" style="margin-top:16px"><div class="kicker">✨ What good looks like</div><p style="margin:6px 0 0;font-size:17px">${w.good}</p></div>
+
+  <div class="card" style="margin-top:16px"><h3>🛂 Stamps to collect</h3>
+   <p class="muted" style="margin:0 0 16px">Finish the deliverable, then tap the stamp and record who signed it off.</p>
+   <div class="stamps">${w.stamps.map(s=>{const r=state.stamps[s.id];return `<button class="slot ${r?"done":""}" data-stamp="${s.id}">
+     <span class="circ">${r?inkStamp(w,s,r):"+"}</span><span class="lbl">${esc(s.title)}</span>
+     <span class="by">${r?`✓ ${esc(r.by)}`:`Signed off by ${esc(s.by)}`}</span></button>`}).join("")}</div>
+  </div>
+
+  <div class="card" style="margin-top:16px"><h3>💭 Friday reflection</h3>
+   ${w.reflections.map((q,i)=>{const id=`r${n}-${i}`;return `<label class="field"><span>${esc(q)}</span><textarea class="refl" data-refl="${id}">${esc(state.refl[id])}</textarea></label>`}).join("")}
+   <div class="saved" id="savedNote"></div></div>
+  <div style="display:flex;justify-content:space-between;margin-top:20px" class="no-print">${prev}${next}</div>`;
+}
+
+function viewCerts(){
+  return `<div class="kicker">Week 5</div><h2 class="page">🏅 Your certifications</h2>
+  <p class="lede">You take them in the order you'll use the skills: social selling first, then cold calling, then the pitch deck. Full rubrics arrive in Week 2. The pass mark is 80% on each rubric (to be confirmed). If you don't pass first time, you get coaching and a retake on Thursday of Week 5.</p>
+  <div class="grid g3">${CERTS.map(c=>{const st=state.certs[c.key]||{};const passed=!!state.stamps[c.stamp];
+   const ticks=c.criteria.filter((_,i)=>st["p"+i]).length;
+   return `<div class="card cert"><span class="num">${c.n}</span>
+    <div class="kicker" style="margin-top:6px">${c.day}</div><h3>${c.name}</h3>
+    <p style="margin:0 0 8px">${c.how}</p><p class="muted" style="margin:0 0 8px;font-size:14px">Assessed by ${c.by}</p>
+    <div class="kicker">Practice checklist · ${ticks}/${c.criteria.length}</div>
+    <ul class="obj">${c.criteria.map((x,i)=>`<li><label><input type="checkbox" data-cert="${c.key}" data-i="${i}" ${st["p"+i]?"checked":""}><span>${esc(x)}</span></label></li>`).join("")}</ul>
+    ${passed?`<span class="badge-pass">✓ Passed${state.stamps[c.stamp].score?" · "+esc(state.stamps[c.stamp].score)+"%":""}</span>`
+      :`<button class="btn small" data-stamp="${c.stamp}">Record my pass</button>`}
+   </div>`}).join("")}</div>`;
+}
+
+let gloss = {tab:"cards", flipped:{}, quiz:null};
+function allTerms(){ return [...GLOSSARY.map(([t,d])=>({t,d,starter:true})), ...state.myTerms.map(x=>({t:x.t,d:x.d,mine:true}))]; }
+function viewGlossary(){
+  const tabs=[["cards","Flashcards"],["quiz","Quiz me"],["mine","My terms"]];
+  let body="";
+  if(gloss.tab==="cards"){
+    body=`<p class="muted">Tap a card to flip it. Mark the ones you know with “Got it”.</p>
+    <div class="grid g3">${allTerms().map((x,i)=>{const k=x.t;const on=gloss.flipped[k];const got=state.learned[k];
+     return `<div><button class="flip ${on?"on":""}" data-flip="${esc(k)}" style="width:100%" aria-label="${esc(x.t)}: tap to flip">
+      <div class="in"><div class="f"><span class="tag" style="color:${got?"#1f7a5c":"var(--muted)"}">${got?"✓ Got it":x.mine?"Mine":""}</span><b>${esc(x.t)}</b><span class="muted" style="font-size:13px;margin-top:6px">Tap to flip</span></div>
+      <div class="b">${esc(x.d)}</div></div></button>
+      ${x.starter?`<button class="btn small ${got?"":"ghost"}" data-learn="${esc(k)}" style="margin-top:8px">${got?"✓ Got it":"Got it"}</button>`:""}</div>`}).join("")}</div>`;
+  } else if(gloss.tab==="quiz"){
+    body=viewQuiz();
+  } else {
+    body=`<p class="muted">Add terms you hear in sessions. Your goal is 20 terms by the end of Week 2: ${glossaryCount()} so far (starter terms you've marked “Got it” count too).</p>
+    <form class="card" id="termForm" style="margin-bottom:16px"><div class="grid g2">
+     <label class="field"><span>Term</span><input name="t" required></label>
+     <label class="field"><span>What it means, in your words</span><input name="d" required></label></div>
+     <button class="btn small" type="submit">Add term</button></form>
+    ${state.myTerms.length?`<div class="card">${state.myTerms.map((x,i)=>`<div class="sess"><b>${esc(x.t)}</b><div style="display:flex;justify-content:space-between;gap:10px"><span>${esc(x.d)}</span><button class="btn small ghost" data-delterm="${i}" aria-label="Delete ${esc(x.t)}">✕</button></div></div>`).join("")}</div>`:`<p class="muted">No terms yet.</p>`}`;
+  }
+  return `<div class="kicker">Payments made simple</div><h2 class="page">📖 Glossary</h2>
+  <p class="lede">No payments experience needed. Start with these terms, then build your own glossary.</p>
+  <div class="tabs">${tabs.map(([k,l])=>`<button class="tab ${gloss.tab===k?"on":""}" data-gtab="${k}">${l}</button>`).join("")}</div>${body}`;
+}
+function newQuiz(){
+  const terms=allTerms(); const pick=[...terms].sort(()=>Math.random()-.5).slice(0,Math.min(8,terms.length));
+  gloss.quiz={i:0,score:0,answered:null,qs:pick.map(q=>{const opts=[q,...terms.filter(x=>x.t!==q.t).sort(()=>Math.random()-.5).slice(0,3)].sort(()=>Math.random()-.5);return {q,opts}})};
+}
+function viewQuiz(){
+  if(!gloss.quiz) newQuiz();
+  const z=gloss.quiz;
+  if(z.i>=z.qs.length) return `<div class="card" style="text-align:center"><div style="font-size:48px">${z.score===z.qs.length?"🏆":z.score>=z.qs.length*.8?"🎉":"💪"}</div>
+    <h3>You scored ${z.score} out of ${z.qs.length}</h3><p class="muted">${z.score>=z.qs.length*.8?"That's a pass. Nice work!":"Keep practising. You'll get there."}</p>
+    <button class="btn" data-act="requiz">Try another round</button></div>`;
+  const {q,opts}=z.qs[z.i];
+  return `<div class="card" style="max-width:640px"><div class="kicker">Question ${z.i+1} of ${z.qs.length} · Score ${z.score}</div>
+   <h3 style="font-size:20px">Which term means: “${esc(q.d)}”</h3>
+   ${opts.map(o=>{let cls="";if(z.answered){if(o.t===q.t)cls="right";else if(o.t===z.answered)cls="wrong";}
+     return `<button class="quizopt ${cls}" data-ans="${esc(o.t)}" ${z.answered?"disabled":""}>${esc(o.t)}</button>`}).join("")}
+   ${z.answered?`<button class="btn" data-act="nextq" style="margin-top:8px">${z.i+1<z.qs.length?"Next question →":"See my score"}</button>`:""}
+  </div>`;
+}
+
+function viewTeam(){
+  return `<div class="kicker">Your people</div><h2 class="page">👋 My Check In team</h2>
+  <p class="lede">Who to go to, and how to reach them. Changes save automatically.</p>
+  <div class="grid g2">${TEAM_ROLES.map(([k,role,def])=>{const v=state.team[k]||{};
+   const name = v.name ?? (k==="manager"?state.profile.manager:k==="buddy"?state.profile.buddy:def) ?? "";
+   return `<div class="card"><div class="kicker">${role}</div>
+    <label class="field"><span>Name</span><input data-team="${k}" data-f="name" value="${esc(name)}"></label>
+    <label class="field"><span>How to reach them (Slack, email)</span><input data-team="${k}" data-f="contact" value="${esc(v.contact)}"></label></div>`}).join("")}</div>
+  <div class="card" style="margin-top:16px"><h3>🧭 What's expected after Check Out</h3>
+   <p class="muted" style="margin:0 0 8px">Your manager confirms your targets in your 30/60/90 day plan.</p>
+   ${EXPECT.map(([k,v])=>`<div class="sess"><div class="time">${k}</div><div>${v}</div></div>`).join("")}</div>`;
+}
+
+function viewNotes(){
+  return `<div class="kicker">Your space</div><h2 class="page">📝 Notes</h2>
+  <p class="lede">Questions, ideas and terms to add to your glossary. Saved automatically in this browser.</p>
+  <div class="card"><textarea class="refl" id="notes" style="min-height:360px" placeholder="Start typing…">${esc(state.notes)}</textarea><div class="saved" id="savedNote"></div></div>`;
+}
+
+function viewCheckout(){
+  const done=stampCount(), p=state.profile;
+  if(done<total){
+    const left=WEEKS.map(w=>({w,miss:w.stamps.filter(s=>!state.stamps[s.id])})).filter(x=>x.miss.length);
+    return `<div class="kicker">Graduation</div><h2 class="page">🎓 Check Out</h2>
+    <p class="lede">You Check Out when all ${total} stamps are collected and all three certifications are passed. You have ${total-done} to go.</p>
+    <div class="card hero">${ring(done,total)}<div><h3>Still to collect</h3>
+     <ul class="left" style="padding-left:18px;margin:0">${left.map(x=>`<li><a href="#week/${x.w.n}"><b>Week ${x.w.n}: ${x.w.name}</b></a>: ${x.miss.map(s=>esc(s.title)).join(" · ")}</li>`).join("")}</ul></div></div>`;
+  }
+  const lastDate = Object.values(state.stamps).map(s=>s.date).filter(Boolean).sort().pop();
+  return `<div class="kicker">Graduation</div><h2 class="page">🎓 You've checked out!</h2>
+  <p class="lede">Every stamp collected and all three certifications passed. You're certified and ready to prospect. Congratulations from the whole NORAM team.</p>
+  <div class="ticket">
+   <div class="main"><div class="kicker" style="color:var(--coral)">Boarding pass · Check Out</div>
+    <h3 style="font-size:28px;margin:6px 0 16px">${esc(p.name)}</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:4px 16px">
+     <div><div class="k">From</div><div class="v">Check In</div></div>
+     <div><div class="k">To</div><div class="v">Ramp 🚀</div></div>
+     <div><div class="k">Hub</div><div class="v">${hub().name}</div></div>
+     <div><div class="k">Date</div><div class="v">${lastDate?fmtDate(parseDate(lastDate),{month:"long",day:"numeric",year:"numeric"}):"—"}</div></div>
+    </div>
+    <div class="k">Certified in</div><div class="v">Social selling · Cold calling · Pitch deck</div>
+   </div>
+   <div class="stub"><div><div class="k">Stamps</div><div class="v">${total}/${total}</div><div class="k">Gate</div><div class="v">Your first call block</div></div>${crest(80)}</div>
+  </div>
+  <div class="actions" style="justify-content:flex-start"><button class="btn" data-act="print">🖨️ Print my boarding pass</button><button class="btn ghost" data-act="confetti">🎉 Celebrate again</button></div>`;
+}
+
+/* =========================================================
+   Modals
+   ========================================================= */
+function modal(html){
+  const el=document.createElement("div"); el.className="scrim"; el.innerHTML=`<div class="modal" role="dialog" aria-modal="true">${html}</div>`;
+  el.addEventListener("click",e=>{ if(e.target===el) el.remove(); });
+  document.addEventListener("keydown",function k(e){ if(e.key==="Escape"){el.remove();document.removeEventListener("keydown",k);} });
+  document.body.appendChild(el); const f=el.querySelector("input,button"); f&&f.focus(); return el;
+}
+function openStamp(id){
+  const s=ALL_STAMPS.find(x=>x.id===id); const r=state.stamps[id]; const w=s.week;
+  if(r){
+    const m=modal(`<div style="text-align:center">${inkStamp(w,s,r)}</div><h3>${esc(s.title)}</h3>
+     <p class="muted" style="margin:0">Signed off by <b>${esc(r.by)}</b>${r.date?" on "+fmtDate(parseDate(r.date),{month:"long",day:"numeric"}):""}${r.score?` · Score ${esc(r.score)}%`:""}</p>
+     <div class="actions"><button class="btn ghost" data-x="remove">Remove stamp</button><button class="btn" data-x="close">Close</button></div>`);
+    m.querySelector('[data-x="close"]').onclick=()=>m.remove();
+    m.querySelector('[data-x="remove"]').onclick=()=>{ delete state.stamps[id]; save(); m.remove(); render(); };
+    return;
+  }
+  const isCert=!!s.cert;
+  const m=modal(`<div class="kicker">Week ${w.n} · ${w.name}</div><h3>${esc(s.title)}</h3>
+   <p class="muted" style="margin:0">To be signed off by ${esc(s.by)}.</p>
+   <form id="stampForm">
+    <label class="field"><span>Signed off by (name)</span><input name="by" required placeholder="${esc(s.by)}"></label>
+    <label class="field"><span>Date</span><input name="date" type="date" value="${ymd(new Date())}" required></label>
+    ${isCert?`<label class="field"><span>Score (%)</span><input name="score" type="number" min="0" max="100" placeholder="e.g. 86"></label>`:""}
+    <div class="actions"><button type="button" class="btn ghost" data-x="close">Cancel</button><button class="btn gold" type="submit">Stamp it! 🛂</button></div>
+   </form>`);
+  m.querySelector('[data-x="close"]').onclick=()=>m.remove();
+  m.querySelector("#stampForm").onsubmit=e=>{
+    e.preventDefault(); const fd=new FormData(e.target);
+    state.stamps[id]={by:fd.get("by").trim(),date:fd.get("date"),score:fd.get("score")||""}; save(); m.remove();
+    justStamped=id; render();
+    if(stampCount()===total && !state.celebrated){ state.celebrated=true; save(); setTimeout(()=>{location.hash="#checkout";},700); }
+  };
+}
+function openSettings(){
+  const m=modal(`<h3>Backup &amp; reset</h3><p class="muted" style="margin:0">Your passport is saved in this browser only. Download a backup to move it to another device.</p>
+   <div class="actions" style="justify-content:flex-start">
+    <button class="btn" data-x="export">⬇️ Download backup</button>
+    <label class="btn ghost" style="display:inline-block">⬆️ Restore backup<input type="file" accept="application/json" hidden data-x="import"></label>
+    <button class="btn ghost" data-x="print">🖨️ Print this page</button></div>
+   <hr style="border:0;border-top:1px dashed var(--line);margin:18px 0">
+   <p style="margin:0 0 8px"><b>Start over</b><br><span class="muted">Clears every stamp, note and answer in this browser.</span></p>
+   <div class="actions" style="justify-content:space-between"><button class="btn ghost" data-x="reset" style="color:#b3261e">Reset passport</button><button class="btn" data-x="close">Done</button></div>`);
+  m.querySelector('[data-x="close"]').onclick=()=>m.remove();
+  m.querySelector('[data-x="print"]').onclick=()=>{m.remove();window.print();};
+  m.querySelector('[data-x="export"]').onclick=()=>{
+    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:"application/json"}));
+    a.download=`check-in-passport-${(state.profile.name||"backup").toLowerCase().replace(/\W+/g,"-")}.json`; a.click();
+  };
+  m.querySelector('[data-x="import"]').onchange=e=>{
+    const f=e.target.files[0]; if(!f) return; const rd=new FileReader();
+    rd.onload=()=>{ try{ const d=JSON.parse(rd.result); if(!d.profile) throw 0; state=Object.assign(blank(),d); save(); m.remove(); render(); }catch(_){ alert("That file isn't a Check In Passport backup."); } };
+    rd.readAsText(f);
+  };
+  m.querySelector('[data-x="reset"]').onclick=()=>{ if(confirm("Reset your passport? This can't be undone.")){ state=blank(); save(); m.remove(); location.hash=""; render(); } };
+}
+
+/* =========================================================
+   Render + events
+   ========================================================= */
+let justStamped=null, editing=false;
+function route(){ return (location.hash||"#home").slice(1); }
+function render(){
+  const root=$("#root");
+  if(!state.profile || editing){ root.innerHTML=viewCover(); bindCover(); return; }
+  const r=route(); let html;
+  if(r.startsWith("week/")) html=viewWeek(+r.split("/")[1]);
+  else html=({home:viewHome,certs:viewCerts,glossary:viewGlossary,team:viewTeam,notes:viewNotes,checkout:viewCheckout}[r]||viewHome)();
+  root.innerHTML=shell(html, r.startsWith("week/")?r:(["certs","glossary","team","notes","checkout"].includes(r)?r:"home"));
+  if(justStamped){ const el=document.querySelector(`[data-stamp="${justStamped}"] .inkstamp`); if(el) el.classList.add("thunk"); justStamped=null; }
+  if(r==="checkout" && stampCount()===total) confetti();
+}
+function bindCover(){
+  const f=$("#coverForm"), start=$("#f-start"), hint=$("#startHint");
+  const check=()=>{ const d=parseDate(start.value); hint.textContent = d && d.getDay()!==2 ? `Heads up: ${fmtDate(d,{weekday:"long"})}. Check In always starts on a Tuesday.` : ""; };
+  start.addEventListener("input",check); check();
+  f.onsubmit=e=>{ e.preventDefault(); const fd=new FormData(f);
+    state.profile={name:fd.get("name").trim(),hub:fd.get("hub"),start:fd.get("start"),manager:fd.get("manager").trim(),buddy:fd.get("buddy").trim()};
+    save(); editing=false; if(!location.hash) location.hash="#home"; render(); };
+  const c=$("#coverCancel"); if(c) c.onclick=()=>{editing=false;render();};
+}
+
+let saveTimer;
+function flashSaved(){ const n=$("#savedNote"); if(n){ n.textContent="Saved ✓"; clearTimeout(saveTimer); saveTimer=setTimeout(()=>n.textContent="",1200); } }
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button,a,[data-act]"); if(!t) return;
+  if(t.id==="menuBtn"){ $("#side").classList.toggle("open"); return; }
+  if(t.closest(".nav a")) $("#side")?.classList.remove("open");
+  if(t.id==="editProfile"||t.dataset.act==="edit"){ e.preventDefault(); editing=true; render(); return; }
+  if(t.id==="settingsBtn"){ openSettings(); return; }
+  if(t.dataset.stamp){ openStamp(t.dataset.stamp); return; }
+  if(t.dataset.day!==undefined && t.classList.contains("tab")){ activeDay[+route().split("/")[1]]=+t.dataset.day; render(); return; }
+  if(t.dataset.gtab){ gloss.tab=t.dataset.gtab; render(); return; }
+  if(t.dataset.flip!==undefined){ gloss.flipped[t.dataset.flip]=!gloss.flipped[t.dataset.flip]; t.classList.toggle("on"); return; }
+  if(t.dataset.learn!==undefined){ state.learned[t.dataset.learn]=!state.learned[t.dataset.learn]; save(); render(); return; }
+  if(t.dataset.ans!==undefined){ const z=gloss.quiz; if(z.answered) return; z.answered=t.dataset.ans; if(z.answered===z.qs[z.i].q.t) z.score++; render(); return; }
+  if(t.dataset.act==="nextq"){ gloss.quiz.i++; gloss.quiz.answered=null; render(); return; }
+  if(t.dataset.act==="requiz"){ newQuiz(); render(); return; }
+  if(t.dataset.delterm!==undefined){ state.myTerms.splice(+t.dataset.delterm,1); save(); render(); return; }
+  if(t.dataset.act==="print"){ window.print(); return; }
+  if(t.dataset.act==="confetti"){ confetti(); return; }
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.obj){ state.obj[t.dataset.obj]=t.checked; save(); }
+  if(t.dataset.cert){ const c=state.certs[t.dataset.cert]||(state.certs[t.dataset.cert]={}); c["p"+t.dataset.i]=t.checked; save(); render(); }
+});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.refl){ state.refl[t.dataset.refl]=t.value; save(); flashSaved(); }
+  if(t.id==="notes"){ state.notes=t.value; save(); flashSaved(); }
+  if(t.dataset.team){ const v=state.team[t.dataset.team]||(state.team[t.dataset.team]={}); v[t.dataset.f]=t.value; save(); }
+});
+document.addEventListener("submit",e=>{
+  if(e.target.id==="termForm"){ e.preventDefault(); const fd=new FormData(e.target); state.myTerms.push({t:fd.get("t").trim(),d:fd.get("d").trim()}); save(); render(); }
+});
+window.addEventListener("hashchange",()=>{ render(); window.scrollTo(0,0); });
+
+/* =========================================================
+   Confetti
+   ========================================================= */
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c=$("#confetti"), x=c.getContext("2d"); c.width=innerWidth; c.height=innerHeight;
+  const cols=WEEKS.map(w=>w.hex).concat("#e8b44c");
+  const ps=Array.from({length:160},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:Math.random()*6.28,s:5+Math.random()*6,c:cols[Math.floor(Math.random()*cols.length)]}));
+  let f=0; (function tick(){ x.clearRect(0,0,c.width,c.height);
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore();});
+    if(++f<240) requestAnimationFrame(tick); else x.clearRect(0,0,c.width,c.height); })();
+}
+
+render();
+</script>
+</body>
+</html>
