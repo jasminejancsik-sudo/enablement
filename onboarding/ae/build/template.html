@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f5f5f2; --surface-1:#fcfcfb; --surface-2:#f0efec; --border:#e4e3df;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#76756f;
+  --hero:#0b1f3a; --hero-2:#13345f; --hero-text:#ffffff; --hero-sub:#c9d6ea;
+  --accent:#2a78d6;
+  --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a;
+  --good:#0ca30c; --warning:#fab219; --critical:#d03b3b;
+  --stack-band:rgba(42,120,214,.08);
+  --shadow:0 1px 2px rgba(11,31,58,.06),0 4px 16px rgba(11,31,58,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --bg:#111110; --surface-1:#1a1a19; --surface-2:#242422; --border:#33332f;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#9a998f;
+    --hero:#0d1a2e; --hero-2:#16304f; --hero-sub:#aebfd8;
+    --accent:#3987e5;
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+    --stack-band:rgba(57,135,229,.12);
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#111110; --surface-1:#1a1a19; --surface-2:#242422; --border:#33332f;
+  --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#9a998f;
+  --hero:#0d1a2e; --hero-2:#16304f; --hero-sub:#aebfd8;
+  --accent:#3987e5;
+  --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+  --stack-band:rgba(57,135,229,.12);
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text-primary);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+/* hero */
+.hero{background:linear-gradient(135deg,var(--hero) 0%,var(--hero-2) 100%);color:var(--hero-text);padding:44px 0 36px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-sub);font-weight:600}
+.hero h1{font-size:40px;line-height:1.1;margin:10px 0 10px;font-weight:700;letter-spacing:-.02em}
+.hero p.sub{font-size:18px;color:var(--hero-sub);margin:0 0 6px;max-width:760px}
+.hero .meta{font-size:13px;color:var(--hero-sub);margin-top:14px}
+.tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:28px}
+.tile{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px}
+.tile .label{font-size:12.5px;color:var(--hero-sub)}
+.tile .value{font-size:34px;font-weight:700;line-height:1.15;margin-top:2px}
+.tile .value small{font-size:14px;font-weight:500;color:var(--hero-sub);margin-left:4px}
+.tile .icon{display:inline-block;width:18px;height:18px;border-radius:50%;font-size:11px;line-height:18px;text-align:center;font-weight:700;margin-right:6px;vertical-align:2px;color:#0b0b0b}
+/* nav */
+nav.toc{position:sticky;top:0;z-index:5;background:var(--surface-1);border-bottom:1px solid var(--border)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--text-secondary);font-size:13.5px;font-weight:500;padding:6px 12px;border-radius:999px}
+nav.toc a:hover{background:var(--surface-2);color:var(--text-primary)}
+nav.toc .spacer{flex:1}
+nav.toc button{font:inherit;font-size:13px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-secondary);border-radius:999px;padding:5px 12px;cursor:pointer}
+/* sections */
+section{padding:40px 0 8px}
+h2{font-size:26px;margin:0 0 4px;letter-spacing:-.01em}
+.lede{color:var(--text-secondary);margin:0 0 20px;max-width:820px}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+/* journey */
+.journey{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.weekhead{font-size:11px;color:var(--text-muted);text-align:center;padding-bottom:2px}
+.phase{border-radius:12px;padding:14px 14px 12px;background:var(--surface-1);border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.phase .pgoal{flex:1}
+.phase .pweeks{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.phase:before{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:var(--accent);opacity:calc(.35 + var(--i)*.13)}
+.phase .pname{font-weight:700;font-size:16px}
+.phase .pdays{font-size:12px;color:var(--text-muted);margin-bottom:8px}
+.phase .ptheme{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
+.phase .pgoal{font-size:12.5px;color:var(--text-secondary)}
+.phase .pfoot{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font-size:12px;color:var(--text-secondary);border-top:1px dashed var(--border);padding-top:8px}
+.phase .pfoot b{color:var(--text-primary)}
+.rail{grid-column:1/-1;position:relative;height:56px;margin-top:6px}
+.rail .line{position:absolute;left:0;right:0;top:20px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--surface-2),var(--accent))}
+.flag{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:180px}
+.flag .dot{width:22px;height:22px;margin:9px auto 4px;border-radius:50%;background:var(--surface-1);border:4px solid var(--accent)}
+.flag.cert .dot{background:var(--accent)}
+.flag .ft{font-size:12px;font-weight:700}
+.flag .fd{font-size:11px;color:var(--text-muted)}
+/* charts */
+.chart-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.chart-title{font-weight:700;font-size:16px}
+.chart-sub{font-size:13px;color:var(--text-secondary)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--text-secondary)}
+.legend .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend .si{display:inline-block;width:16px;height:16px;border-radius:50%;margin-right:6px;font-size:10px;line-height:16px;text-align:center;font-weight:800;color:#0b0b0b;vertical-align:-3px}
+svg text{fill:var(--text-secondary);font-size:12px}
+svg .axis{stroke:var(--border)}
+svg .grid{stroke:var(--border);stroke-dasharray:2 3}
+.tooltip{position:fixed;pointer-events:none;z-index:20;background:var(--surface-1);color:var(--text-primary);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:10px 12px;font-size:12.5px;min-width:170px;opacity:0;transition:opacity .08s}
+.tooltip .tt-h{font-weight:700;margin-bottom:4px}
+.tooltip .row{display:flex;justify-content:space-between;gap:16px}
+.tooltip .row span:first-child:before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;background:var(--c)}
+.linkbtn{background:none;border:0;color:var(--accent);font:inherit;font-size:13px;cursor:pointer;padding:0}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;font-size:13.5px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);font-weight:600;background:var(--surface-1);position:sticky;top:49px}
+td.num,th.num{text-align:right}
+.sel{font-size:12.5px;color:var(--text-secondary);margin-top:8px}
+/* readiness bars */
+.rb-row{display:grid;grid-template-columns:150px 1fr 280px;align-items:center;gap:14px;padding:7px 0}
+.rb-name{font-weight:600;font-size:14px}
+.rb-name small{display:block;font-weight:400;color:var(--text-muted);font-size:12px}
+.rb-bar{display:flex;gap:2px;height:22px}
+.rb-bar div{border-radius:4px;min-width:4px}
+.rb-lab{font-size:12.5px;color:var(--text-secondary)}
+/* status pill */
+.pill{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-primary);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:2px 9px 2px 3px;white-space:nowrap}
+.pill i{font-style:normal;width:16px;height:16px;border-radius:50%;display:inline-block;text-align:center;line-height:16px;font-size:10px;font-weight:800;color:#0b0b0b}
+.s-Ready i,.bg-Ready{background:var(--good)} .s-Refresh i,.bg-Refresh{background:var(--warning)} .s-Build i,.bg-Build{background:var(--critical)}
+.s-Ready i,.s-Build i{color:#fff}
+.chip{font:inherit;font-size:13px;border:1px solid var(--border);background:var(--surface-1);color:var(--text-secondary);padding:5px 12px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--text-primary);color:var(--surface-1);border-color:var(--text-primary)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.filters input{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface-1);color:var(--text-primary);min-width:240px}
+.filters .sep{width:1px;height:22px;background:var(--border);margin:0 4px}
+.note{font-size:12.5px;color:var(--text-secondary);margin-top:3px}
+.tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);border:1px solid currentColor;border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:1px}
+/* backlog */
+.bl-col h3{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.bl-item{padding:11px 0;border-top:1px solid var(--border)}
+.bl-item .t{font-weight:600;font-size:14px}
+.bl-item .m{font-size:12px;color:var(--text-muted);margin:2px 0}
+/* stacks */
+.stack{position:relative;overflow:hidden}
+.stack .big{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+.stack h3{font-size:22px;margin:4px 0 2px}
+.stack .days{color:var(--text-muted);font-size:13px;margin-bottom:10px}
+.stack .why{color:var(--text-secondary);font-size:14px;margin:0 0 14px}
+.obj{list-style:none;padding:0;margin:0 0 16px}
+.obj li{padding:6px 0 6px 28px;position:relative;font-size:14px}
+.obj li:before{content:"✓";position:absolute;left:0;top:6px;width:19px;height:19px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);font-size:11px;text-align:center;line-height:18px;color:var(--accent);font-weight:800}
+.seq{border-left:3px solid var(--accent);margin-left:8px;padding-left:16px}
+.seq .it{position:relative;padding:7px 0}
+.seq .it:before{content:"";position:absolute;left:-23.5px;top:13px;width:11px;height:11px;border-radius:50%;background:var(--surface-1);border:3px solid var(--accent)}
+.seq .it.cert:before{background:var(--accent)}
+.seq .it .t{font-weight:600;font-size:14px}
+.seq .it .m{font-size:12px;color:var(--text-muted)}
+/* certs */
+.cert h3{font-size:20px;margin:0}
+.cert .when{font-size:13px;color:var(--accent);font-weight:700;margin-bottom:8px}
+.kv{display:grid;grid-template-columns:90px 1fr;gap:4px 12px;font-size:13.5px;margin-bottom:14px}
+.kv b{color:var(--text-muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;padding-top:2px}
+.rub td:first-child{font-weight:600;width:38%}
+.rub td.sc{width:110px;white-space:nowrap}
+.rub .dots{letter-spacing:3px;color:var(--text-muted)}
+/* changes */
+.chg{display:grid;grid-template-columns:1fr 36px 1fr;align-items:stretch;gap:0;margin-bottom:10px}
+.chg .a,.chg .b{padding:12px 16px;border-radius:12px;font-size:14px}
+.chg .a{background:var(--surface-2);color:var(--text-secondary)}
+.chg .b{background:var(--surface-1);border:1px solid var(--border);font-weight:600;box-shadow:var(--shadow)}
+.chg .arr{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:20px;font-weight:700}
+.chg-h{display:grid;grid-template-columns:1fr 36px 1fr;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);font-weight:700;margin-bottom:8px}
+/* metrics */
+.metric .label{font-size:13px;color:var(--text-secondary)}
+.metric .value{font-size:26px;font-weight:700;margin-top:4px}
+footer{padding:40px 0 60px;color:var(--text-muted);font-size:13px}
+@media (max-width:1000px){.tiles{grid-template-columns:repeat(3,1fr)}.grid2,.grid3{grid-template-columns:1fr}.journey{grid-template-columns:1fr}.rail{display:none}.rb-row{grid-template-columns:110px 1fr}.rb-lab{grid-column:2}}
+@media print{nav.toc,.filters,.linkbtn,#themeBtn{display:none}body{background:#fff}section{break-inside:avoid-page}th{position:static}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">NORAM Revenue Enablement · Onboard → Ramp → Everboard</div>
+    <h1 id="title"></h1>
+    <p class="sub" id="subtitle"></p>
+    <div class="meta" id="meta"></div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+</header>
+<nav class="toc"><div class="wrap">
+  <a href="#journey">Journey</a><a href="#load">Learning load</a><a href="#readiness">Readiness</a><a href="#backlog">Build list</a>
+  <a href="#stacks">Day 60 &amp; 90 stacks</a><a href="#certs">Certifications</a><a href="#changes">What changes</a><a href="#metrics">Success measures</a><a href="#inventory">All sessions</a>
+  <span class="spacer"></span><button id="themeBtn" type="button">Toggle dark</button>
+</div></nav>
+
+<main class="wrap">
+<section id="journey">
+  <h2>The 90-day journey</h2>
+  <p class="lede">Six phases, each with one job. Day 30, 60 and 90 each end with a clear gate, and selling time grows as structured learning steps back.</p>
+  <div class="journey" id="journeyGrid"></div>
+</section>
+
+<section id="load">
+  <h2>Learning load, paced on purpose</h2>
+  <p class="lede">Structured hours drop from about 15 a week while AEs are landing to about 5 a week once they're selling. Learning is stacked into two focused weeks, Explore at Day 60 and Propose at Day 90, timed to when each skill is needed.</p>
+  <div class="card">
+    <div class="chart-head">
+      <div><div class="chart-title">Structured learning hours per week</div><div class="chart-sub">Hover a bar for the breakdown. Week 14 shows a typical everboarding month.</div></div>
+      <div class="legend" id="loadLegend"></div>
+    </div>
+    <div id="loadChart"></div>
+    <button class="linkbtn" id="loadTableBtn" type="button" aria-expanded="false">Show as table</button>
+    <div id="loadTable" hidden></div>
+  </div>
+</section>
+
+<section id="readiness">
+  <h2>What exists today, and what's missing</h2>
+  <p class="lede">Every session from the Q4 2025 plan, the NY Sales Class repository and the Q3 2026 tracker, mapped into the new journey. Most of the content already exists. The gaps are concentrated where AEs prove their skills.</p>
+  <div class="card">
+    <div class="chart-head">
+      <div class="chart-title">Session readiness by phase</div>
+      <div class="legend" id="statusLegend"></div>
+    </div>
+    <div id="readyBars"></div>
+  </div>
+</section>
+
+<section id="backlog">
+  <h2>Build list</h2>
+  <p class="lede">What needs to be created or refreshed, by priority. P1 items are needed for the next cohort: the certifications, the Day 60 and Day 90 stacks, and the Day 1 payments primer.</p>
+  <div class="grid2" id="backlogCols"></div>
+</section>
+
+<section id="stacks">
+  <h2>Stacked moments: Day 60 and Day 90</h2>
+  <p class="lede">Instead of dripping topics across months, related sessions are grouped into one focused week right before the skill is certified. Fewer things at once, each at the moment it's needed.</p>
+  <div class="grid2" id="stackCards"></div>
+</section>
+
+<section id="certs">
+  <h2>Certifications</h2>
+  <p class="lede">Two certifications at the moments that matter most in a Checkout deal: discovery, and the proposal. Both are scored 1–5 per section on a shared rubric so the bar is the same across pods.</p>
+  <div class="grid2" id="certCards"></div>
+</section>
+
+<section id="changes">
+  <h2>What changes from today</h2>
+  <p class="lede">Built on the feedback from previous cohorts and from sales leadership.</p>
+  <div class="card"><div class="chg-h"><div>Today</div><div></div><div>New programme</div></div><div id="changeRows"></div></div>
+</section>
+
+<section id="metrics">
+  <h2>How we'll measure success</h2>
+  <p class="lede">Reported to NORAM leadership for each cohort, connecting onboarding to revenue outcomes.</p>
+  <div class="grid3" id="metricTiles"></div>
+</section>
+
+<section id="inventory">
+  <h2>All sessions</h2>
+  <p class="lede">The full inventory. Filter by phase or status, or search by title or owner.</p>
+  <div class="card">
+    <div class="filters" id="filters"></div>
+    <div style="overflow-x:auto"><table id="invTable"><thead><tr><th class="num">Wk</th><th>Session</th><th>Format</th><th class="num">Hrs</th><th>Owner</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+    <div class="sel" id="invCount"></div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap" id="foot"></div></footer>
+<div class="tooltip" id="tt" role="status"></div>
+
+<script>
+const D = /*__DATA__*/null;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ICON = {Ready:"✓", Refresh:"↻", Build:"+"};
+const SLABEL = {Ready:"Ready today", Refresh:"Needs refresh", Build:"To build"};
+const pill = s => `<span class="pill s-${s}"><i aria-hidden="true">${ICON[s]}</i>${SLABEL[s]}</span>`;
+const phaseByKey = Object.fromEntries(D.phases.map(p => [p.key, p]));
+const total = D.sessions.length, st = D.status;
+
+// theme toggle
+$("#themeBtn").onclick = () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.dataset.theme = dark ? "light" : "dark";
+  drawLoad();
+};
+
+// hero
+$("#title").textContent = D.program.title;
+$("#subtitle").textContent = D.program.subtitle;
+$("#meta").textContent = `${D.program.owner} · ${D.program.version}`;
+const certCount = D.milestones.length;
+$("#tiles").innerHTML = [
+  ["Sessions mapped", total, ""],
+  ["Ready today", st.Ready, "", "Ready"],
+  ["Need refresh", st.Refresh, "", "Refresh"],
+  ["To build", st.Build, "", "Build"],
+  ["Skill gates", certCount, "D30 · D60 · D90"],
+  ["Days to first Propose", 90, ""],
+].map(([l, v, sm, s]) => `<div class="tile"><div class="label">${s ? `<span class="icon bg-${s}" style="color:${s==="Refresh"?"#0b0b0b":"#fff"}">${ICON[s]}</span>` : ""}${l}</div><div class="value">${v}${sm ? `<small>${sm}</small>` : ""}</div></div>`).join("");
+
+// journey
+(function(){
+  const g = $("#journeyGrid");
+  let h = "";
+  D.phases.forEach((p, i) => {
+    const n = D.sessions.filter(x => x.phase === p.key).length;
+    const wk = p.weeks[0] === 0 ? "Week 0" : p.weeks[0] === 14 ? "Ongoing" : p.weeks.length > 1 ? `Weeks ${p.weeks[0]}–${p.weeks[p.weeks.length - 1]}` : `Week ${p.weeks[0]}`;
+    h += `<div class="phase" style="--i:${i}"><div class="pweeks">${wk}</div>
+      <div class="pname">${esc(p.name)}</div><div class="pdays">${esc(p.days)}</div>
+      <div class="ptheme">${esc(p.theme)}</div><div class="pgoal">${esc(p.goal)}</div>
+      <div class="pfoot"><span><b>${n}</b> sessions</span><span>Selling <b>${esc(p.selling)}</b></span></div></div>`;
+  });
+  const endOf = {30: 2, 60: 3, 90: 4};
+  h += `<div class="rail"><div class="line"></div>${D.milestones.map(m => {
+    const left = ((endOf[m.day] + 1) / 6) * 100;
+    return `<div class="flag ${m.type}" style="left:calc(${left}% - 5px)"><div class="dot"></div><div class="ft">Day ${m.day}</div><div class="fd">${esc(m.name.replace("Day 30 ", ""))}</div></div>`;
+  }).join("")}</div>`;
+  g.innerHTML = h;
+})();
+
+// tooltip helpers
+const tt = $("#tt");
+function showTT(e, html){ tt.innerHTML = html; tt.style.opacity = 1; moveTT(e); }
+function moveTT(e){ const r = tt.getBoundingClientRect(); let x = e.clientX + 14, y = e.clientY + 14; if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 14; if (y + r.height > innerHeight - 8) y = e.clientY - r.height - 14; tt.style.left = x + "px"; tt.style.top = y + "px"; }
+function hideTT(){ tt.style.opacity = 0; }
+
+// learning load chart
+const SERIES = [["Live", "--series-1", "Live sessions"], ["Self-paced", "--series-2", "Self-paced e-learning"], ["Practice", "--series-3", "Practice & certification"]];
+$("#loadLegend").innerHTML = SERIES.map(([k, v, l]) => `<span><span class="sw" style="background:var(${v})"></span>${l}</span>`).join("");
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function drawLoad(){
+  const W = 1180, H = 330, m = {l:40, r:12, t:34, b:40};
+  const data = D.load, n = data.length;
+  const max = 16, iw = W - m.l - m.r, ih = H - m.t - m.b, bw = iw / n, barW = Math.min(46, bw * .58);
+  const y = v => m.t + ih - (v / max) * ih;
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Stacked bar chart of structured learning hours per week">`;
+  // stack bands
+  const bands = {9:"Explore Week · Day 60", 13:"Propose Week · Day 90"};
+  data.forEach((d, i) => { if (bands[d.week]) { const x = m.l + i * bw; s += `<rect x="${x + 2}" y="${m.t - 26}" width="${bw - 4}" height="${ih + 26}" rx="8" fill="var(--stack-band)"/><text x="${x + bw / 2}" y="${m.t - 12}" text-anchor="middle" style="font-weight:700;fill:var(--text-primary)">${bands[d.week]}</text>`; } });
+  for (let v = 0; v <= max; v += 4) s += `<line class="${v ? "grid" : "axis"}" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}h</text>`;
+  data.forEach((d, i) => {
+    const cx = m.l + i * bw + bw / 2, x = cx - barW / 2;
+    let base = 0; const segs = SERIES.filter(([k]) => d[k] > 0);
+    segs.forEach(([k, v], j) => {
+      const y0 = y(base), y1 = y(base + d[k]); const h = Math.max(0, y0 - y1 - (j ? 2 : 0));
+      const top = j === segs.length - 1;
+      const yy = y1;
+      s += top ? `<path d="M${x},${yy + h} V${yy + 4} Q${x},${yy} ${x + 4},${yy} H${x + barW - 4} Q${x + barW},${yy} ${x + barW},${yy + 4} V${yy + h} Z" fill="${css(v)}"/>`
+               : `<rect x="${x}" y="${yy}" width="${barW}" height="${h}" fill="${css(v)}"/>`;
+      base += d[k];
+    });
+    const tot = SERIES.reduce((a, [k]) => a + d[k], 0);
+    if ([1, 9, 13].includes(d.week)) s += `<text x="${cx}" y="${y(tot) - 7}" text-anchor="middle" style="fill:var(--text-primary);font-weight:600">${+tot.toFixed(1)}h</text>`;
+    s += `<text x="${cx}" y="${H - m.b + 18}" text-anchor="middle">${d.week === 0 ? "Pre" : d.week === 14 ? "90+" : "W" + d.week}</text>`;
+    s += `<rect class="hit" data-i="${i}" x="${m.l + i * bw}" y="${m.t}" width="${bw}" height="${ih}" fill="transparent"/>`;
+  });
+  s += `<text x="${m.l}" y="${H - 4}" style="fill:var(--text-muted)">Week of employment</text></svg>`;
+  $("#loadChart").innerHTML = s;
+  $("#loadChart").querySelectorAll(".hit").forEach(r => {
+    const d = data[+r.dataset.i], ph = D.phases.find(p => p.weeks.includes(d.week));
+    const tot = SERIES.reduce((a, [k]) => a + d[k], 0);
+    const html = `<div class="tt-h">${d.week === 0 ? "Pre-board" : d.week === 14 ? "Everboarding (monthly)" : "Week " + d.week} · ${esc(ph.name)}</div>` +
+      SERIES.map(([k, v, l]) => `<div class="row" style="--c:var(${v})"><span>${l}</span><b>${+d[k].toFixed(2)}h</b></div>`).join("") +
+      `<div class="row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px"><span style="--c:transparent">Total</span><b>${+tot.toFixed(2)}h</b></div>`;
+    r.addEventListener("mouseenter", e => showTT(e, html)); r.addEventListener("mousemove", moveTT); r.addEventListener("mouseleave", hideTT);
+  });
+}
+drawLoad();
+$("#loadTable").innerHTML = `<table><thead><tr><th>Week</th>${SERIES.map(s => `<th class="num">${s[2]}</th>`).join("")}<th class="num">Total</th></tr></thead><tbody>${D.load.map(d => `<tr><td>${d.week === 0 ? "Pre-board" : d.week === 14 ? "90+ (monthly)" : "Week " + d.week}</td>${SERIES.map(([k]) => `<td class="num">${+d[k].toFixed(2)}</td>`).join("")}<td class="num"><b>${+SERIES.reduce((a, [k]) => a + d[k], 0).toFixed(2)}</b></td></tr>`).join("")}</tbody></table>`;
+$("#loadTableBtn").onclick = e => { const t = $("#loadTable"); t.hidden = !t.hidden; e.target.textContent = t.hidden ? "Show as table" : "Hide table"; e.target.setAttribute("aria-expanded", !t.hidden); };
+
+// readiness bars
+$("#statusLegend").innerHTML = ["Ready", "Refresh", "Build"].map(s => `<span><span class="si bg-${s}" style="color:${s === "Refresh" ? "#0b0b0b" : "#fff"}">${ICON[s]}</span>${SLABEL[s]}</span>`).join("");
+(function(){
+  const maxN = Math.max(...D.phases.map(p => D.sessions.filter(x => x.phase === p.key).length));
+  $("#readyBars").innerHTML = D.phases.map(p => {
+    const c = D.byPhase[p.key] || {}, n = (c.Ready || 0) + (c.Refresh || 0) + (c.Build || 0);
+    const bar = ["Ready", "Refresh", "Build"].filter(s => c[s]).map(s => `<div class="bg-${s}" style="flex:0 0 calc(${(c[s] / maxN) * 100}% - 2px)" title="${c[s]} ${SLABEL[s].toLowerCase()}"></div>`).join("");
+    const lab = ["Ready", "Refresh", "Build"].map(s => c[s] ? `${ICON[s]} ${c[s]} ${s === "Ready" ? "ready" : s === "Refresh" ? "refresh" : "to build"}` : "").filter(Boolean).join(" · ");
+    return `<div class="rb-row"><div class="rb-name">${esc(p.name)}<small>${esc(p.days)}</small></div><div class="rb-bar">${bar}</div><div class="rb-lab">${lab}</div></div>`;
+  }).join("");
+})();
+
+// backlog
+(function(){
+  const todo = D.sessions.filter(x => x.status !== "Ready");
+  const p1 = x => x.stack || x.cat === "Certification" || x.title.startsWith("Payments at Checkout");
+  const col = (title, items, sub) => `<div class="card bl-col"><h3>${title} <span class="note" style="margin:0">${sub}</span></h3>${items.map(x => `
+    <div class="bl-item"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div class="t">${esc(x.title)}</div>${pill(x.status)}</div>
+    <div class="m">${esc(phaseByKey[x.phase].name)} · Week ${x.week} · ${esc(x.owner)}</div>${x.note ? `<div class="note">${esc(x.note)}</div>` : ""}</div>`).join("")}</div>`;
+  const a = todo.filter(p1).sort((x, y) => x.week - y.week), b = todo.filter(x => !p1(x)).sort((x, y) => (x.status === "Build" ? 0 : 1) - (y.status === "Build" ? 0 : 1) || x.week - y.week);
+  $("#backlogCols").innerHTML = col("P1: needed for the next cohort", a, `${a.length} items`) + col("P2: build into the programme", b, `${b.length} items`);
+})();
+
+// stacks
+(function(){
+  const card = key => {
+    const k = D.stacks[key], items = D.sessions.filter(x => x.stack === key);
+    return `<div class="card stack"><div class="big">${key === "D60" ? "Day 60" : "Day 90"}</div><h3>${esc(k.title.split(": ")[1] || k.title)}</h3><div class="days">${esc(k.days)}</div>
+      <p class="why">${esc(k.why)}</p>
+      <div class="chart-title" style="font-size:14px;margin-bottom:4px">By the end of the week, the AE can…</div>
+      <ul class="obj">${k.objectives.map(o => `<li>${esc(o)}</li>`).join("")}</ul>
+      <div class="chart-title" style="font-size:14px;margin-bottom:8px">The week</div>
+      <div class="seq">${items.map(x => `<div class="it ${x.cat === "Certification" ? "cert" : ""}"><div style="display:flex;justify-content:space-between;gap:10px"><div class="t">${esc(x.title)}</div>${pill(x.status)}</div><div class="m">${esc(x.fmt)} · ${x.hrs}h · ${esc(x.owner)}</div></div>`).join("")}</div></div>`;
+  };
+  $("#stackCards").innerHTML = card("D60") + card("D90");
+})();
+
+// certs
+$("#certCards").innerHTML = D.certs.map(c => `<div class="card cert"><div class="when">${esc(c.when)}</div><h3>${esc(c.name)}</h3>
+  <div class="kv" style="margin-top:12px"><b>Format</b><span>${esc(c.format)}</span><b>Assessors</b><span>${esc(c.assessors)}</span><b>Pass</b><span>${esc(c.pass)}</span></div>
+  <table class="rub"><thead><tr><th>Section</th><th>What good looks like</th><th class="sc">Score</th></tr></thead><tbody>
+  ${c.rubric.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td><td class="sc"><span class="dots">○○○○○</span></td></tr>`).join("")}</tbody></table></div>`).join("");
+
+// changes
+$("#changeRows").innerHTML = D.changes.map(([a, b]) => `<div class="chg"><div class="a">${esc(a)}</div><div class="arr" aria-hidden="true">→</div><div class="b">${esc(b)}</div></div>`).join("");
+
+// metrics
+$("#metricTiles").innerHTML = D.metrics.map(([l, v]) => `<div class="card metric"><div class="label">${esc(l)}</div><div class="value">${esc(v)}</div></div>`).join("");
+
+// inventory
+(function(){
+  const state = {phase: "all", status: "all", q: ""};
+  const f = $("#filters");
+  f.innerHTML = `<button class="chip" data-k="phase" data-v="all" aria-pressed="true">All phases</button>` +
+    D.phases.map(p => `<button class="chip" data-k="phase" data-v="${p.key}" aria-pressed="false">${esc(p.name)}</button>`).join("") +
+    `<span class="sep"></span><button class="chip" data-k="status" data-v="all" aria-pressed="true">Any status</button>` +
+    ["Ready", "Refresh", "Build"].map(s => `<button class="chip" data-k="status" data-v="${s}" aria-pressed="false">${ICON[s]} ${SLABEL[s]}</button>`).join("") +
+    `<span class="sep"></span><input type="search" placeholder="Search sessions or owners" aria-label="Search sessions">`;
+  f.addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; state[b.dataset.k] = b.dataset.v; f.querySelectorAll(`.chip[data-k="${b.dataset.k}"]`).forEach(x => x.setAttribute("aria-pressed", x === b)); render(); });
+  f.querySelector("input").addEventListener("input", e => { state.q = e.target.value.toLowerCase(); render(); });
+  function render(){
+    const rows = D.sessions.filter(x => (state.phase === "all" || x.phase === state.phase) && (state.status === "all" || x.status === state.status) && (!state.q || (x.title + " " + x.owner + " " + x.note).toLowerCase().includes(state.q)));
+    let last = null, h = "";
+    rows.forEach(x => {
+      if (x.phase !== last) { const p = phaseByKey[x.phase]; h += `<tr><td colspan="6" style="background:var(--surface-2);font-weight:700">${esc(p.name)} <span class="note" style="font-weight:400">· ${esc(p.days)} · ${esc(p.theme)}</span></td></tr>`; last = x.phase; }
+      h += `<tr><td class="num">${x.week === 0 ? "–" : x.week === 14 ? "90+" : x.week}</td><td><b>${esc(x.title)}</b>${x.stack ? `<span class="tag">${x.stack === "D30" ? "Day 30" : x.stack === "D60" ? "Day 60 stack" : "Day 90 stack"}</span>` : ""}${x.note ? `<div class="note">${esc(x.note)}</div>` : ""}</td><td>${esc(x.fmt)}</td><td class="num">${x.hrs || "–"}</td><td>${esc(x.owner)}</td><td>${pill(x.status)}</td></tr>`;
+    });
+    $("#invTable tbody").innerHTML = h || `<tr><td colspan="6">No sessions match.</td></tr>`;
+    $("#invCount").textContent = `Showing ${rows.length} of ${total} sessions`;
+  }
+  render();
+})();
+
+$("#foot").innerHTML = `Built from: ${D.program.sources.map(([n, u]) => `<a href="${u}">${esc(n)}</a>`).join(" · ")}<br>Edit <code>onboarding/ae/build/program_data.py</code> and run <code>python3 onboarding/ae/build/build.py</code> to regenerate this page and the Excel tracker.`;
+</script>
+</body>
+</html>
