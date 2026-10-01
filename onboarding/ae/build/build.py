@@ -79,8 +79,45 @@ def build_xlsx():
         for k, color in fills.items():
             ws.conditional_formatting.add(rng, CellIsRule(operator="equal", formula=[f'"{k}"'], fill=PatternFill("solid", fgColor=color)))
 
-    # 1. Overview
+    fb_fill = PatternFill("solid", fgColor="EAF2FC")
+
+    def feedback_fill(ws, cols, r0, n):
+        for col in cols:
+            ws[f"{col}{r0}"].fill = PatternFill("solid", fgColor="2A78D6")
+            for r in range(r0 + 1, r0 + n + 1):
+                ws[f"{col}{r}"].fill = fb_fill
+
+    # 0. Feedback on the programme design
     ws = wb.active
+    ws.title = "Feedback"
+    ws["A1"] = "Review the programme: what should we keep, change or cut?"
+    ws["A1"].font = Font(bold=True, size=16, color=NAVY)
+    ws["A2"] = "Fill in the blue columns here for big-picture decisions, and the blue columns on the Inventory and Build Backlog tabs for individual sessions."
+    ws["A2"].font = Font(italic=True, color="52514E")
+    items = [("Phases", f'{p["name"]} ({p["days"]})', f'{p["theme"]}: {p["goal"]} Target selling time {p["selling"]}.') for p in D.PHASES]
+    items += [("Gates", f'Day {m["day"]}: {m["name"]}', f'{m["what"]}. Pass: {m["pass"]}.') for m in D.MILESTONES]
+    items += [("Stacks", D.STACKS[k]["title"], D.STACKS[k]["days"] + ". " + D.STACKS[k]["why"] + " Objectives: " + "; ".join(D.STACKS[k]["objectives"]) + ".") for k in ("D60", "D90")]
+    items += [("Certifications", c["name"], f'{c["format"]} Assessors: {c["assessors"]}. Pass: {c["pass"]} Rubric: ' + "; ".join(a for a, _ in c["rubric"]) + ".") for c in D.CERTS]
+    items += [("What changes", a, "New: " + b) for a, b in D.CHANGES]
+    items += [("Success measures", a, "Target: " + b) for a, b in D.METRICS]
+    r0 = 4
+    for i, h in enumerate(("Area", "Item", "Detail", "Keep / Change / Cut", "Your feedback"), 1):
+        c = ws.cell(r0, i, h)
+        c.font, c.fill, c.alignment = head_font, head_fill, Alignment(vertical="center", wrap_text=True)
+    for r, row in enumerate(items, r0 + 1):
+        for i, v in enumerate(row, 1):
+            c = ws.cell(r, i, v)
+            c.alignment, c.border = wrap, border
+    feedback_fill(ws, ("D", "E"), r0, len(items))
+    dv = DataValidation(type="list", formula1='"Keep,Change,Cut,Discuss"')
+    ws.add_data_validation(dv)
+    dv.add(f"D{r0 + 1}:D{r0 + len(items)}")
+    for col, w in zip("ABCDE", (16, 40, 90, 16, 50)):
+        ws.column_dimensions[col].width = w
+    ws.freeze_panes = "A5"
+
+    # 1. Overview
+    ws = wb.create_sheet()
     ws.title = "Overview"
     ws["A1"] = D.PROGRAM["title"]
     ws["A1"].font = Font(bold=True, size=18, color=NAVY)
@@ -91,7 +128,7 @@ def build_xlsx():
     for i, k in enumerate(D.STATUSES):
         ws.cell(6 + i, 1, {"Ready": "Ready today", "Refresh": "Need refresh", "Build": "To build"}[k])
         ws.cell(6 + i, 2, f'=COUNTIF(Inventory!H4:H500,"{k}")')
-    ws["A10"], ws["B10"] = "Build/refresh items done", '=COUNTIF(\'Build Backlog\'!H4:H500,"Done")'
+    ws["A10"], ws["B10"] = "Build/refresh items done", '=COUNTIF(\'Build Backlog\'!I4:I500,"Done")'
     for r in range(5, 11):
         ws.cell(r, 1).font = Font(bold=True)
     r = 12
@@ -116,32 +153,40 @@ def build_xlsx():
     # 2. Inventory
     ws = wb.create_sheet()
     rows = [[phase_name[x["phase"]], x["week"], x["title"], x["cat"], x["fmt"], x["hrs"], x["owner"], x["status"],
-             {"D30": "Day 30", "D60": "Day 60 stack", "D90": "Day 90 stack"}.get(x["stack"], ""), x["note"], x["source"]]
+             {"D30": "Day 30", "D60": "Day 60 stack", "D90": "Day 90 stack"}.get(x["stack"], ""), x["note"], x["source"], "", ""]
             for x in D.SESSIONS]
     r0 = sheet(ws, "Inventory",
-               ["Phase", "Week", "Session", "Category", "Format", "Hours", "Owner", "Status", "Stack", "What needs to happen / notes", "Source"],
-               rows, [22, 7, 52, 18, 13, 7, 30, 10, 13, 70, 14],
+               ["Phase", "Week", "Session", "Category", "Format", "Hours", "Owner", "Status", "Stack", "What needs to happen / notes", "Source", "Keep / Change / Cut", "Your feedback"],
+               rows, [22, 7, 52, 18, 13, 7, 30, 10, 13, 70, 14, 16, 50],
                note="Every AE onboarding session: what exists today (Ready), what needs updating (Refresh) and what's missing (Build).")
     dv = DataValidation(type="list", formula1='"Ready,Refresh,Build"', allow_blank=False)
     ws.add_data_validation(dv)
     dv.add(f"H{r0 + 1}:H500")
     status_cf(ws, "H", r0 + 1, 500)
+    dv = DataValidation(type="list", formula1='"Keep,Change,Cut,Discuss"')
+    ws.add_data_validation(dv)
+    dv.add(f"L{r0 + 1}:L500")
+    feedback_fill(ws, ("L", "M"), r0, len(rows))
 
     # 3. Build backlog
     ws = wb.create_sheet()
     todo = [x for x in D.SESSIONS if x["status"] != "Ready"]
     prio = lambda x: "P1" if (x["stack"] or x["cat"] == "Certification" or x["title"].startswith("Payments at Checkout")) else "P2"
     todo.sort(key=lambda x: (prio(x), x["status"] != "Build", x["week"]))
-    rows = [[prio(x), x["status"], x["title"], phase_name[x["phase"]], x["week"], x["owner"], "", "Not started", "", x["note"]] for x in todo]
+    rows = [[prio(x), x["status"], x["title"], phase_name[x["phase"]], x["week"], x["owner"], "", "", "Not started", "", x["note"]] for x in todo]
     r0 = sheet(ws, "Build Backlog",
-               ["Priority", "Type", "Session", "Phase", "Week", "Proposed owner", "Target date", "Progress", "Content link", "Brief"],
-               rows, [9, 9, 50, 22, 7, 30, 13, 13, 30, 70],
+               ["Priority", "Type", "Session", "Phase", "Week", "Proposed owner", "Owner agreed?", "Target date", "Progress", "Content link", "Brief"],
+               rows, [9, 9, 50, 22, 7, 30, 14, 13, 13, 30, 70],
                note="P1 = needed for the next cohort (certifications, Day 60/90 stacks, Day 1 payments primer). Update Progress as content is built.")
     dv = DataValidation(type="list", formula1='"Not started,In design,In review,Pilot,Done"')
     ws.add_data_validation(dv)
-    dv.add(f"H{r0 + 1}:H500")
+    dv.add(f"I{r0 + 1}:I500")
+    dv = DataValidation(type="list", formula1='"Yes,No - suggest other,TBD"')
+    ws.add_data_validation(dv)
+    dv.add(f"G{r0 + 1}:G500")
     status_cf(ws, "B", r0 + 1, 500)
-    ws.conditional_formatting.add(f"H{r0 + 1}:H500", CellIsRule(operator="equal", formula=['"Done"'], fill=PatternFill("solid", fgColor=fills["Ready"])))
+    feedback_fill(ws, ("G",), r0, len(rows))
+    ws.conditional_formatting.add(f"I{r0 + 1}:I500", CellIsRule(operator="equal", formula=['"Done"'], fill=PatternFill("solid", fgColor=fills["Ready"])))
 
     # 4. Certification scorecards
     for c in D.CERTS:
