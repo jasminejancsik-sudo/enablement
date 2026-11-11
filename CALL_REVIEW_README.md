@@ -14,3 +14,9 @@ Call snapshot, scorecard across agenda setting, discovery, sales acumen, product
 
 ## Tuning
 Edit `.claude/skills/call-review/SKILL.md` to add your methodology (DEPTH definitions already live in `DEPTH_Definitions.md` there), your own scorecard, or product facts to check claims against.
+
+## Webpage version
+Open `call-review.html` in a browser (double-click, no hosting or API key needed).
+1. Paste the transcript and click **Build prompt**; it copies a full prompt (rules, DEPTH, JSON format).
+2. Paste that into Claude, copy Claude's reply back into step 2, and click **Render review**.
+3. **Review** shows the full write-up (toggle facilitator notes, print to PDF). **Present** shows one clip at a time with the pause point and questions, and reveals coaching on click (arrow keys to move).

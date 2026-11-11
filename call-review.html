@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Call Review: Pause &amp; Play Finder</title>
+<style>
+  :root{--bg:#f6f7f9;--card:#fff;--ink:#14181f;--mut:#5d6675;--line:#e2e6ec;--acc:#0b5fff;--good:#0a7d4b;--warn:#b25e00;--bad:#b3261e;}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header{background:#14181f;color:#fff;padding:16px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;margin:0;flex:1}
+  header .steps{display:flex;gap:8px}
+  .step{padding:6px 12px;border-radius:999px;background:#2b3240;color:#aab3c2;font-size:13px;cursor:pointer;border:0}
+  .step.on{background:var(--acc);color:#fff}
+  main{max-width:1000px;margin:0 auto;padding:24px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:16px}
+  h2{margin:0 0 10px;font-size:17px} h3{margin:14px 0 6px;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+  label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
+  input,textarea,select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+  textarea{min-height:260px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+  .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  button.btn{background:var(--acc);color:#fff;border:0;padding:10px 16px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer}
+  button.btn.sec{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  button.btn:disabled{opacity:.5;cursor:default}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .hint{color:var(--mut);font-size:13px}
+  .err{color:var(--bad);font-size:14px;margin-top:8px;white-space:pre-wrap}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#33405a;margin-right:6px}
+  .tag.Replicate{background:#e2f5ec;color:var(--good)} .tag.Improve{background:#fff0dc;color:var(--warn)} .tag.Discuss{background:#e8efff;color:var(--acc)}
+  .tag.long{background:#fde7e5;color:var(--bad)}
+  table{border-collapse:collapse;width:100%;font-size:14px} td,th{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+  .score{font-weight:700;white-space:nowrap}
+  blockquote{margin:6px 0;padding:8px 12px;border-left:3px solid var(--acc);background:#f2f6ff;border-radius:0 6px 6px 0}
+  blockquote b{color:var(--acc)}
+  ul{margin:4px 0 4px 20px;padding:0}
+  .pause{background:#fff7e6;border:1px solid #f1d9a6;padding:8px 12px;border-radius:8px}
+  .talk{background:#eefaf3;border:1px solid #bfe6cf;padding:8px 12px;border-radius:8px;white-space:pre-wrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px} @media(max-width:700px){.grid2{grid-template-columns:1fr}}
+  .hide{display:none!important}
+  .fac{display:none} body.show-fac .fac{display:block}
+  #present .big{font-size:20px}
+  .nav{position:sticky;bottom:0;background:var(--bg);padding:10px 0;display:flex;gap:10px;align-items:center}
+  details{margin-top:8px} summary{cursor:pointer;font-weight:600;color:var(--acc)}
+  pre.prompt{white-space:pre-wrap;max-height:260px;overflow:auto;background:#0f1420;color:#d7e0f2;padding:12px;border-radius:8px;font-size:12px}
+  @media print{header,.nav,.noprint,#step1,#step2{display:none!important} body{background:#fff} .card{break-inside:avoid} .fac{display:block!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Call Review: Pause &amp; Play Finder</h1>
+  <div class="steps">
+    <button class="step on" data-s="1">1. Transcript</button>
+    <button class="step" data-s="2">2. Paste Claude's answer</button>
+    <button class="step" data-s="3">3. Review</button>
+    <button class="step" data-s="4">4. Present</button>
+  </div>
+</header>
+<main>
+
+<!-- STEP 1 -->
+<section id="step1">
+  <div class="card">
+    <h2>1. Add the call</h2>
+    <p class="hint">Paste the transcript and add optional context. The page builds a complete prompt (with DEPTH definitions and the 4-minute clip rule) for you to paste into Claude. Nothing is sent anywhere from this page.</p>
+    <div class="row">
+      <div><label>AE name</label><input id="ae" placeholder="e.g. Sam"></div>
+      <div><label>Segment / prospect type</label><input id="seg" placeholder="e.g. Mid-market retail"></div>
+      <div><label>Call type / DEPTH stage</label><input id="stage" placeholder="e.g. 2nd call, Explore"></div>
+      <div><label>Focus (optional)</label><input id="focus" placeholder="e.g. objection handling"></div>
+    </div>
+    <label>Transcript <span class="hint">(timestamps and speaker labels help a lot)</span></label>
+    <textarea id="tx" placeholder="Paste call transcript here..."></textarea>
+    <div class="bar">
+      <button class="btn" id="build">Build prompt</button>
+      <button class="btn sec" id="copy" disabled>Copy prompt</button>
+      <span class="hint" id="count"></span>
+    </div>
+    <div class="err" id="err1"></div>
+    <details id="pd" class="hide"><summary>Preview prompt</summary><pre class="prompt" id="prompt"></pre></details>
+    <p class="hint">Next: paste into Claude, then copy Claude's whole reply and go to step 2. Tip: anonymise prospect names and pricing first if you'll show clips to a group.</p>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2" class="hide">
+  <div class="card">
+    <h2>2. Paste Claude's answer</h2>
+    <p class="hint">Paste the JSON Claude returned (code fences are fine).</p>
+    <textarea id="resp" placeholder='{"snapshot": ...}'></textarea>
+    <div class="bar"><button class="btn" id="render">Render review</button><button class="btn sec" id="sample">Load sample</button></div>
+    <div class="err" id="err2"></div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3" class="hide">
+  <div class="bar noprint" style="margin:0 0 12px">
+    <label style="display:flex;gap:6px;align-items:center;margin:0"><input type="checkbox" id="facToggle" style="width:auto"> Show facilitator notes (set-up, coaching, talk tracks)</label>
+    <button class="btn sec" onclick="window.print()">Print / save PDF</button>
+  </div>
+  <div id="review"></div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4" class="hide">
+  <div id="present"></div>
+  <div class="nav noprint"><button class="btn sec" id="prev">&larr; Prev</button><button class="btn sec" id="next">Next &rarr;</button><span class="hint" id="pos"></span><span class="hint">Arrow keys also work</span></div>
+</section>
+
+</main>
+
+<script>
+const DEPTH = `DEPTH is Checkout.com's sales methodology and opportunity stages: Discover, Explore, Propose, Trade, Handover.
+- DISCOVER: research and planning before the first meeting (or first meeting on a new issue for an existing Merchant): picture of the company, people and market; plan the opening, what to learn, and the next commitment to secure.
+- EXPLORE: strong first impression, active listening, thoughtful questions that funnel to a deep understanding of the Merchant's goals, needs and challenges; may take more than one meeting; understand before jumping to solution; qualification info such as MEDDIC supports understanding but should not be the first thing led with.
+- PROPOSE: bring solutions addressing the needs and priorities agreed in Explore; connect goals to specific Checkout capabilities; support with proof points, data and quantified value/financial impact. Merchant should see the link: "You told us this matters; here's what we recommend and the outcome it can deliver."
+- TRADE: discuss pricing and agree commercial terms for a solution the Merchant accepts meets their needs; present pricing in a conversation, explain confidently and clearly, handle objections respectfully, work toward a mutually beneficial agreement; never give something away without seeking an appropriate commitment in return.
+- HANDOVER: deliver on commitments; keep the Merchant informed; be clear on actions needed from them; coordinate internally so experience matches promises; Sales Rep works with the Account Manager on an account plan.`;
+
+const SCHEMA = `{
+  "snapshot": {"summary": "", "biggest_strength": "", "biggest_opportunity": ""},
+  "scorecard": [{"lens": "", "score": 1-5 or null, "evidence": ""}],
+  "depth_check": {"stages_covered": ["Explore"], "assessment": ""},
+  "moments": [{
+    "title": "", "type": "Replicate | Improve | Discuss",
+    "lens": "", "depth_stage": "",
+    "clip_start": "timestamp or opening quote", "clip_end": "timestamp or closing quote",
+    "duration_minutes": 0,
+    "setup": "what to say before pressing play, incl. what to listen for",
+    "key_lines": [{"speaker": "", "text": ""}],
+    "pause_point": "exactly where to stop playback",
+    "analysis": "evidence-based, 2-3 sentences",
+    "facilitator_questions": [""],
+    "coaching_tips": [""],
+    "better_talk_track": "rewrite (Improve) or reusable pattern (Replicate)",
+    "practice_rep": "2-minute role-play prompt"
+  }],
+  "patterns": [""],
+  "session_plan": [{"time": "0-5 min", "activity": ""}],
+  "follow_ups": [""],
+  "verify": [""]
+}`;
+
+function buildPrompt(){
+  const ctx = [['AE',ae.value],['Segment',seg.value],['Call type / stage',stage.value],['Focus',focus.value]]
+    .filter(x=>x[1].trim()).map(x=>x.join(': ')).join('\n') || '(none given)';
+  return `You are an enablement coach at Checkout.com (payments). I run live sessions with Account Executives where we play short clips of real calls and pause to coach. Review the call transcript below and find the best "pause and play" moments.
+
+CONTEXT
+${ctx}
+
+RULES
+1. Every moment must be 4 minutes or LESS. Use timestamps to bound it. If the transcript has no timestamps, pick a section of at most ~500 words and label it by start and end quotes. Never pick a longer span; trim to the tightest useful window.
+2. Quote exact lines, never paraphrase. Never fabricate quotes, timestamps or facts. Trim with "..." only where needed.
+3. Every coaching point must cite what was actually said.
+4. Include wins as well as misses: roughly 40% "Replicate" and 60% "Improve" (use "Discuss" for debatable moments).
+5. If a product, pricing or payments claim cannot be verified from the transcript, flag it under "verify" instead of calling it wrong.
+6. Be candid but constructive; coach the behaviour, not the person. Flag anything that should be anonymised before showing the group.
+7. Return 4-6 moments, ordered in the sequence I should play them.
+
+DEPTH METHODOLOGY
+${DEPTH}
+Tag every moment with the DEPTH stage it shows or should have shown. Flag stage-jumping (e.g. proposing or discussing price before needs are agreed). In the depth_check, say which stages the call covered and whether the AE stayed in the right stage for the deal. Judge Discover from how well the opening and questions reflect prior research and whether a next commitment was planned.
+
+LENSES TO SCAN
+Agenda setting & call control (upfront contract, time check, agreed outcome, recap, tangents); discovery & questioning (open vs closed, follow-up depth, pain to impact to cost of inaction, talk/listen ratio, silence); sales acumen (business case, value vs feature selling, qualification, stakeholder mapping, urgency, commercial framing); product knowledge (accuracy, payments fluency, tying product to stated problem); objection handling (acknowledge, clarify, respond, confirm); competitive positioning; storytelling & proof; next steps & close (mutual action plan, dated commitments, multi-threading); light-bulb moments; missed opportunities (ignored buying signals, unexplored pain).
+Scorecard lenses to rate 1-5 (null if not observed): Agenda setting, Discovery, Sales acumen, Product knowledge, Objection handling, Competitive positioning, Storytelling & proof, Next steps & close.
+
+OUTPUT
+Reply with ONLY valid JSON (no commentary) in exactly this shape:
+${SCHEMA}
+
+TRANSCRIPT
+"""
+${tx.value.trim()}
+"""`;
+}
+
+const $ = id => document.getElementById(id);
+const ae=$('ae'),seg=$('seg'),stage=$('stage'),focus=$('focus'),tx=$('tx');
+let data=null, idx=0, lastPrompt='';
+
+tx.addEventListener('input',()=>{const w=tx.value.trim().split(/\s+/).filter(Boolean).length;$('count').textContent=w?`${w.toLocaleString()} words`:''});
+$('build').onclick=()=>{
+  if(!tx.value.trim()){$('err1').textContent='Paste a transcript first.';return}
+  $('err1').textContent='';
+  lastPrompt=buildPrompt();
+  $('prompt').textContent=lastPrompt; $('pd').classList.remove('hide'); $('copy').disabled=false;
+  copyPrompt();
+};
+async function copyPrompt(){
+  try{await navigator.clipboard.writeText(lastPrompt);$('copy').textContent='Copied!'}
+  catch(e){$('pd').open=true;const r=document.createRange();r.selectNodeContents($('prompt'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('copy').textContent='Select + copy above'}
+  setTimeout(()=>$('copy').textContent='Copy prompt',2000);
+}
+$('copy').onclick=copyPrompt;
+
+// navigation
+function go(n){
+  for(let i=1;i<=4;i++){$('step'+i).classList.toggle('hide',i!==n)}
+  document.querySelectorAll('.step').forEach(b=>b.classList.toggle('on',+b.dataset.s===n));
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.step').forEach(b=>b.onclick=()=>{const n=+b.dataset.s;if(n>=3&&!data){go(2);$('err2').textContent='Render a review first.';return}go(n)});
+
+// element helper (textContent only, so pasted content can't inject HTML)
+function el(tag,props,...kids){
+  const e=document.createElement(tag);
+  if(props)for(const k in props){if(k==='class')e.className=props[k];else e[k]=props[k]}
+  kids.flat().forEach(k=>{if(k==null||k===false)return;e.append(k.nodeType?k:document.createTextNode(String(k)))});
+  return e;
+}
+const list=a=>el('ul',null,(a||[]).map(x=>el('li',null,x)));
+const sec=(t,...c)=>[el('h3',null,t),...c];
+
+function parseJSON(t){
+  const s=t.indexOf('{'),e=t.lastIndexOf('}');
+  if(s<0||e<s)throw new Error('No JSON object found.');
+  return JSON.parse(t.slice(s,e+1));
+}
+$('render').onclick=()=>{
+  try{
+    data=parseJSON($('resp').value);
+    if(!Array.isArray(data.moments)||!data.moments.length)throw new Error('JSON has no "moments" array.');
+    $('err2').textContent='';idx=0;renderReview();renderPresent();go(3);
+  }catch(e){$('err2').textContent='Could not read that: '+e.message+'\nMake sure you copied Claude\'s full reply (starting with { and ending with }).'}
+};
+
+const dur=m=>Number(m.duration_minutes);
+function momentTags(m){
+  const d=dur(m);
+  return [el('span',{class:'tag '+(m.type||'')},m.type||'Moment'),
+    m.depth_stage&&el('span',{class:'tag'},'DEPTH: '+m.depth_stage),
+    m.lens&&el('span',{class:'tag'},m.lens),
+    el('span',{class:'tag'+(d>4?' long':'')},(isNaN(d)?'?':d)+' min'+(d>4?' (over 4, trim!)':''))];
+}
+function quotes(m){return (m.key_lines||[]).map(l=>el('blockquote',null,el('b',null,(l.speaker||'')+(l.speaker?': ':'')),l.text))}
+
+function renderReview(){
+  const r=$('review');r.textContent='';
+  const s=data.snapshot||{};
+  r.append(el('div',{class:'card'},el('h2',null,'Call snapshot'),el('p',null,s.summary),
+    el('div',{class:'grid2'},
+      el('div',null,el('b',{style:'color:var(--good)'},'Biggest strength'),el('p',null,s.biggest_strength)),
+      el('div',null,el('b',{style:'color:var(--warn)'},'Biggest opportunity'),el('p',null,s.biggest_opportunity)))));
+  if(data.scorecard){
+    const t=el('table',null,el('tr',null,el('th',null,'Lens'),el('th',null,'Score'),el('th',null,'Evidence')),
+      data.scorecard.map(x=>el('tr',null,el('td',null,x.lens),el('td',{class:'score'},x.score==null?'n/a':x.score+'/5'),el('td',null,x.evidence))));
+    const dc=data.depth_check;
+    r.append(el('div',{class:'card'},el('h2',null,'Scorecard'),t,
+      dc&&sec('DEPTH check',el('div',null,(dc.stages_covered||[]).map(x=>el('span',{class:'tag'},x))),el('p',null,dc.assessment))));
+  }
+  data.moments.forEach((m,i)=>{
+    r.append(el('div',{class:'card'},
+      el('h2',null,`Moment ${i+1}: ${m.title||''}`),el('div',null,momentTags(m)),
+      el('p',{class:'hint'},`Clip: ${m.clip_start||'?'}  →  ${m.clip_end||'?'}`),
+      m.setup&&el('div',{class:'fac'},sec('Set-up (say before play)',el('p',null,m.setup))),
+      sec('Key lines',quotes(m)),
+      m.pause_point&&el('div',{class:'pause'},el('b',null,'Pause point: '),m.pause_point),
+      sec('Why it matters',el('p',null,m.analysis)),
+      sec('Facilitator questions',list(m.facilitator_questions)),
+      el('div',{class:'fac'},
+        sec('Coaching tips',list(m.coaching_tips)),
+        sec('Better talk track / pattern',el('div',{class:'talk'},m.better_talk_track||'')),
+        sec('Practice rep',el('p',null,m.practice_rep)))));
+  });
+  const extras=[];
+  if(data.patterns?.length)extras.push(el('div',{class:'card'},el('h2',null,'Patterns & themes'),list(data.patterns)));
+  if(data.session_plan?.length)extras.push(el('div',{class:'card'},el('h2',null,'Session plan'),
+    el('table',null,data.session_plan.map(x=>el('tr',null,el('td',{class:'score'},x.time),el('td',null,x.activity)))),
+    data.follow_ups?.length&&sec('Follow-ups',list(data.follow_ups))));
+  if(data.verify?.length)extras.push(el('div',{class:'card'},el('h2',null,'To verify / anonymise'),list(data.verify)));
+  r.append(...extras);
+}
+$('facToggle').onchange=e=>document.body.classList.toggle('show-fac',e.target.checked);
+
+// Present mode: one moment at a time; coaching hidden until revealed
+function renderPresent(){
+  const p=$('present');p.textContent='';
+  const m=data.moments[idx];
+  const reveal=el('div',{class:'hide'},
+    sec('Why it matters',el('p',{class:'big'},m.analysis)),
+    sec('Coaching tips',list(m.coaching_tips)),
+    sec('Better talk track / pattern',el('div',{class:'talk'},m.better_talk_track||'')),
+    sec('Practice rep',el('p',null,m.practice_rep)));
+  const btn=el('button',{class:'btn sec'},'Reveal coaching');
+  btn.onclick=()=>{reveal.classList.toggle('hide');btn.textContent=reveal.classList.contains('hide')?'Reveal coaching':'Hide coaching'};
+  p.append(el('div',{class:'card'},
+    el('h2',{style:'font-size:24px'},`Moment ${idx+1}: ${m.title||''}`),el('div',null,momentTags(m)),
+    el('p',{class:'hint'},`Play: ${m.clip_start||'?'}  →  ${m.clip_end||'?'}`),
+    m.setup&&el('p',{class:'big'},m.setup),
+    el('div',{class:'pause big'},el('b',null,'Pause at: '),m.pause_point),
+    sec('Ask the room',list(m.facilitator_questions)),
+    el('div',{class:'bar'},btn),reveal));
+  $('pos').textContent=`${idx+1} / ${data.moments.length}`;
+  $('prev').disabled=idx===0;$('next').disabled=idx===data.moments.length-1;
+}
+$('prev').onclick=()=>{if(idx>0){idx--;renderPresent();window.scrollTo(0,0)}};
+$('next').onclick=()=>{if(data&&idx<data.moments.length-1){idx++;renderPresent();window.scrollTo(0,0)}};
+document.addEventListener('keydown',e=>{
+  if(!data||$('step4').classList.contains('hide'))return;
+  if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click();
+});
+
+// sample so the layout can be previewed without a real call
+$('sample').onclick=()=>{
+  $('resp').value=JSON.stringify({
+    snapshot:{summary:"SAMPLE DATA. 2nd discovery call with a mid-market retailer evaluating a PSP switch.",biggest_strength:"Strong open question on checkout drop-off.",biggest_opportunity:"Jumped to pricing before quantifying the pain."},
+    scorecard:[{lens:"Agenda setting",score:3,evidence:"Stated purpose but no time check."},{lens:"Discovery",score:4,evidence:"Good follow-ups on auth rates."},{lens:"Next steps & close",score:null,evidence:"Call cut off before close."}],
+    depth_check:{stages_covered:["Explore","Propose"],assessment:"Moved into Propose/Trade before needs were agreed."},
+    moments:[{title:"Pricing before pain",type:"Improve",lens:"Sales acumen",depth_stage:"Explore → Trade",clip_start:"12:10",clip_end:"15:40",duration_minutes:3.5,setup:"Listen for when the AE first mentions price.",key_lines:[{speaker:"Prospect",text:"What's your rate?"},{speaker:"AE",text:"We're around 2.4% plus 20p."}],pause_point:"Right after the AE quotes the rate.",analysis:"The AE answered the price question without asking what problem the prospect was solving.",facilitator_questions:["What would you say instead?","What did we lose by answering immediately?"],coaching_tips:["Acknowledge, then ask what is driving the question.","Anchor on cost of inaction before numbers."],better_talk_track:"\"Happy to get into pricing. So I can make it relevant, what's the cost of the current drop-off to you today?\"",practice_rep:"Pair up: one asks 'what's your rate?' in the first 5 minutes; the other redirects."}],
+    patterns:["Answers questions literally rather than exploring the why."],session_plan:[{time:"0-5 min",activity:"Play Moment 1 and discuss"}],follow_ups:["Manager to listen for first price mention on next 3 calls."],verify:["Quoted rate: confirm with Pricing; anonymise merchant name."]
+  },null,2);
+};
+</script>
+</body>
+</html>
