@@ -13,4 +13,4 @@ Tip: keep transcripts in a `calls/` folder, and anonymise names/pricing before s
 Call snapshot, scorecard across agenda setting, discovery, sales acumen, product knowledge, objection handling, competitive positioning, storytelling and next steps, then 4-6 ranked clips each with set-up, pause point, facilitator questions, coaching tips, a better talk track and a role-play rep. It also gives patterns, a session plan and a verify list.
 
 ## Tuning
-Edit `.claude/skills/call-review/SKILL.md` to add your methodology (e.g. map moments to RevWay/DEPTH stages), your own scorecard, or product facts to check claims against.
+Edit `.claude/skills/call-review/SKILL.md` to add your methodology (DEPTH definitions already live in `DEPTH_Definitions.md` there), your own scorecard, or product facts to check claims against.

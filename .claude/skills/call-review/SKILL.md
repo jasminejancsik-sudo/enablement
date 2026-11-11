@@ -18,6 +18,15 @@ A call transcript (pasted or a file path). Optional context from the user: AE na
 5. **Product accuracy:** If the AE or prospect makes a product, pricing or payments claim you cannot verify from the transcript or repo, flag it as "verify with Product/SE" rather than stating it is wrong.
 6. Be candid but constructive. Coach the behaviour, not the person. Remember clips may be shown to the group, so flag anything sensitive (prospect names, pricing, confidential info) for anonymising.
 
+## DEPTH mapping
+Checkout's methodology is DEPTH (Discover, Explore, Propose, Trade, Handover). Full definitions are in `DEPTH_Definitions.md` in this folder; read it before reviewing. Tag every moment with the DEPTH stage it demonstrates or should have demonstrated, and judge it against that stage's purpose:
+- **Explore:** strong first impression, active listening, thoughtful funnelled questions, understanding goals/needs/challenges before pitching. Qualification (e.g. MEDDIC) should support understanding, not lead the conversation.
+- **Propose:** solutions tied to needs agreed in Explore ("you told us X matters; here's what we recommend and the outcome"), with proof points and quantified value.
+- **Trade:** pricing discussed conversationally, explained confidently, objections handled respectfully, nothing given away without a commitment in return.
+- **Handover:** commitments, merchant actions, internal coordination, AM account plan.
+- **Discover** is pre-call prep: assess it from how well the opening and questions reflect research on the company, people and market, and whether a next commitment was planned.
+Flag stage-jumping (e.g. proposing or discussing price before needs are agreed) and note when a call spans stages.
+
 ## Lenses to scan for
 - **Agenda setting & call control:** upfront contract, time check, agreed outcome, recapping, handling tangents, managing time
 - **Discovery & questioning:** open vs closed, depth of follow-up, pain to impact to cost of inaction, talk/listen ratio, silence
@@ -36,13 +45,13 @@ A call transcript (pasted or a file path). Optional context from the user: AE na
 3-4 lines: who/what/stage, overall impression, the single biggest strength and the single biggest opportunity.
 
 ### 2. Scorecard
-Table rating each lens 1-5 (or "n/a, not observed") with a one-line evidence note.
+Table rating each lens 1-5 (or "n/a, not observed") with a one-line evidence note, followed by a DEPTH stage check: which stages the call covered, and whether the AE stayed in the right stage for the deal.
 
 ### 3. Pause & Play moments
 Rank 4-6 moments in the order you would play them in a session. For each:
 
 **Moment N: [short title]** · `Type: Replicate | Improve | Discuss`
-- **Lens:** which area(s)
+- **Lens / DEPTH stage:** which area(s) and stage
 - **Clip:** start to end (duration, must be 4 min or less)
 - **Set-up for the room (say before pressing play):** 1-2 sentences, with what to listen for
 - **Key lines:** the quoted exchange (shortened)
